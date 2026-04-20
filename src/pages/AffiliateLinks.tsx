@@ -1,0 +1,291 @@
+import React, { useState, useRef } from 'react';
+import { useApp } from '../context/AppContext';
+import { ArrowLeft, Copy, Share2, Check, Hash, UserPlus, Search, X, Sparkles, Download, Scan, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { QRScanner } from '../components/QRScanner';
+import { ReferrerModal } from '../components/ReferrerModal';
+import html2canvas from 'html2canvas';
+
+export const AffiliateLinks: React.FC = () => {
+  const { user, referrer, addReferrer, campaignAssets, systemSettings, showToast } = useApp();
+  const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
+  const [assetCopied, setAssetCopied] = useState<number | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const qrRef = useRef<HTMLDivElement>(null);
+
+  // Referrer Modal State - Now starts as false to let user see the page first
+  const [showReferrerModal, setShowReferrerModal] = useState(false);
+
+  const referralCode = user?.referralCode || 'GUEST';
+  const baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
+  const affiliateLink = `${baseUrl}/#/ref/${referralCode}`;
+  
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(affiliateLink)}&color=000000&bgcolor=FFFFFF`;
+
+  // Helper to ensure referrer exists
+  const checkReferrerAction = (action: () => void) => {
+    if (!referrer) {
+      setShowReferrerModal(true);
+      return;
+    }
+    action();
+  };
+
+  const copyToClipboard = () => {
+    checkReferrerAction(() => {
+        navigator.clipboard.writeText(affiliateLink);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const copyCodeToClipboard = () => {
+    checkReferrerAction(() => {
+        navigator.clipboard.writeText(referralCode);
+        setCodeCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const handleDownloadQR = async () => {
+    if (!qrRef.current) return;
+    setIsCapturing(true);
+    try {
+      const canvas = await html2canvas(qrRef.current, {
+        scale: 4,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      });
+      const url = canvas.toDataURL("image/png");
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `QR_Referral_${referralCode}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast({ message: "QR Code downloaded with logo", type: 'success' });
+    } catch (error) {
+      console.error('QR Download failed', error);
+      showToast({ message: "Failed to capture QR code", type: 'error' });
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
+  const handleShare = async () => {
+    checkReferrerAction(async () => {
+        if (navigator.share) {
+            try {
+                const shareData: ShareData = {
+                    title: 'Join Synergy Flow',
+                    text: `Start earning with Synergy Flow! Use my code: ${referralCode}`,
+                    url: affiliateLink,
+                };
+
+                // Try to include the QR image if possible
+                if (qrRef.current && navigator.canShare && navigator.canShare({ files: [] as File[] })) {
+                    try {
+                        const canvas = await html2canvas(qrRef.current, { scale: 2, useCORS: true });
+                        const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
+                        if (blob) {
+                            const file = new File([blob], `QR_${referralCode}.png`, { type: 'image/png' });
+                            if (navigator.canShare({ files: [file] })) {
+                                (shareData as any).files = [file];
+                            }
+                        }
+                    } catch (e) {
+                        console.log("Could not attach QR image to share", e);
+                    }
+                }
+
+                await navigator.share(shareData);
+            } catch (error) {
+                console.log('Error sharing', error);
+            }
+        } else {
+            copyToClipboard();
+        }
+    });
+  };
+
+  const handleGetAssetLink = (id: number) => {
+    checkReferrerAction(() => {
+        const assetLink = `${baseUrl}/#/campaigns?id=${id}&ref=${referralCode}`;
+        navigator.clipboard.writeText(assetLink);
+        setAssetCopied(id);
+        setTimeout(() => setAssetCopied(null), 2000);
+    });
+  };
+
+  const handleDownload = async (imageUrl: string, title: string) => {
+    if (!imageUrl) return;
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${title.replace(/\s+/g, '_')}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed', error);
+      const link = document.createElement('a');
+      link.href = imageUrl;
+      link.target = '_blank';
+      link.download = `${title.replace(/\s+/g, '_')}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const activeAssets = campaignAssets.filter(a => a.active);
+
+  return (
+    <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
+              <ArrowLeft size={24} />
+            </button>
+            <h1 className="text-xl font-bold ml-2 text-gray-900 dark:text-white tracking-tight">Affiliate Links</h1>
+          </div>
+          <button 
+            onClick={handleDownloadQR}
+            disabled={isCapturing}
+            className="p-2 text-synergy-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition active:scale-90 disabled:opacity-50"
+            title="Download QR Code"
+          >
+            {isCapturing ? <Loader2 size={24} className="animate-spin" /> : <Download size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content (Interactive, triggers modal on click if no referrer) */}
+      <div>
+          <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700 text-center mb-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Scan & Join</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-xs mb-6">Your personal referral QR Code</p>
+            
+            <div ref={qrRef} className="bg-white p-4 rounded-xl shadow-inner border border-gray-100 inline-block mb-6 relative">
+               <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48 object-contain" crossOrigin="anonymous" />
+               {systemSettings.logo && (
+                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                   <div className="w-10 h-10 bg-white p-0.5 rounded-md shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden">
+                     <img 
+                        src={systemSettings.logo} 
+                        alt="logo" 
+                        className="w-full h-full object-contain rounded-[4px]" 
+                        referrerPolicy="no-referrer"
+                        crossOrigin="anonymous"
+                     />
+                   </div>
+                 </div>
+               )}
+            </div>
+            
+            <div className="mb-4">
+              <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-2 text-left ml-1">My Referral Code</label>
+              <div className="bg-blue-50/50 dark:bg-blue-900/10 rounded-xl p-4 flex items-center justify-between border border-blue-100 dark:border-blue-900/30">
+                <div className="flex items-center space-x-2">
+                  <Hash size={16} className="text-synergy-blue" />
+                  <span className="text-lg font-black text-gray-900 dark:text-white tracking-widest">{referralCode}</span>
+                </div>
+                <button onClick={copyCodeToClipboard} className="text-synergy-blue hover:text-synergy-dark transition bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm border border-blue-50 dark:border-gray-700">
+                  {codeCopied ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-2 text-left ml-1">Shareable Link</label>
+              <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 flex items-center justify-between border border-gray-100 dark:border-gray-700">
+                <span className="text-xs text-gray-600 dark:text-gray-400 truncate mr-2 flex-1 text-left">{affiliateLink}</span>
+                <button onClick={copyToClipboard} className="text-synergy-blue hover:text-synergy-dark transition bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                  {copied ? <Check size={20} className="text-green-500" /> : <Copy size={20} />}
+                </button>
+              </div>
+            </div>
+
+            <button 
+              onClick={handleShare}
+              className="w-full bg-synergy-blue text-white font-bold py-3.5 rounded-xl shadow-glow flex items-center justify-center space-x-2 active:scale-95 transition hover:bg-synergy-dark"
+            >
+              <Share2 size={18} />
+              <span>Share Everything</span>
+            </button>
+          </div>
+
+          <div className="flex justify-between items-center mb-4 ml-1">
+            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 uppercase tracking-widest">Campaign Assets</h3>
+            <button 
+              onClick={() => navigate('/campaigns')}
+              className="text-[10px] font-black text-synergy-blue uppercase tracking-widest hover:underline"
+            >
+              Browse All
+            </button>
+          </div>
+          <div className="space-y-4">
+            {activeAssets.length === 0 ? (
+                <p className="text-center py-6 text-gray-400 text-xs italic">No campaign assets available at this time.</p>
+            ) : (
+                activeAssets.map((asset) => (
+                    <div key={asset.id} className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm flex items-center space-x-4 border border-gray-50 dark:border-gray-700 transition-all">
+                        <div className="w-16 h-16 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shrink-0">
+                            <img src={asset.image || undefined} alt={asset.title} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate">{asset.title}</h4>
+                            <p className="text-[10px] text-gray-400 font-medium line-clamp-1">{asset.description}</p>
+                        </div>
+                        <div className="flex space-x-2 shrink-0">
+                          <button 
+                            onClick={() => handleGetAssetLink(asset.id)}
+                            className={`font-bold text-[10px] uppercase tracking-wider border px-3 py-1.5 rounded-full transition flex items-center space-x-1 ${assetCopied === asset.id ? 'bg-green-50 border-green-200 text-green-600' : 'border-synergy-blue text-synergy-blue hover:bg-blue-50 dark:hover:bg-blue-900/20'}`}
+                          >
+                              {assetCopied === asset.id ? (
+                                  <>
+                                     <span>Copied</span>
+                                     <Check size={12} />
+                                  </>
+                              ) : (
+                                  <span>Get Link</span>
+                              )}
+                          </button>
+                          {asset.image && (
+                            <button 
+                              onClick={() => handleDownload(asset.image, asset.title)}
+                              className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                            >
+                              <Download size={14} />
+                            </button>
+                          )}
+                        </div>
+                    </div>
+                ))
+            )}
+          </div>
+      </div>
+
+      {/* REFERRER REQUIRED MODAL */}
+      <ReferrerModal 
+        isOpen={showReferrerModal} 
+        onClose={() => setShowReferrerModal(false)}
+        onSuccess={() => {
+          // Success logic if needed
+        }}
+        title="Referrer Required"
+        description="To start promoting and earning commissions, you must link your account to a referrer."
+      />
+
+
+    </div>
+  );
+};

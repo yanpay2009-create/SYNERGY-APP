@@ -1,0 +1,275 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (
+          request.auth.token.email in ["yanpay2009@gmail.com", "synergyflow.my@gmail.com"] ||
+          (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+        );
+    }
+
+    function isValidEmail(email) {
+      return email is string && (email == "" || email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
+    }
+
+    function isValidUrl(url) {
+      return url is string && (url == "" || url.matches("^https://.*") || url.matches("^http://.*"));
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function uidUnchanged() {
+      return !('uid' in request.resource.data) || request.resource.data.get('uid', '') == request.auth.uid;
+    }
+
+    function uidNotModified(userId) {
+      return !('uid' in request.resource.data) || request.resource.data.uid == resource.data.get('uid', userId);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidUser(data) {
+      let d = data;
+      return (d.get('name', '') is string && d.get('name', '').size() < 100) &&
+             (d.get('email', '') is string && d.get('email', '').size() < 100) &&
+             (d.get('tier', 'Starter') is string) &&
+             (d.get('accumulatedSales', 0) is number) &&
+             (d.get('walletBalance', 0) is number) &&
+             (d.get('teamSize', 0) is number) &&
+             (d.get('accumulatedIncome', 0) is number) &&
+             (d.get('referralCode', '') is string && d.get('referralCode', '').size() < 20) &&
+             (d.get('uid', '') is string && d.get('uid', '').size() < 50) &&
+             (d.get('role', 'user') in ['admin', 'user']) &&
+             (d.get('kycStatus', 'Unverified') in ['Unverified', 'Pending', 'Verified', 'Rejected']) &&
+             (d.get('avatar', '') is string && d.get('avatar', '').size() < 500) &&
+             (d.get('phone', '') is string && d.get('phone', '').size() < 20) &&
+             (d.get('lineId', '') is string && d.get('lineId', '').size() < 50) &&
+             (d.get('referrerCode', '') is string) &&
+             (d.get('uplineId', '') is string) &&
+             (d.get('uplinePath', []) is list) &&
+             (d.get('favorites', []) is list && d.get('favorites', []).size() <= 100);
+    }
+
+    function isValidPublicProfile(data) {
+      return hasOnlyAllowedFields(['name', 'avatar', 'referralCode', 'tier', 'uplineId', 'uplinePath', 'teamSize', 'email', 'phone', 'lineId', 'accumulatedIncome', 'totalSales', 'dailyIncome', 'lastIncomeDate', 'referrerCode', 'uid', 'role']) &&
+             data.get('name', '') is string && data.get('name', '').size() < 100 &&
+             data.get('avatar', '') is string && data.get('avatar', '').size() < 500 &&
+             data.get('referralCode', '') is string && data.get('referralCode', '').size() < 20 &&
+             data.get('tier', 'Starter') is string &&
+             data.get('teamSize', 0) is number &&
+             data.get('dailyIncome', 0) is number &&
+             (data.get('lastIncomeDate', '') is string || data.get('lastIncomeDate', null) == null) &&
+             (data.get('uplineId', null) == null || data.get('uplineId', '') is string) &&
+             (data.get('referrerCode', null) == null || data.get('referrerCode', '') is string) &&
+             (data.get('uid', null) == null || data.get('uid', '') is string) &&
+             (data.get('role', 'user') in ['admin', 'user']) &&
+             data.get('uplinePath', []) is list;
+    }
+
+    function isValidProduct(data) {
+      return hasRequiredFields(['name', 'price', 'category', 'sold', 'stock']) &&
+             data.get('name', '') is string && data.get('name', '').size() > 0 && data.get('name', '').size() < 200 &&
+             data.get('price', 0) is number && data.get('price', 0) >= 0 &&
+             data.get('category', '') is string && data.get('category', '').size() < 50 &&
+             data.get('sold', 0) is number && data.get('sold', 0) >= 0 &&
+             data.get('stock', 0) is number && data.get('stock', 0) >= 0 &&
+             (!('image' in data) || isValidUrl(data.get('image', ''))) &&
+             (!('description' in data) || (data.get('description', '') is string && data.get('description', '').size() < 5000));
+    }
+
+    function isValidOrder(data) {
+      return hasRequiredFields(['userId', 'date', 'items', 'total', 'status', 'shippingAddress']) &&
+             (isAdmin() || data.get('userId', '') == request.auth.uid) &&
+             data.get('status', '') in ['Pending', 'To Ship', 'Shipped', 'Delivered', 'Cancelled', 'Return Pending', 'Returned'] &&
+             data.get('total', 0) is number && data.get('total', 0) >= 0 &&
+             data.get('items', []) is list && data.get('items', []).size() > 0 && data.get('items', []).size() <= 50;
+    }
+
+    function isValidFeedItem(data) {
+      return hasRequiredFields(['type', 'category', 'user', 'userId', 'content', 'caption', 'status', 'likes', 'shares', 'isAi']) &&
+             (isAdmin() || data.get('userId', '') == request.auth.uid) &&
+             data.get('type', '') in ['image', 'video'] &&
+             data.get('status', '') in ['Approved', 'Pending'] &&
+             data.get('likes', 0) is number && data.get('likes', 0) >= 0 &&
+             data.get('shares', 0) is number && data.get('shares', 0) >= 0 &&
+             data.get('caption', '') is string && data.get('caption', '').size() < 2000;
+    }
+
+    function isValidCommission(data) {
+      return hasRequiredFields(['userId', 'amount', 'status', 'date', 'type']) &&
+             data.get('amount', 0) is number &&
+             data.get('status', '') in ['Pending', 'Paid', 'Cancelled', 'Waiting'] &&
+             data.get('type', '') in ['Direct', 'Team', 'Withdrawal', 'Refund'] &&
+             data.get('source', '') is string && data.get('source', '').size() < 500 &&
+             (isAdmin() || data.get('sourceUid', '') == request.auth.uid || data.get('userId', '') == request.auth.uid);
+    }
+
+    function isValidNotification(data) {
+      return hasRequiredFields(['userId', 'title', 'message', 'date', 'type', 'read']) &&
+             data.get('type', '') in ['system', 'promo', 'order', 'commission'] &&
+             data.get('read', false) == false;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['teamSize', 'accumulatedIncome', 'accumulatedSales', 'dailyIncome', 'lastIncomeDate']));
+      allow delete: if isAdmin();
+    }
+
+    match /publicProfiles/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['dailyIncome', 'lastIncomeDate', 'accumulatedIncome', 'teamSize', 'totalSales']));
+      allow delete: if isAdmin();
+    }
+
+    match /phoneMap/{phone} {
+      allow get: if true;
+      allow create, update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    match /emailMap/{email} {
+      allow get: if true;
+      allow create, update: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow create: if isAdmin() && isValidProduct(request.resource.data);
+      allow update: if isAdmin() || (isAuthenticated() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['sold', 'stock', 'reviews']));
+      allow delete: if isAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && (resource.data.get('userId', '') == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && isValidOrder(request.resource.data);
+      allow update: if isAdmin() || (
+        isAuthenticated() && 
+        resource.data.userId == request.auth.uid && 
+        isValidOrder(request.resource.data) && 
+        (
+          request.resource.data.status == resource.data.status || 
+          (resource.data.status == 'Delivered' && request.resource.data.status == 'Return Pending') ||
+          (resource.data.status == 'Pending' && request.resource.data.status == 'Cancelled') ||
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reviewedProductIds'])
+        )
+      );
+      allow delete: if isAdmin();
+    }
+
+    function isValidInteractionUpdate(data) {
+      return (!('likes' in data) || (data.get('likes', 0) is number && data.get('likes', 0) >= 0)) &&
+             (!('shares' in data) || (data.get('shares', 0) is number && data.get('shares', 0) >= 0)) &&
+             (!('likedBy' in data) || (data.get('likedBy', []) is list)) &&
+             (!('comments' in data) || (data.get('comments', []) is list));
+    }
+
+    match /feed/{postId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidFeedItem(request.resource.data);
+      allow update: if isAdmin() || (
+        isAuthenticated() && (
+          (resource.data.get('userId', '') == request.auth.uid && isValidFeedItem(request.resource.data)) ||
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy', 'comments', 'shares']) && isValidInteractionUpdate(request.resource.data))
+        )
+      );
+      allow delete: if isAdmin() || (isAuthenticated() && resource.data.get('userId', '') == request.auth.uid);
+    }
+
+    match /commissions/{txId} {
+      allow read: if isAuthenticated() && (resource.data.get('userId', '') == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && isValidCommission(request.resource.data) && (
+        isAdmin() || 
+        (request.resource.data.type in ['Direct', 'Team'] && request.resource.data.get('sourceUid', '') == request.auth.uid) ||
+        (request.resource.data.type == 'Withdrawal' && request.resource.data.userId == request.auth.uid) ||
+        (
+          request.resource.data.type == 'Refund' && 
+          request.resource.data.userId == request.auth.uid &&
+          get(/databases/$(database)/documents/orders/$(request.resource.data.orderId)).data.userId == request.auth.uid
+        )
+      );
+      allow update: if isAdmin() || (
+        isAuthenticated() && 
+        resource.data.get('orderId', '') != '' && 
+        get(/databases/$(database)/documents/orders/$(resource.data.orderId)).data.userId == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+        request.resource.data.status == 'Pending'
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && (resource.data.get('userId', '') == request.auth.uid || resource.data.get('userId', '') == 'global' || isAdmin());
+      allow create: if isAuthenticated() && isValidNotification(request.resource.data);
+      allow update: if isAuthenticated() && (resource.data.get('userId', '') == request.auth.uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']));
+      allow delete: if isAdmin();
+    }
+
+    match /counters/{counterId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasOnlyAllowedFields(['count']) && request.resource.data.count is number;
+      allow update: if isAuthenticated() && 
+                    hasOnlyAllowedFields(['count']) && 
+                    request.resource.data.count is number && 
+                    request.resource.data.count == resource.data.count + 1;
+      allow delete: if isAdmin();
+    }
+
+    match /ads/{adId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /systemSettings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /onboardingSlides/{slideId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /promotions/{promoId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /campaignAssets/{assetId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
