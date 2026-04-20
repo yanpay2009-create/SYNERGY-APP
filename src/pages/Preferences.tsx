@@ -43,8 +43,8 @@ export const Preferences: React.FC = () => {
           <Icon size={20} />
         </div>
         <div className="text-left">
-           <span className="text-sm font-bold text-gray-700 dark:text-gray-200 leading-tight block">{label}</span>
-           {subtitle && <span className="text-[10px] text-gray-400 font-medium leading-tight mt-1 block">{subtitle}</span>}
+           <span className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight block">{label}</span>
+           {subtitle && <span className="text-[10px] text-gray-400 font-semibold leading-tight mt-1 block">{subtitle}</span>}
         </div>
       </div>
       <div className="flex items-center space-x-2">

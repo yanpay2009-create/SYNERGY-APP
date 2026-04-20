@@ -28,8 +28,8 @@ export const PersonalInfo: React.FC = () => {
           <Icon size={20} />
         </div>
         <div className="text-left">
-          <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 leading-tight">{title}</h3>
-          <p className="text-[10px] text-gray-400 font-medium leading-tight mt-0.5">{desc}</p>
+          <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight">{title}</h3>
+          <p className="text-[10px] text-gray-400 font-semibold leading-tight mt-0.5">{desc}</p>
         </div>
       </div>
       <ChevronRight size={16} className="text-gray-300 dark:text-gray-500 group-hover:translate-x-1 transition-transform" />

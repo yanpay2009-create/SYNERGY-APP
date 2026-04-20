@@ -68,14 +68,14 @@ const MenuRow = ({ icon: Icon, label, subtitle, value, valueLabel, to, colorClas
         <Icon size={20} />
       </div>
       <div className="flex flex-col items-start min-w-0 flex-1">
-        <span className="text-sm font-bold text-gray-700 dark:text-gray-200 leading-tight text-left">{label}</span>
-        {subtitle && <span className="text-xs text-gray-400 font-medium leading-tight mt-1 text-left">{subtitle}</span>}
+        <span className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight text-left">{label}</span>
+        {subtitle && <span className="text-[10px] text-gray-400 font-semibold leading-tight mt-1 text-left">{subtitle}</span>}
       </div>
     </div>
     <div className="flex items-center space-x-2 shrink-0 ml-4 mt-1">
       <div className="flex flex-col items-end">
         {value && <span className="text-xs text-gray-400 font-semibold">{value}</span>}
-        {valueLabel && <span className="text-[9px] text-gray-300 dark:text-gray-500 font-bold uppercase tracking-tighter leading-none mt-0.5">{valueLabel}</span>}
+        {valueLabel && <span className="text-[9px] text-gray-300 dark:text-gray-500 font-bold leading-none mt-0.5">{valueLabel}</span>}
       </div>
       <ChevronRight size={16} className="text-gray-300 dark:text-gray-500" />
     </div>
