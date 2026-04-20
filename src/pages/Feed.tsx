@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { ShoppingBag, Share2, Copy, Heart, MessageCircle, Send, X, Check, Clock, ChevronUp, Sparkles, Play, ShieldCheck, UserPlus, Search, Scan, Plus, User, ArrowRight, Volume2, VolumeX, Maximize2 } from 'lucide-react';
+import { Share2, Copy, Heart, MessageCircle, Send, X, Check, Clock, ChevronUp, Sparkles, Play, ShieldCheck, UserPlus, Search, Scan, Plus, User, ArrowRight, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { FeedItem } from '../types';
 import { CountdownTimer } from '../components/CountdownTimer';
@@ -62,6 +62,16 @@ export const Feed: React.FC = () => {
   const visibleFeed = feed.filter(f => f.status === 'Approved' || f.userId === user?.email);
   const filteredFeed = activeTab === 'For You' ? visibleFeed : visibleFeed.filter(f => f.category === 'Trending');
   
+  const activeAds = useMemo(() => {
+    return ads.filter(a => {
+      if (!a.active || a.placement !== 'feed') return false;
+      if (a.expiryDate) {
+        return new Date(a.expiryDate).getTime() > currentTime;
+      }
+      return true;
+    });
+  }, [ads, currentTime]);
+
   const checkReferrerAction = (action: () => void) => {
     if (!referrer) {
       setShowReferrerModal(true);
@@ -117,24 +127,6 @@ export const Feed: React.FC = () => {
     toggleFeedLike(id);
   };
 
-  const handleProductAction = (post: FeedItem) => {
-    if (post.productId) {
-      const product = products.find(p => p.id === post.productId);
-      if (product) {
-        addToCart(product, 1);
-        showToast({
-          type: 'success',
-          title: 'Added to Cart',
-          message: `${product.name} has been added to your basket.`
-        });
-      } else {
-        navigate('/shop');
-      }
-    } else {
-      navigate('/shop');
-    }
-  };
-
   const submitComment = (e: React.FormEvent) => {
       e.preventDefault();
       if (!isLoggedIn || !user) {
@@ -163,29 +155,28 @@ export const Feed: React.FC = () => {
   const activePostForComments = feed.find(f => f.id === showComments);
 
   return (
-    <>
-    <div className="h-screen w-full max-w-md mx-auto relative bg-black transition-colors duration-300">
+    <div className="pb-0 pt-0 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-950 relative transition-colors duration-300">
       
-      {/* Top Header Bar (Floating Tabs) */}
-      <div className={`fixed top-0 left-0 right-0 z-[100] px-4 pt-10 pb-4 pointer-events-none transition-all duration-500`}>
+      {/* Top Header Bar (Always visible, centered tabs) */}
+      <div className={`fixed top-0 left-0 right-0 z-[100] px-4 pt-8 pb-4 pointer-events-none transition-all duration-500 ${isScrolled ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
         <div className="max-w-md mx-auto flex items-center justify-center">
-          <div className="flex space-x-1 p-1 rounded-full bg-black/20 backdrop-blur-md border border-white/10 shadow-lg pointer-events-auto">
+          <div className="flex space-x-1 p-1 rounded-full bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-auto">
             <button 
                 onClick={() => setActiveTab('Trending')} 
-                className={`text-[8px] px-3 py-1.5 rounded-full font-black uppercase tracking-wider transition-all duration-300 ${
+                className={`text-[8px] px-2.5 py-1 rounded-full font-black uppercase tracking-wider transition-all duration-300 ${
                     activeTab === 'Trending' 
-                        ? 'bg-white text-black shadow-xl' 
-                        : 'text-white/60 hover:text-white'
+                        ? 'bg-synergy-blue text-white shadow-glow' 
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                 }`}
             >
                 Trending
             </button>
             <button 
                 onClick={() => setActiveTab('For You')} 
-                className={`text-[8px] px-3 py-1.5 rounded-full font-black uppercase tracking-wider transition-all duration-300 ${
+                className={`text-[8px] px-2.5 py-1 rounded-full font-black uppercase tracking-wider transition-all duration-300 ${
                     activeTab === 'For You' 
-                        ? 'bg-white text-black shadow-xl' 
-                        : 'text-white/60 hover:text-white'
+                        ? 'bg-synergy-blue text-white shadow-glow' 
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                 }`}
             >
                 For You
@@ -194,101 +185,77 @@ export const Feed: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Full-Screen Snap Container */}
-      <div className="h-full w-full overflow-y-scroll snap-y snap-mandatory no-scrollbar bg-black">
+      {/* Advertising Banners - Standard flow */}
+      <div className="sticky top-0 z-0">
+        {activeAds.length > 0 && (
+            <div className="w-full h-40 bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                <div className="flex overflow-x-auto snap-x no-scrollbar h-full">
+                  {activeAds.map(ad => (
+                      <div key={ad.id} className="min-w-full h-full relative snap-center group">
+                          <img src={ad.image || undefined} alt={ad.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                          
+                          {ad.expiryDate && (
+                            <div className="absolute top-12 right-4 z-20">
+                              <CountdownTimer expiryDate={ad.expiryDate} onExpire={handleExpire} />
+                            </div>
+                          )}
+  
+                          <div className="absolute bottom-8 left-6 right-6 text-white">
+                              <h2 className="text-lg font-bold leading-tight drop-shadow-lg">{ad.title}</h2>
+                              <p className="text-[10px] text-gray-200 line-clamp-1 font-medium mt-0.5 drop-shadow-md">{ad.subtitle}</p>
+                          </div>
+                      </div>
+                  ))}
+                </div>
+            </div>
+        )}
+      </div>
+
+      {activeAds.length === 0 && (
+        <div className="pt-24"></div>
+      )}
+
+      {/* Standard Content Flow */}
+      <div className={`relative z-10 bg-gray-50 dark:bg-gray-950 pt-4 px-4 min-h-screen pb-28 ${activeAds.length > 0 ? '-mt-4 shadow-[0_-20px_40px_rgba(0,0,0,0.05)]' : ''}`}>
+        <div className="space-y-6">
         {filteredFeed.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400 px-10 text-center">
-                <Sparkles size={60} className="mb-4 opacity-20" />
-                <p className="text-sm font-bold">No posts in your feed yet.</p>
-                <p className="text-xs mt-2 opacity-60">Be the first to share something amazing with the community!</p>
+            <div className="text-center py-20 text-gray-400">
+                <Sparkles size={40} className="mx-auto mb-3 opacity-20" />
+                <p className="text-sm font-medium">No posts in your feed yet.</p>
             </div>
         ) : (
             filteredFeed.map(post => {
-              const isLong = post.caption.length > 25;
+              const isLong = post.caption.length > 60;
               const isExpanded = expandedPostIds.has(post.id);
               const displayCaption = isLong && !isExpanded 
-                ? `${post.caption.substring(0, 25)}...` 
+                ? `${post.caption.substring(0, 60)}...` 
                 : post.caption;
 
               return (
-                <div key={post.id} className="h-full w-full relative snap-start flex items-center justify-center overflow-hidden bg-black">
-                  
-                  {/* Background Blurred Placeholder for Horizontal Content */}
-                  <div className="absolute inset-0 z-0 opacity-30 blur-3xl scale-110 pointer-events-none">
-                    {post.content && (
-                      <img src={post.content} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                    )}
-                  </div>
-
-                  {/* Actual Media Content (Centered, Actual size via contain) */}
-                  <div className="relative z-10 w-full h-full flex items-center justify-center px-0">
+                <div key={post.id} className={`bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden shadow-soft transition-all duration-300 border border-transparent dark:border-gray-700 ${post.status === 'Pending' ? 'opacity-80 grayscale-[0.3]' : ''}`}>
+                  <div className="relative aspect-square bg-gray-100 dark:bg-gray-900">
                     {post.type === 'video' ? (
-                        <video 
-                          src={post.content} 
-                          className="w-full max-h-full object-contain" 
-                          loop 
-                          muted 
-                          autoPlay 
-                          playsInline 
-                        />
+                        <video src={post.content} className="w-full h-full object-cover" controls playsInline />
                     ) : (
-                        <img 
-                          src={post.content || undefined} 
-                          alt="Post" 
-                          className="w-full max-h-full object-contain" 
-                        />
+                        <img src={post.content || undefined} alt="Post" className="w-full h-full object-cover" />
                     )}
-
-                    {/* Pending Status Badge */}
-                    {post.status === 'Pending' && (
-                        <div className="absolute top-24 left-4 z-20 bg-yellow-400 backdrop-blur-md rounded-full px-3 py-1 text-black text-[9px] font-black uppercase flex items-center space-x-1 shadow-lg border border-black/10">
-                            <Clock size={10} />
-                            <span>Reviewing</span>
-                        </div>
-                    )}
+                    
+                    {/* Add to Cart button removed from here */}
+                    
+                    <div className="absolute top-4 right-4 flex flex-col items-end space-y-2 z-10">
+                        {post.status === 'Pending' && (
+                            <div className="bg-yellow-400/90 backdrop-blur-md rounded-full px-3 py-1 text-white text-[10px] font-black uppercase flex items-center space-x-1 shadow-md border border-white/20">
+                                <Clock size={12} />
+                                <span>Reviewing</span>
+                            </div>
+                        )}
+                    </div>
                   </div>
                   
-                  {/* Right Side Vertical Actions (Floating) */}
-                  <div className="absolute right-4 bottom-28 flex flex-col items-center space-y-4 z-30">
-                     <button 
-                        onClick={() => handleLike(post.id)} 
-                        className="flex flex-col items-center group transition active:scale-90"
-                     >
-                        <Heart size={28} className={(post.likedBy || []).includes(user?.uid || '') ? "fill-red-500 text-red-500 scale-110" : "text-white drop-shadow-lg"} />
-                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">{post.likes}</span>
-                     </button>
-
-                     <button 
-                        onClick={() => handleCommentClick(post.id)} 
-                        className="flex flex-col items-center group transition active:scale-90"
-                     >
-                        <MessageCircle size={28} className="text-white drop-shadow-lg" />
-                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">{post.comments.length}</span>
-                     </button>
-
-                     <button 
-                        onClick={() => handleShare(post)} 
-                        disabled={post.status === 'Pending'}
-                        className={`flex flex-col items-center group transition active:scale-90 ${post.status === 'Pending' ? 'opacity-50 cursor-not-allowed' : ''}`}
-                     >
-                        <Share2 size={28} className="text-white drop-shadow-lg" />
-                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">Share</span>
-                     </button>
-
-                     <button 
-                        onClick={() => handleProductAction(post)} 
-                        className="flex flex-col items-center group transition active:scale-90"
-                     >
-                        <ShoppingBag size={28} className="text-white drop-shadow-lg" />
-                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">Shop</span>
-                     </button>
-                  </div>
-                  
-                  {/* Bottom Information Overlay (Text directly on content) */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 pb-20 z-20 pointer-events-none">
-                    <div className="pointer-events-auto transform transition-transform duration-500">
-                      <div className="flex items-center space-x-3 mb-3 drop-shadow-lg">
-                         <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-white/50 bg-gray-900 flex-shrink-0 shadow-xl">
+                  <div className="p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center space-x-2.5">
+                         <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-100 dark:border-gray-700 bg-gray-50 flex-shrink-0">
                             <img 
                                 src={post.avatar || "https://picsum.photos/seed/user/100/100"} 
                                 alt={post.user} 
@@ -296,25 +263,58 @@ export const Feed: React.FC = () => {
                                 referrerPolicy="no-referrer"
                             />
                          </div>
-                         <div className="drop-shadow-md">
-                            <div className="text-sm font-bold text-white tracking-wide">@{post.user}</div>
-                            <div className="text-[9px] text-white/70 font-semibold uppercase tracking-tighter mt-0.5">Synergy Flow Affiliate</div>
-                         </div>
+                         <span className="text-sm font-bold text-gray-800 dark:text-gray-100">{post.user}</span>
                       </div>
+                      <div className="flex space-x-4 text-gray-500">
+                        <button onClick={() => handleLike(post.id)} className="flex flex-col items-center transition active:scale-90"><Heart size={22} className={(post.likedBy || []).includes(user?.uid || '') ? "fill-red-500 text-red-500" : ""} /><span className="text-[10px] mt-1 font-bold">{post.likes}</span></button>
+                        <button onClick={() => handleCommentClick(post.id)} className="flex flex-col items-center transition active:scale-90"><MessageCircle size={22} /><span className="text-[10px] mt-1 font-bold">{post.comments.length}</span></button>
+                      </div>
+                    </div>
 
-                      <div className="overflow-hidden drop-shadow-md">
-                          <div className="text-xs text-white leading-relaxed font-medium">
-                              {displayCaption}
-                              {isLong && (
-                                  <button 
-                                      onClick={() => toggleCaption(post.id)}
-                                      className="ml-2 text-white font-black underline decoration-white/50 focus:outline-none"
-                                  >
-                                      {isExpanded ? 'Hide' : 'More'}
-                                  </button>
-                              )}
-                          </div>
-                      </div>
+                    <div className="mb-3">
+                        <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                            {displayCaption}
+                            {isLong && (
+                                <button 
+                                    onClick={() => toggleCaption(post.id)}
+                                    className="ml-1 text-synergy-blue hover:underline focus:outline-none"
+                                >
+                                    {isExpanded ? 'Show less' : 'See more'}
+                                </button>
+                            )}
+                            <div className="mt-1 flex flex-wrap gap-1.5">
+                                <span className="text-synergy-blue">#SynergyFlow</span>
+                                <span className="text-synergy-blue">#Affiliate</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      {post.productId && (
+                        <button 
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            const product = products.find(p => p.id === post.productId);
+                            if (product) addToCart(product);
+                          }}
+                          className="flex-1 h-9 rounded-full text-[9px] font-black uppercase tracking-[0.1em] flex items-center justify-center space-x-1.5 bg-gray-100 dark:bg-gray-800 text-synergy-blue border border-gray-200 dark:border-gray-700 active:scale-95 transition-all"
+                        >
+                          <Plus size={12} />
+                          <span>Add to Cart</span>
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => handleShare(post)} 
+                        disabled={post.status === 'Pending'} 
+                        className={`flex-1 h-9 rounded-full text-[9px] font-black uppercase tracking-[0.1em] flex items-center justify-center space-x-1.5 shadow-glow active:scale-95 transition ${
+                          post.status === 'Pending' 
+                            ? 'bg-gray-300 dark:bg-gray-700 shadow-none cursor-not-allowed text-gray-500' 
+                            : 'bg-synergy-blue text-white'
+                        }`}
+                      >
+                          <Share2 size={12} />
+                          <span>Promote Now</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -374,6 +374,6 @@ export const Feed: React.FC = () => {
               </div>
           </div>
       )}
-    </>
+    </div>
   );
 };
