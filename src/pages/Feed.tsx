@@ -186,10 +186,10 @@ export const Feed: React.FC = () => {
             </div>
         ) : (
             filteredFeed.map(post => {
-              const isLong = post.caption.length > 40;
+              const isLong = post.caption.length > 25;
               const isExpanded = expandedPostIds.has(post.id);
               const displayCaption = isLong && !isExpanded 
-                ? `${post.caption.substring(0, 40)}...` 
+                ? `${post.caption.substring(0, 25)}...` 
                 : post.caption;
 
               return (
@@ -231,25 +231,21 @@ export const Feed: React.FC = () => {
                   </div>
                   
                   {/* Right Side Vertical Actions (Floating) */}
-                  <div className="absolute right-4 bottom-28 flex flex-col items-center space-y-6 z-30">
+                  <div className="absolute right-4 bottom-28 flex flex-col items-center space-y-4 z-30">
                      <button 
                         onClick={() => handleLike(post.id)} 
                         className="flex flex-col items-center group transition active:scale-90"
                      >
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-2xl group-hover:bg-white/20 transition-all">
-                           <Heart size={24} className={(post.likedBy || []).includes(user?.uid || '') ? "fill-red-500 text-red-500 scale-110" : "text-white"} />
-                        </div>
-                        <span className="text-[10px] mt-1.5 font-black text-white drop-shadow-md">{post.likes}</span>
+                        <Heart size={28} className={(post.likedBy || []).includes(user?.uid || '') ? "fill-red-500 text-red-500 scale-110" : "text-white drop-shadow-lg"} />
+                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">{post.likes}</span>
                      </button>
 
                      <button 
                         onClick={() => handleCommentClick(post.id)} 
                         className="flex flex-col items-center group transition active:scale-90"
                      >
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-2xl group-hover:bg-white/20 transition-all">
-                           <MessageCircle size={24} className="text-white" />
-                        </div>
-                        <span className="text-[10px] mt-1.5 font-black text-white drop-shadow-md">{post.comments.length}</span>
+                        <MessageCircle size={28} className="text-white drop-shadow-lg" />
+                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">{post.comments.length}</span>
                      </button>
 
                      <button 
@@ -257,15 +253,13 @@ export const Feed: React.FC = () => {
                         disabled={post.status === 'Pending'}
                         className={`flex flex-col items-center group transition active:scale-90 ${post.status === 'Pending' ? 'opacity-50 cursor-not-allowed' : ''}`}
                      >
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-2xl group-hover:bg-white/20 transition-all">
-                           <Share2 size={24} className="text-white" />
-                        </div>
-                        <span className="text-[10px] mt-1.5 font-black text-white drop-shadow-md">Share</span>
+                        <Share2 size={28} className="text-white drop-shadow-lg" />
+                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">Share</span>
                      </button>
                   </div>
                   
                   {/* Bottom Information Overlay (Text directly on content) */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 pb-12 z-20 pointer-events-none">
+                  <div className="absolute bottom-0 left-0 right-0 p-8 pb-20 z-20 pointer-events-none">
                     <div className="pointer-events-auto transform transition-transform duration-500">
                       <div className="flex items-center space-x-3 mb-3 drop-shadow-lg">
                          <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-white/50 bg-gray-900 flex-shrink-0 shadow-xl">
@@ -277,8 +271,8 @@ export const Feed: React.FC = () => {
                             />
                          </div>
                          <div className="drop-shadow-md">
-                            <div className="text-base font-black text-white tracking-wide">@{post.user}</div>
-                            <div className="text-[10px] text-white/80 font-bold uppercase tracking-tighter mt-0.5">Synergy Flow Affiliate</div>
+                            <div className="text-sm font-bold text-white tracking-wide">@{post.user}</div>
+                            <div className="text-[9px] text-white/70 font-semibold uppercase tracking-tighter mt-0.5">Synergy Flow Affiliate</div>
                          </div>
                       </div>
 
