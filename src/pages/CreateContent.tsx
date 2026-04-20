@@ -468,7 +468,7 @@ export const CreateContent: React.FC = () => {
           
           <div 
               onClick={media ? undefined : handleMediaClick}
-              className={`w-full h-80 rounded-[32px] border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition relative overflow-hidden group ${media ? 'border-transparent' : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}
+              className={`w-full aspect-[3/4] rounded-[32px] border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition relative overflow-hidden group ${media ? 'border-transparent' : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50'}`}
           >
               {media ? (
                   <>
@@ -684,7 +684,7 @@ export const CreateContent: React.FC = () => {
                                         </div>
 
                                         <div className="flex items-center space-x-3 mb-4">
-                                            <div className="relative w-16 h-16 shrink-0">
+                                            <div className="relative w-16 aspect-[3/4] shrink-0">
                                                 {post.type === 'video' ? (
                                                     <div className="w-full h-full bg-gray-900 rounded-xl flex items-center justify-center relative overflow-hidden">
                                                         <video src={post.content} className="w-full h-full object-cover opacity-70" />

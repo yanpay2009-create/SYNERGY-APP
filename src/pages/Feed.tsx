@@ -233,7 +233,7 @@ export const Feed: React.FC = () => {
 
               return (
                 <div key={post.id} className={`bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden shadow-soft transition-all duration-300 border border-transparent dark:border-gray-700 ${post.status === 'Pending' ? 'opacity-80 grayscale-[0.3]' : ''}`}>
-                  <div className="relative aspect-square bg-gray-100 dark:bg-gray-900">
+                  <div className="relative aspect-[3/4] bg-gray-100 dark:bg-gray-900">
                     {post.type === 'video' ? (
                         <video src={post.content} className="w-full h-full object-cover" controls playsInline />
                     ) : (
