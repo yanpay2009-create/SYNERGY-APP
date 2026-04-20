@@ -255,41 +255,47 @@ const Leaderboard: React.FC = () => {
     const tierStyle = tierColors[item.tier] || tierColors[UserTier.STARTER];
 
     return (
-        <motion.div 
-            layout
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={`p-4 rounded-[24px] flex items-center justify-between border transition-all duration-500 ${styles.card} ${styles.glow} mb-3`}
-        >
-            <div className="flex items-center space-x-4">
+            <motion.div 
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`p-4 rounded-[24px] flex items-center justify-between border transition-all duration-500 ${styles.card} ${styles.glow} mb-3 relative overflow-hidden`}
+            >
+                {/* Background Graphics for Top Ranks */}
+                {isTopRank && (
+                    <div className="absolute right-[-10px] top-[-10px] opacity-[0.03] dark:opacity-[0.05] pointer-events-none transform rotate-12">
+                        {idx === 0 ? <Crown size={100} strokeWidth={1} /> : idx === 1 ? <Trophy size={90} strokeWidth={1} /> : <Medal size={80} strokeWidth={1} />}
+                    </div>
+                )}
+                <div className="flex items-center space-x-4 relative z-10">
                 <div className="relative shrink-0">
-                    <div className={`rounded-full p-1 transition-all duration-500 ${isTopRank ? 'bg-gradient-to-br ' + (idx === 0 ? 'from-amber-400 via-yellow-300 to-amber-600' : idx === 1 ? 'from-purple-400 via-indigo-300 to-purple-600' : 'from-orange-400 via-red-300 to-orange-600') : ''}`}>
+                    <div className={`rounded-full p-0.5 transition-all duration-500 ${isTopRank ? 'bg-gradient-to-br ' + (idx === 0 ? 'from-amber-400 via-yellow-300 to-amber-600 shadow-[0_0_15px_rgba(251,191,36,0.3)]' : idx === 1 ? 'from-purple-400 via-indigo-300 to-purple-600 shadow-[0_0_15px_rgba(168,85,247,0.2)]' : 'from-orange-400 via-red-300 to-orange-600 shadow-[0_0_15px_rgba(249,115,22,0.2)]') : ''}`}>
                         <img 
                             src={item.avatar} 
                             alt={item.name} 
-                            className={`w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-800 shadow-md bg-gray-100`} 
+                            className={`w-14 h-14 rounded-full object-cover border-[1px] border-white dark:border-gray-800 shadow-sm bg-gray-100`} 
                         />
                     </div>
-                    <div className={`absolute -top-1 -right-1 rounded-full border-2 border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-8 h-8' : 'w-6 h-6'} ${styles.badge}`}>
-                        <span className={`${isTopRank ? 'text-xs' : 'text-[10px]'} font-black text-white`}>{idx + 1}</span>
+                    <div className={`absolute -top-1 -right-1 rounded-full border-2 border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-6 h-6' : 'w-5 h-5'} ${styles.badge}`}>
+                        <span className={`${isTopRank ? 'text-[10px]' : 'text-[8px]'} font-black text-white`}>{idx + 1}</span>
                     </div>
                 </div>
                 <div className="min-w-0">
                     <div className="flex items-center space-x-2">
-                        <h4 className={`text-sm font-black truncate ${isTopRank ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>{item.name}</h4>
+                        <h4 className={`text-sm font-bold truncate ${isTopRank ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>{item.name}</h4>
                         {styles.icon}
                     </div>
                     <div className="flex items-center space-x-2 mt-1">
-                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-tighter border ${tierStyle.bg} ${tierStyle.text} ${tierStyle.border}`}>{item.tier}</span>
+                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter border ${tierStyle.bg} ${tierStyle.text} ${tierStyle.border}`}>{item.tier}</span>
                         <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Ref: {item.referralCode}</span>
                     </div>
                 </div>
             </div>
-            <div className="text-right shrink-0">
+            <div className="text-right shrink-0 relative z-10">
                 <div className="flex flex-col items-end">
-                    <p className={`text-base font-black ${isTopRank ? styles.text : 'text-emerald-500'}`}>฿{Math.floor(item.dailyIncome).toLocaleString()}</p>
+                    <p className={`text-base ${isTopRank ? 'font-black ' + styles.text : 'font-bold text-gray-900 dark:text-white'}`}>฿{Math.floor(item.dailyIncome).toLocaleString()}</p>
                     <div className="flex items-center space-x-1 mt-0.5">
                         <TrendingUp size={10} className="text-emerald-500" />
                         <p className="text-[9px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">Profit</p>

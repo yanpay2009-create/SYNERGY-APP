@@ -151,7 +151,7 @@ export const TierBenefits: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
                 <div>
                     <div className="flex items-center space-x-1 mb-1">
-                        <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">Current Tier</p>
+                        <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Current Tier</p>
                         <TrendingUp size={10} className="text-synergy-blue" />
                     </div>
                     <h2 className={`text-2xl font-black ${colors.text}`}>{user.tier} Affiliate</h2>
@@ -162,7 +162,7 @@ export const TierBenefits: React.FC = () => {
             </div>
             
             <div className="mb-2">
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-tighter mb-1.5">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-tighter mb-1.5">
                     <span className="text-gray-400">Next Target</span>
                     <span className="text-synergy-blue">{progress.toFixed(0)}% Complete</span>
                 </div>
@@ -179,7 +179,7 @@ export const TierBenefits: React.FC = () => {
                         ? "Max Tier Achieved" 
                         : `฿${((nextTarget ?? 0) - (user.accumulatedSales ?? 0)).toLocaleString()} remaining`}
                 </p>
-                <span className="text-[9px] font-black text-synergy-blue uppercase tracking-widest bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">View Stats</span>
+                <span className="text-[9px] font-bold text-synergy-blue uppercase tracking-widest bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">View Stats</span>
             </div>
         </div>
 
@@ -221,7 +221,7 @@ export const TierBenefits: React.FC = () => {
           </div>
       )}
 
-      <h3 className="text-xs font-black text-gray-400 uppercase ml-2 mb-4 tracking-[0.2em]">Tier Status</h3>
+      <h3 className="text-xs font-bold text-gray-400 uppercase ml-2 mb-4 tracking-[0.2em]">Tier Status</h3>
 
       <div className="space-y-4">
         {tiers.map((tier) => {
@@ -243,12 +243,12 @@ export const TierBenefits: React.FC = () => {
                                             <tier.icon size={32} fill="currentColor" className="opacity-90" />
                                         </div>
                                         <div>
-                                            <h4 className="text-base font-black text-gray-900 dark:text-white leading-tight">{tier.displayName}</h4>
+                                            <h4 className="text-base font-bold text-gray-900 dark:text-white leading-tight">{tier.displayName} Affiliate</h4>
                                             <p className="text-[11px] text-gray-500 font-bold uppercase tracking-tight mt-0.5">{tier.req}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-2 pt-1">
-                                      {isActive && <span className={`text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1.5 rounded-full shadow-sm ${tier.name === UserTier.EXECUTIVE ? 'bg-amber-500' : tier.name === UserTier.BUILDER ? 'bg-purple-700' : tier.name === UserTier.MARKETER ? 'bg-pink-500' : 'bg-synergy-blue'}`}>Active</span>}
+                                      {isActive && <span className={`text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full shadow-sm ${tier.name === UserTier.EXECUTIVE ? 'bg-amber-500' : tier.name === UserTier.BUILDER ? 'bg-purple-700' : tier.name === UserTier.MARKETER ? 'bg-pink-500' : 'bg-synergy-blue'}`}>Active</span>}
                                       {isPassed && <CheckCircle size={18} className="text-green-500" />}
                                     </div>
                                 </div>
@@ -257,7 +257,7 @@ export const TierBenefits: React.FC = () => {
                                     {tier.benefits.map((benefit, i) => (
                                         <li key={i} className="flex items-start space-x-3 text-[13px] text-gray-600 dark:text-gray-400">
                                             <CheckCircle size={16} className="text-green-500 shrink-0 mt-0.5" />
-                                            <span className="font-semibold leading-snug">{benefit}</span>
+                                            <span className="font-medium leading-snug">{benefit}</span>
                                         </li>
                                     ))}
                                 </ul>

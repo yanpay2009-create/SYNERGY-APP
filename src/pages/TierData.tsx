@@ -63,7 +63,7 @@ export const TierData: React.FC = () => {
     switch (selectedTier) {
       case UserTier.EXECUTIVE:
         return { 
-          title: 'Executive', 
+          title: 'Executive Affiliate', 
           subtitle: 'Platform Elite Leaders',
           gradient: 'from-amber-500 to-orange-600', 
           accent: 'amber', 
@@ -75,7 +75,7 @@ export const TierData: React.FC = () => {
         };
       case UserTier.BUILDER:
         return { 
-          title: 'Builder', 
+          title: 'Builder Affiliate', 
           subtitle: 'Structural Growth Hub',
           gradient: 'from-purple-600 to-indigo-700', 
           accent: 'purple', 
@@ -87,7 +87,7 @@ export const TierData: React.FC = () => {
         };
       case UserTier.MARKETER:
         return { 
-          title: 'Marketer', 
+          title: 'Marketer Affiliate', 
           subtitle: 'Campaign Frontline',
           gradient: 'from-pink-500 to-rose-600', 
           accent: 'pink', 
@@ -99,7 +99,7 @@ export const TierData: React.FC = () => {
         };
       default:
         return { 
-          title: 'Starter', 
+          title: 'Starter Affiliate', 
           subtitle: 'Emerging Affiliates',
           gradient: 'from-synergy-blue to-blue-600', 
           accent: 'blue', 
@@ -209,11 +209,11 @@ export const TierData: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                     <div className="flex items-center space-x-2">
-                        <h4 className={`text-sm font-black truncate ${isTopRank ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>{item.name}</h4>
+                        <h4 className={`text-sm font-bold truncate ${isTopRank ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-200'}`}>{item.name}</h4>
                         {styles.icon}
                     </div>
                     <div className="flex items-center space-x-2 mt-1">
-                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-tighter border ${currentColors.bg} ${currentColors.text} ${currentColors.border}`}>{selectedTier}</span>
+                        <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter border ${currentColors.bg} ${currentColors.text} ${currentColors.border}`}>{selectedTier}</span>
                         <span className="flex items-center text-[9px] text-gray-400 font-bold">
                             <Users size={10} className="mr-1" />
                             {item.team} Net
@@ -288,18 +288,18 @@ export const TierData: React.FC = () => {
                               <theme.icon size={26} className="text-white" />
                           </div>
                           <div>
-                              <h2 className="text-lg font-black tracking-tight uppercase leading-tight">{theme.title}</h2>
-                              <p className="text-[10px] opacity-80 font-black uppercase tracking-widest">{theme.subtitle}</p>
+                              <h2 className="text-lg font-bold tracking-tight uppercase leading-tight">{theme.title}</h2>
+                              <p className="text-[10px] opacity-80 font-bold uppercase tracking-widest">{theme.subtitle}</p>
                           </div>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                           <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/5 shadow-inner">
-                              <p className="text-[9px] text-white/80 uppercase font-black tracking-widest mb-1">{theme.activeLabel}</p>
-                              <p className="text-xl font-black">{theme.activeVal}</p>
+                              <p className="text-[9px] text-white/80 uppercase font-bold tracking-widest mb-1">{theme.activeLabel}</p>
+                              <p className="text-xl font-bold">{theme.activeVal}</p>
                           </div>
                           <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/5 shadow-inner">
-                              <p className="text-[9px] text-white/80 uppercase font-black tracking-widest mb-1">{theme.rewardLabel}</p>
-                              <p className="text-xl font-black">{theme.rewardVal}</p>
+                              <p className="text-[9px] text-white/80 uppercase font-bold tracking-widest mb-1">{theme.rewardLabel}</p>
+                              <p className="text-xl font-bold text-white">{theme.rewardVal}</p>
                           </div>
                       </div>
                   </div>
