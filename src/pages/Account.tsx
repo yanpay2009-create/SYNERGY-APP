@@ -444,17 +444,17 @@ export const Account: React.FC = () => {
           </div>
 
           {/* PROFILE SECTION */}
-          <div className="mb-4 relative z-20 flex flex-col items-start -mt-[104px] px-5 w-full">
-              <div className="flex flex-col items-center space-y-3 w-28">
-                  <button onClick={() => triggerPinGate('/edit-profile')} className="relative w-28 h-28 group block active:scale-95 transition-transform shrink-0">
-                    <div className="w-28 h-28 rounded-full shadow-2xl overflow-hidden bg-white dark:bg-gray-700 transition-all group-hover:ring-8 group-hover:ring-synergy-blue/10 border-2 border-white/90">
+          <div className="mb-4 relative z-20 flex flex-col items-start -mt-[100px] px-5 w-full">
+              <div className="flex flex-col items-center space-y-3 w-24">
+                  <button onClick={() => triggerPinGate('/edit-profile')} className="relative w-24 h-24 group block active:scale-95 transition-transform shrink-0">
+                    <div className="w-24 h-24 rounded-full shadow-2xl overflow-hidden bg-white dark:bg-gray-700 transition-all group-hover:ring-8 group-hover:ring-synergy-blue/10 border-2 border-white/90">
                         <img src={user.avatar || undefined} alt="User" className="w-full h-full object-cover" />
                     </div>
-                    <div className="absolute inset-0 bg-black/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><Lock size={26} className="text-white opacity-60" /></div>
+                    <div className="absolute inset-0 bg-black/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><Lock size={22} className="text-white opacity-60" /></div>
                   </button>
-                  <div className="flex flex-col text-center w-40 -mx-6">
+                  <div className="flex flex-col text-center w-64 -mx-20">
                       <div className="flex items-center justify-center space-x-1">
-                        <h2 className="text-base font-bold text-gray-900 dark:text-white tracking-tight drop-shadow-sm leading-tight truncate max-w-[120px]">{user.name}</h2>
+                        <h2 className="text-base font-bold text-gray-900 dark:text-white tracking-tight drop-shadow-sm leading-tight">{user.name}</h2>
                         {kycStatus === 'Verified' && <div className="bg-emerald-500 text-white rounded-full p-0.5 shadow-sm flex items-center justify-center shrink-0"><Check size={8} strokeWidth={4} /></div>}
                       </div>
                   </div>
