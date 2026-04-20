@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { UserTier, TeamMember } from '../types';
+import { formatThailandDate } from '../utils/dateUtils';
 
 export const MyTeam: React.FC = () => {
   const { team, user, t } = useApp();
@@ -113,10 +114,10 @@ export const MyTeam: React.FC = () => {
 
   const getTierColor = (tier: UserTier) => {
     switch (tier) {
-      case UserTier.EXECUTIVE: return 'text-purple-600 bg-purple-50 border-purple-100';
-      case UserTier.BUILDER: return 'text-orange-600 bg-orange-50 border-orange-100';
-      case UserTier.MARKETER: return 'text-synergy-blue bg-blue-50 border-blue-100';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200'; // Starter
+      case UserTier.EXECUTIVE: return 'text-amber-600 bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-900/30';
+      case UserTier.BUILDER: return 'text-purple-600 bg-purple-50 border-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-900/30';
+      case UserTier.MARKETER: return 'text-pink-600 bg-pink-50 border-pink-100 dark:bg-pink-900/20 dark:text-pink-400 dark:border-pink-900/30';
+      default: return 'text-gray-600 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700'; // Starter
     }
   };
 
@@ -191,6 +192,15 @@ export const MyTeam: React.FC = () => {
                     </div>
                 </div>
                 <button onClick={() => selectedMember.phone && handleCopy(selectedMember.phone, 'phone')} className="p-2 text-gray-400 hover:text-synergy-blue">{copied === 'phone' ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}</button>
+            </div>
+            <div className="bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
+                <div className="flex items-center space-x-3 overflow-hidden">
+                    <div className="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center shrink-0"><Hash size={20} /></div>
+                    <div className="min-w-0">
+                        <p className="text-[10px] text-gray-400 uppercase font-bold">Joined Date</p>
+                        <p className="text-sm font-bold text-gray-900 truncate">{selectedMember.joinedDate}</p>
+                    </div>
+                </div>
             </div>
         </div>
       </div>
@@ -273,7 +283,7 @@ export const MyTeam: React.FC = () => {
                             <div className="relative">
                                 <img src={member.avatar || undefined} alt={member.name} className="w-12 h-12 rounded-full object-cover border border-gray-100 dark:border-gray-700" />
                                 <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-800 rounded-full p-0.5">
-                                    <span className={`flex items-center justify-center w-4 h-4 rounded-full text-[8px] font-bold text-white ${member.tier === UserTier.EXECUTIVE ? 'bg-purple-500' : member.tier === UserTier.BUILDER ? 'bg-orange-500' : member.tier === UserTier.MARKETER ? 'bg-blue-500' : 'bg-gray-400'}`}>{member.tier[0]}</span>
+                                    <span className={`flex items-center justify-center w-4 h-4 rounded-full text-[8px] font-bold text-white ${member.tier === UserTier.EXECUTIVE ? 'bg-amber-500' : member.tier === UserTier.BUILDER ? 'bg-purple-500' : member.tier === UserTier.MARKETER ? 'bg-pink-500' : 'bg-gray-400'}`}>{member.tier[0]}</span>
                                 </div>
                             </div>
                             <div>
@@ -285,8 +295,10 @@ export const MyTeam: React.FC = () => {
                             </div>
                         </div>
                         <div className="text-right">
-                            <p className="text-sm font-bold text-gray-900 dark:text-white">฿{Math.floor(getMemberIncome(member)).toLocaleString()}</p>
-                            <p className="text-[10px] text-gray-400 font-medium">Total Income</p>
+                            <p className="text-sm font-bold text-gray-900 dark:text-white">
+                                ฿{Math.floor(getMemberIncome(member)).toLocaleString()}
+                            </p>
+                            <p className="text-[10px] text-gray-400 font-medium">{member.joinedDate}</p>
                         </div>
                     </div>
                 ))}

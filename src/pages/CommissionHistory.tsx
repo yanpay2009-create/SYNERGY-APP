@@ -532,7 +532,7 @@ export const CommissionHistory: React.FC = () => {
                 <div className="w-full bg-white dark:bg-gray-900 rounded-[28px] p-6 shadow-soft border border-gray-100 dark:border-gray-800 space-y-5">
                     <div className="flex justify-between items-center">
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Amount</span>
-                        <span className={`text-xl font-black ${(selectedTx.type === 'Refund' || selectedTx.status === 'Cancelled' || selectedTx.type === 'Withdrawal') ? 'text-red-500' : 'text-emerald-500'}`}>
+                        <span className={`text-xl font-bold ${(selectedTx.type === 'Refund' || selectedTx.status === 'Cancelled' || selectedTx.type === 'Withdrawal') ? 'text-red-500' : 'text-emerald-500'}`}>
                             {(selectedTx.type === 'Refund' || selectedTx.status === 'Cancelled' || selectedTx.type === 'Withdrawal') ? '-' : '+'}฿{Math.floor(Math.abs(selectedTx.amount ?? 0)).toLocaleString()}
                         </span>
                     </div>
@@ -827,7 +827,7 @@ export const CommissionHistory: React.FC = () => {
                         </div>
                     </div>
                     <div className="text-right">
-                        <p className={`text-sm font-black ${(tx.type === 'Refund' || tx.status === 'Cancelled' || tx.type === 'Withdrawal') ? 'text-red-500' : (tx.status === 'Pending' ? 'text-gray-400' : 'text-emerald-500')}`}>
+                        <p className={`text-sm font-bold ${(tx.type === 'Refund' || tx.status === 'Cancelled' || tx.type === 'Withdrawal') ? 'text-red-500' : (tx.status === 'Pending' ? 'text-gray-400' : 'text-emerald-500')}`}>
                             {(tx.type === 'Refund' || tx.status === 'Cancelled' || tx.type === 'Withdrawal') ? '-' : '+'}฿{Math.floor(Math.abs(tx.amount ?? 0)).toLocaleString()}
                         </p>
                         <p className="text-[10px] text-gray-400 font-medium">{tx.date}</p>

@@ -179,6 +179,7 @@ export interface User {
   walletBalance: number;
   avatar: string;
   referralCode: string;
+  joinedDate?: string;
   pin?: string;
   password?: string;
   teamIncomeExpiry?: string; 

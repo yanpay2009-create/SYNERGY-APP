@@ -792,6 +792,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const registeredPhone = localStorage.getItem('synergy_registering_phone');
             localStorage.removeItem('synergy_registering_phone');
 
+            const nowTimestamp = formatThailandDate(getThailandNow(), { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
             const newUser: User = {
               name: firebaseUser.displayName || (isAdminUser ? "Admin" : "Verified User"),
               uid: firebaseUser.uid,
@@ -800,6 +802,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               tier: UserTier.STARTER,
               role: isAdminUser ? 'admin' : 'user',
               kycStatus: isAdminUser ? 'Verified' : 'Unverified',
+              joinedDate: nowTimestamp,
               accumulatedSales: 0,
               teamSize: 0,
               accumulatedIncome: 0,
@@ -998,7 +1001,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           totalSales: d.accumulatedSales,
           teamSize: d.teamSize || 0,
           accumulatedIncome: d.accumulatedIncome || 0,
-          joinedDate: d.joinedDate || '2024-01-01',
+          joinedDate: d.joinedDate || '01 Jan 2024, 00:00',
           relationship: d.uplineId === auth.currentUser?.uid ? 'Direct' : 'Indirect',
           phone: d.phone,
           lineId: d.lineId,
@@ -3186,7 +3189,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             totalSales: d.accumulatedSales,
             teamSize: d.teamSize || 0,
             accumulatedIncome: d.accumulatedIncome || 0,
-            joinedDate: d.joinedDate || '2024-01-01',
+            joinedDate: d.joinedDate || '01 Jan 2024, 00:00',
             relationship: d.uplineId === auth.currentUser?.uid ? 'Direct' : 'Indirect',
             phone: d.phone,
             lineId: d.lineId,
