@@ -48,7 +48,7 @@ export const getTierColors = (tier: UserTier | undefined) => {
 
 export const getTierBadgeStyles = (tier: UserTier | undefined) => {
   const colors = getTierColors(tier);
-  return `${colors.bgLight} ${colors.text} border border-white/50 dark:border-gray-600 shadow-sm`;
+  return `${colors.bgLight} ${colors.text} border border-white/50 dark:border-slate-800 shadow-sm`;
 };
 
 export const formatSold = (num: number) => {
@@ -84,10 +84,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isFeatured = 
   return (
       <div 
           onClick={() => product.stock > 0 && navigate(`/product/${product.id}`)}
-          className={`${isFeatured ? 'w-40 shrink-0' : 'w-full'} bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition duration-300 cursor-pointer active:scale-[0.98] border border-transparent dark:border-gray-700 overflow-hidden flex flex-col relative`}
+          className={`${isFeatured ? 'w-40 shrink-0' : 'w-full'} bg-white dark:bg-slate-800 rounded-2xl shadow-soft hover:shadow-lg transition-all duration-300 cursor-pointer active:scale-[0.98] border border-slate-100 dark:border-slate-800/50 overflow-hidden flex flex-col relative group`}
       >
-          <div className="relative aspect-square bg-gray-100 dark:bg-gray-700">
-              <img src={product.image || undefined} alt={product.name} className="w-full h-full object-cover" />
+          <div className="relative aspect-square bg-slate-100 dark:bg-slate-800">
+              <img src={product.image || undefined} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 
               {/* Commission Badge at Top Right */}
               <div className={`absolute top-2 right-2 px-1.5 py-0.5 rounded-full backdrop-blur-md flex items-center font-black text-[10px] shadow-sm z-10 ${getTierBadgeStyles(user?.tier)}`}>
@@ -95,30 +95,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isFeatured = 
               </div>
 
               {product.stock <= 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center z-20">
-                      <span className="text-gray-400 dark:text-gray-500 text-xl font-black tracking-tighter opacity-90">
-                          Out of Stock
+                  <div className="absolute inset-0 flex items-center justify-center z-20 bg-slate-900/40 backdrop-blur-[2px]">
+                      <span className="text-white text-xl font-black tracking-tighter drop-shadow-lg">
+                          {t('home.out_of_stock')}
                       </span>
                   </div>
               )}
           </div>
-          <div className="p-2">
-              <h3 className="text-xs font-bold text-gray-800 dark:text-gray-100 line-clamp-1 mb-0.5">{product.name}</h3>
+          <div className="p-3">
+              <h3 className="text-xs font-bold text-slate-800 dark:text-slate-100 line-clamp-1 mb-1">{product.name}</h3>
               <div className="flex justify-between items-end">
                   <div className="min-w-0">
-                      <div className="flex items-center space-x-1">
+                       <div className="flex items-center space-x-1">
                           <p className="text-sm font-black text-synergy-blue">฿{(finalPrice ?? 0).toLocaleString()}</p>
                           {hasDiscount && (
-                              <p className="text-[9px] text-gray-400 line-through leading-none">฿{(product.price ?? 0).toLocaleString()}</p>
+                              <p className="text-[9px] text-slate-500 line-through leading-none">฿{(product.price ?? 0).toLocaleString()}</p>
                           )}
                       </div>
-                      <div className="flex items-center space-x-1 mt-0.5">
+                      <div className="flex items-center space-x-1 mt-1">
                           <div className="flex items-center space-x-0.5">
-                              <Star size={9} className="text-amber-400 fill-amber-400" />
-                              <span className="text-[9px] text-gray-400 font-bold">{calculateRating(product.reviews)}</span>
+                              <Star size={9} strokeWidth={2} className="text-amber-400 fill-amber-400 fill-opacity-30" />
+                              <span className="text-[9px] text-slate-500 font-bold">{calculateRating(product.reviews)}</span>
                           </div>
-                          <span className="text-[8px] text-gray-300 dark:text-gray-600">|</span>
-                          <p className="text-[9px] text-gray-400 font-bold whitespace-nowrap">
+                          <span className="text-[8px] text-slate-500 dark:text-slate-400">|</span>
+                          <p className="text-[9px] text-slate-500 font-bold whitespace-nowrap">
                               {formatSold(product.sold)} {t('home.sold')}
                           </p>
                       </div>
@@ -126,13 +126,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isFeatured = 
                   <button 
                       disabled={product.stock <= 0}
                       onClick={(e) => { e.stopPropagation(); addToCart(product); }} 
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition shadow-sm shrink-0 ml-1 ${
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm shrink-0 ml-1 active:scale-90 ${
                         product.stock <= 0 
-                        ? 'bg-gray-100 dark:bg-gray-800 text-gray-300 cursor-not-allowed' 
-                        : 'bg-gray-50 dark:bg-gray-700 text-synergy-blue hover:bg-synergy-blue hover:text-white'
+                        ? 'bg-slate-100 dark:bg-slate-800 text-slate-300 cursor-not-allowed' 
+                        : 'bg-sky-50 dark:bg-slate-700 text-synergy-blue hover:bg-synergy-blue hover:text-white group/btn'
                       }`}
                   >
-                      <Plus size={18} />
+                      <Plus size={18} strokeWidth={2.5} fill="currentColor" fillOpacity={0.2} className="group-hover/btn:fill-opacity-40 transition-all" />
                   </button>
               </div>
           </div>

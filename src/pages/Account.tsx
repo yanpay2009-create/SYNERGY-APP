@@ -43,7 +43,8 @@ import {
   Trophy,
   TrendingUp,
   ArrowRight,
-  Store
+  Store,
+  MapPin
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getThailandNow, getThailandTodayString, formatThailandDate } from '../utils/dateUtils';
@@ -52,32 +53,36 @@ import { Auth } from './Auth';
 import { QRScanner } from '../components/QRScanner';
 import { ReferrerModal } from '../components/ReferrerModal';
 
-const MenuRow = ({ icon: Icon, label, subtitle, value, valueLabel, to, colorClass, requiresPin, navigate, triggerPinGate, isLast }: any) => (
+const MenuRow = ({ icon: Icon, label, subtitle, value, valueLabel, to, onClick, colorClass, requiresPin, navigate, triggerPinGate, isLast }: any) => (
   <button 
     onClick={() => { 
+      if (onClick) {
+          onClick();
+          return;
+      }
       if (requiresPin) {
           triggerPinGate(to);
       } else if (to) {
           navigate(to); 
       }
     }}
-    className={`w-full flex items-start justify-between p-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 active:scale-[0.99] transition-all ${!isLast ? 'border-b border-gray-50 dark:border-gray-700/50' : ''}`}
+    className={`w-full flex items-start justify-between p-4 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 active:scale-[0.98] active:bg-slate-100 dark:active:bg-slate-800/60 transition-all duration-200 group ${!isLast ? 'border-b border-slate-50 dark:border-slate-800/50' : ''}`}
   >
     <div className="flex items-start space-x-4 min-w-0 flex-1">
-      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-gray-700 text-synergy-blue'} flex items-center justify-center shadow-sm shrink-0 mt-0.5`}>
-        <Icon size={20} />
+      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-sky-50 dark:bg-slate-700/50 text-synergy-blue'} flex items-center justify-center shadow-sm shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
+        <Icon size={20} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
       </div>
       <div className="flex flex-col items-start min-w-0 flex-1">
-        <span className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight text-left">{label}</span>
-        {subtitle && <span className="text-[10px] text-gray-400 font-semibold leading-tight mt-1 text-left">{subtitle}</span>}
+        <span className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight text-left group-hover:text-synergy-blue transition-colors duration-300">{label}</span>
+        {subtitle && <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold leading-tight mt-1 text-left">{subtitle}</span>}
       </div>
     </div>
     <div className="flex items-center space-x-2 shrink-0 ml-4 mt-1">
       <div className="flex flex-col items-end">
-        {value && <span className="text-xs text-gray-400 font-semibold">{value}</span>}
-        {valueLabel && <span className="text-[9px] text-gray-300 dark:text-gray-500 font-bold leading-none mt-0.5">{valueLabel}</span>}
+        {value && <span className="text-xs text-slate-600 font-semibold">{value}</span>}
+        {valueLabel && <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold leading-none mt-0.5">{valueLabel}</span>}
       </div>
-      <ChevronRight size={16} className="text-gray-300 dark:text-gray-500" />
+      <ChevronRight size={16} className="text-slate-400 dark:text-slate-500 group-hover:translate-x-1 transition-transform duration-300" />
     </div>
   </button>
 );
@@ -376,6 +381,9 @@ export const Account: React.FC = () => {
           <div className="absolute bottom-[-10px] right-[-10px] w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
           <div className="absolute top-8 right-6 z-20">
               <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-4 py-1.5 flex items-center shadow-lg animate-in fade-in slide-in-from-right-4 duration-700">
+                  <div className="mr-2 p-1 bg-white/20 rounded-full">
+                      <Crown size={12} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-white" />
+                  </div>
                   <span className="text-[10px] font-black text-white tracking-widest uppercase italic">
                       {user.tier} AFFILIATE
                   </span>
@@ -391,7 +399,7 @@ export const Account: React.FC = () => {
                 {showSuccess ? <CheckCircle2 size={40} className="animate-in zoom-in" /> : (pinFlow === 'recovery' ? <Smartphone size={32} className="text-amber-500" /> : (pinFlow === 'verify' ? <Lock size={32} /> : <Sparkles size={32} className="animate-pulse" />))}
               </div>
               <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2 text-center">{getPinTitle()}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-10 text-center max-w-[260px] leading-relaxed font-medium">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-10 text-center max-w-[260px] leading-relaxed font-medium">
                   {showSuccess ? "Verification confirmed. Accessing profile..." : (pinFlow === 'recovery' ? "Enter the verification code sent to your device." : (pinFlow === 'setup' ? "Create a new 6-digit PIN for your account." : "Enter your PIN to access sensitive information."))}
               </p>
               {pinFlow === 'recovery' ? (
@@ -438,9 +446,9 @@ export const Account: React.FC = () => {
           
           {/* Action Icons Area */}
           <div className="absolute top-6 right-6 flex items-center space-x-2.5 z-30">
-              <button onClick={() => triggerPinGate('/withdraw')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><Wallet size={18} /></button>
-              <button onClick={() => navigate('/referrer-info')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><UserCheck size={18} /></button>
-              <button onClick={handleShareProfile} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><Share2 size={18} /></button>
+              <button onClick={() => triggerPinGate('/withdraw')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><Wallet size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={() => navigate('/referrer-info')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><UserCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={handleShareProfile} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><Share2 size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
           </div>
 
           {/* PROFILE SECTION */}
@@ -475,7 +483,7 @@ export const Account: React.FC = () => {
                 <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner relative mb-3">
                      <div className={`h-full ${colors.progress} rounded-full relative transition-all duration-1000 ease-out`} style={{ width: `${globalProgress}%` }}><div className="absolute right-0 top-0 bottom-0 w-2 bg-white/50 rounded-full"></div></div>
                 </div>
-                <div className="flex justify-between text-[9px] font-black text-gray-400 dark:text-gray-500 px-1 tracking-widest uppercase">
+                <div className="flex justify-between text-[9px] font-black text-gray-500 dark:text-gray-400 px-1 tracking-widest uppercase">
                     <span className={user.tier === UserTier.STARTER ? 'text-synergy-blue' : ''}>Starter</span>
                     <span className={user.tier === UserTier.MARKETER ? 'text-pink-600' : ''}>Marketer</span>
                     <span className={user.tier === UserTier.BUILDER ? 'text-purple-700 font-black' : ''}>Builder</span>
@@ -519,7 +527,7 @@ export const Account: React.FC = () => {
                     <div className="absolute bottom-4 left-6 right-6">
                         <h3 className="text-lg font-black leading-tight text-gray-900 drop-shadow-sm">{activeAd.title}</h3>
                         <div className="flex justify-between items-center mt-1">
-                          <p className="text-[9px] text-gray-600 font-bold opacity-90 truncate max-w-[80%]">{activeAd.subtitle}</p>
+                          <p className="text-[9px] text-gray-700 font-bold opacity-90 truncate max-w-[80%]">{activeAd.subtitle}</p>
                           <div className="bg-black/30 backdrop-blur-md rounded-full p-1.5 border border-white/20 group-hover:bg-synergy-blue group-hover:border-synergy-blue transition-all text-white">
                               <ArrowRight size={12} />
                           </div>
@@ -535,11 +543,11 @@ export const Account: React.FC = () => {
                     <div className="relative z-10">
                         <div className="flex items-center space-x-3 mb-1.5">
                             <div className={`p-1.5 ${colors.bgLight} backdrop-blur-md rounded-xl border border-white/50 dark:border-gray-600 shadow-inner`}>
-                                <Store size={16} className={colors.text} />
+                                <Store size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className={colors.text} />
                             </div>
                             <h3 className={`text-lg font-black tracking-tight ${colors.text}`}>Empower Your Network</h3>
                         </div>
-                        <p className="text-[10px] text-gray-500 dark:text-gray-400 font-bold line-clamp-1 pl-1">Scale your earnings with 30% direct commission.</p>
+                        <p className="text-[10px] text-gray-600 dark:text-gray-300 font-bold line-clamp-1 pl-1">Scale your earnings with 30% direct commission.</p>
                         
                         <div className="mt-3 flex items-center justify-between">
                             <button className={`${colors.progress} text-white px-4 py-1.5 rounded-2xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
@@ -570,9 +578,12 @@ export const Account: React.FC = () => {
 
           {/* Admin Management Section */}
           {isAdmin && (
-            <div className="mb-5 animate-in slide-in-from-bottom-2">
-              <h3 className="text-xs font-black text-indigo-500 uppercase ml-2 mb-4 tracking-[0.2em] flex items-center"><ShieldCheck size={16} className="mr-2.5" />Admin Management</h3>
-              <div className="bg-white dark:bg-gray-800 rounded-[24px] overflow-hidden shadow-soft border border-gray-100 dark:border-gray-700 relative">
+            <div className="mb-8 animate-in slide-in-from-bottom-2">
+              <h3 className="text-[10px] font-black text-indigo-500 uppercase ml-4 mb-4 tracking-[0.25em] flex items-center">
+                <ShieldCheck size={14} className="mr-2" />
+                {t('account.admin')}
+              </h3>
+              <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={Database} label="System Infrastructure" subtitle="Monitor logs and core infrastructure" to="/admin/dashboard" colorClass="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={ImageIcon} label="Product Catalog" subtitle="Configure product details and media" to="/admin/products" colorClass="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
@@ -584,26 +595,45 @@ export const Account: React.FC = () => {
             </div>
           )}
 
-          <div className="mb-5">
-            <h3 className="text-xs font-black text-gray-400 uppercase ml-2 mb-4 tracking-[0.2em]">{t('account.dashboard')}</h3>
-            <div className="bg-white dark:bg-gray-800 rounded-[24px] overflow-hidden shadow-soft border border-gray-100 dark:border-gray-700 relative">
+          {/* Business Section (Affiliate) */}
+          <div className="mb-8">
+            <h3 className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase ml-4 mb-4 tracking-[0.25em] flex items-center">
+                <BarChart3 size={14} className="mr-2" />
+                {t('account.business')}
+            </h3>
+            <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
-                    <MenuRow icon={Package} label={t('menu.my_orders')} subtitle={t('menu.my_orders_sub')} to="/my-orders" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <MenuRow icon={LinkIcon} label={t('menu.affiliate_links')} subtitle={t('menu.affiliate_links_sub')} to="/affiliate-links" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <MenuRow icon={BarChart2} label={t('menu.commissions')} subtitle={t('menu.commissions_sub')} value={`${currentRate}%`} valueLabel={t('account.currently')} to="/commissions" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <MenuRow icon={Trophy} label={t('menu.leaderboard')} subtitle={t('menu.leaderboard_sub')} to="/leaderboard" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <MenuRow icon={Crown} label={t('menu.affiliate_tiers')} subtitle={t('menu.affiliate_tiers_sub')} value={user.tier} to="/tier-benefits" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Users} label={t('menu.my_team')} subtitle={t('menu.my_team_sub')} value={`${team.length}`} valueLabel={t('account.members')} to="/my-team" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <MenuRow icon={BarChart2} label={t('menu.commissions')} subtitle={t('menu.commissions_sub')} value={`${currentRate}%`} valueLabel={t('account.currently')} to="/commissions" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
+                    <MenuRow icon={Share2} label={t('menu.share_profile')} subtitle={t('menu.share_profile_sub')} to={null} onClick={handleShareProfile} colorClass="bg-green-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
                 </div>
             </div>
           </div>
 
-          <div className="pb-8">
-             <h3 className="text-xs font-black text-gray-400 uppercase ml-2 mb-4 tracking-[0.2em]">{t('account.personal')}</h3>
-             <div className="bg-white dark:bg-gray-800 rounded-[24px] overflow-hidden shadow-soft border border-gray-100 dark:border-gray-700 relative">
+          {/* Account Section (Personal) */}
+          <div className="pb-12">
+             <h3 className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase ml-4 mb-4 tracking-[0.25em] flex items-center">
+                 <UserCog size={14} className="mr-2" />
+                 {t('account.account_section')}
+             </h3>
+             <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={UserCog} label={t('menu.personal_info')} subtitle={t('menu.personal_info_sub')} to="/personal-info" requiresPin={true} navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <MenuRow icon={MapPin} label={t('menu.address_book')} subtitle={t('menu.address_book_sub')} to="/address-book" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <MenuRow icon={Package} label={t('menu.my_orders')} subtitle={t('menu.my_orders_sub')} to="/my-orders" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <MenuRow icon={ShieldCheck} label={t('menu.security_privacy')} subtitle={t('menu.security_privacy_sub')} to="/privacy-security" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Settings} label={t('menu.preferences')} subtitle={t('menu.preferences_sub')} to="/preferences" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={HelpCircle} label={t('menu.help_support')} subtitle={t('menu.help_support_sub')} to="/help-support" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <MenuRow icon={Info} label={t('menu.about_us')} subtitle={t('menu.about_us_sub')} to="/about-us" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
+                    <MenuRow icon={Info} label={t('menu.about_us')} subtitle={t('menu.about_us_sub')} to="/about-us" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
+                    <button 
+                        onClick={() => logout()}
+                        className="w-full flex items-center px-6 py-5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+                    >
+                        <Lock size={18} className="mr-3" />
+                        <span className="text-sm font-bold uppercase tracking-widest">{t('pref.logout')}</span>
+                    </button>
                 </div>
              </div>
           </div>

@@ -129,7 +129,7 @@ export const TierBenefits: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
-              <ArrowLeft size={24} />
+              <ArrowLeft size={24} strokeWidth={2} />
             </button>
             <h1 className="text-xl font-bold ml-2 text-gray-900 dark:text-white tracking-tight">Affiliate Tiers</h1>
           </div>
@@ -138,7 +138,7 @@ export const TierBenefits: React.FC = () => {
             className="p-2.5 bg-white dark:bg-gray-800 text-amber-500 rounded-full shadow-sm hover:bg-amber-50 dark:hover:bg-amber-900/30 transition border border-amber-100 dark:border-gray-700 active:scale-95"
             title="Executive Board"
           >
-            <Crown size={20} />
+            <Crown size={20} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
           </button>
         </div>
       </div>
@@ -151,19 +151,19 @@ export const TierBenefits: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
                 <div>
                     <div className="flex items-center space-x-1 mb-1">
-                        <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Current Tier</p>
-                        <TrendingUp size={10} className="text-synergy-blue" />
+                        <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Current Tier</p>
+                        <TrendingUp size={10} strokeWidth={2.5} fill="currentColor" fillOpacity={0.2} className="text-synergy-blue" />
                     </div>
                     <h2 className={`text-2xl font-black ${colors.text}`}>{user.tier} Affiliate</h2>
                 </div>
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border transition-transform group-hover:scale-110 ${colors.bgLight} ${colors.text} border-white/50 dark:border-gray-600`}>
-                    <colors.icon size={24} fill="currentColor" />
+                    <colors.icon size={24} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
                 </div>
             </div>
             
             <div className="mb-2">
                 <div className="flex justify-between text-[10px] font-bold uppercase tracking-tighter mb-1.5">
-                    <span className="text-gray-400">Next Target</span>
+                    <span className="text-gray-500">Next Target</span>
                     <span className="text-synergy-blue">{progress.toFixed(0)}% Complete</span>
                 </div>
                 <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
@@ -174,7 +174,7 @@ export const TierBenefits: React.FC = () => {
                 </div>
             </div>
             <div className="flex items-center justify-between mt-3">
-                <p className="text-[10px] text-gray-400 font-bold">
+                <p className="text-[10px] text-gray-500 font-bold">
                     {user.tier === UserTier.EXECUTIVE 
                         ? "Max Tier Achieved" 
                         : `฿${((nextTarget ?? 0) - (user.accumulatedSales ?? 0)).toLocaleString()} remaining`}
@@ -205,7 +205,7 @@ export const TierBenefits: React.FC = () => {
       {user.tier !== UserTier.STARTER && (
           <div className={`p-4 rounded-2xl mb-6 shadow-sm border flex items-start space-x-3 transition-colors duration-300 ${isEligible ? 'bg-green-50 dark:bg-emerald-900/20 border-green-100 dark:border-emerald-800 text-green-700 dark:text-emerald-400' : 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800 text-red-700 dark:text-red-400'}`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border ${isEligible ? 'bg-green-100 border-green-200 dark:bg-emerald-900/40 text-green-600 dark:text-emerald-300 dark:border-emerald-700' : 'bg-red-100 border-red-200 dark:bg-red-900/40 text-red-600 dark:text-red-300 dark:border-red-700'}`}>
-                  {isEligible ? <Clock size={20} /> : <Clock size={20} className="animate-pulse" />}
+                  {isEligible ? <Clock size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /> : <Clock size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} className="animate-pulse" />}
               </div>
               <div>
                   <h4 className="text-sm font-bold mb-1">
@@ -221,7 +221,7 @@ export const TierBenefits: React.FC = () => {
           </div>
       )}
 
-      <h3 className="text-xs font-bold text-gray-400 uppercase ml-2 mb-4 tracking-[0.2em]">Tier Status</h3>
+      <h3 className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase ml-2 mb-4 tracking-[0.2em]">Tier Status</h3>
 
       <div className="space-y-4">
         {tiers.map((tier) => {
@@ -240,23 +240,23 @@ export const TierBenefits: React.FC = () => {
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="flex items-center space-x-4">
                                         <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md border ${tier.color} transition-transform`}>
-                                            <tier.icon size={32} fill="currentColor" className="opacity-90" />
+                                            <tier.icon size={32} strokeWidth={1.5} fill="currentColor" fillOpacity={0.15} className="opacity-90" />
                                         </div>
                                         <div>
                                             <h4 className="text-base font-bold text-gray-900 dark:text-white leading-tight">{tier.displayName} Affiliate</h4>
-                                            <p className="text-[11px] text-gray-500 font-bold uppercase tracking-tight mt-0.5">{tier.req}</p>
+                                            <p className="text-[11px] text-gray-600 font-bold uppercase tracking-tight mt-0.5">{tier.req}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-2 pt-1">
                                       {isActive && <span className={`text-white text-[9px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full shadow-sm ${tier.name === UserTier.EXECUTIVE ? 'bg-amber-500' : tier.name === UserTier.BUILDER ? 'bg-purple-700' : tier.name === UserTier.MARKETER ? 'bg-pink-500' : 'bg-synergy-blue'}`}>Active</span>}
-                                      {isPassed && <CheckCircle size={18} className="text-green-500" />}
+                                      {isPassed && <CheckCircle size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-green-500" />}
                                     </div>
                                 </div>
                                 
                                 <ul className="space-y-2.5 mt-4">
                                     {tier.benefits.map((benefit, i) => (
-                                        <li key={i} className="flex items-start space-x-3 text-[13px] text-gray-600 dark:text-gray-400">
-                                            <CheckCircle size={16} className="text-green-500 shrink-0 mt-0.5" />
+                                        <li key={i} className="flex items-start space-x-3 text-[13px] text-gray-700 dark:text-gray-400">
+                                            <CheckCircle size={16} strokeWidth={2.5} fill="currentColor" fillOpacity={0.2} className="text-green-500 shrink-0 mt-0.5" />
                                             <span className="font-medium leading-snug">{benefit}</span>
                                         </li>
                                     ))}

@@ -6,6 +6,8 @@ interface ShoppingBagIconProps {
   strokeWidth?: number;
   handleColor?: string;
   bodyColor?: string;
+  fill?: string;
+  fillOpacity?: number;
 }
 
 export const ShoppingBagIcon: React.FC<ShoppingBagIconProps> = ({ 
@@ -13,7 +15,9 @@ export const ShoppingBagIcon: React.FC<ShoppingBagIconProps> = ({
   className = "", 
   strokeWidth = 2,
   handleColor = "currentColor",
-  bodyColor = "currentColor"
+  bodyColor = "currentColor",
+  fill = "none",
+  fillOpacity = 0
 }) => {
   const color = bodyColor === "currentColor" ? "currentColor" : bodyColor;
   
@@ -22,7 +26,8 @@ export const ShoppingBagIcon: React.FC<ShoppingBagIconProps> = ({
       width={size} 
       height={size} 
       viewBox="0 0 24 24" 
-      fill="none" 
+      fill={fill}
+      fillOpacity={fillOpacity}
       stroke={color}
       strokeWidth={strokeWidth} 
       strokeLinecap="round" 

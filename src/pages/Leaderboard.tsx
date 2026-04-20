@@ -41,11 +41,15 @@ interface LeaderboardEntry {
   teamSize: number;
 }
 
+import { Skeleton } from '../components/Skeleton';
+
+// ... interface LeaderboardEntry ...
+
 const tierColors: Record<string, { bg: string, text: string, border: string }> = {
-  [UserTier.STARTER]: { bg: 'bg-blue-50 dark:bg-blue-900/30', text: 'text-synergy-blue dark:text-blue-400', border: 'border-blue-100 dark:border-blue-800' },
-  [UserTier.MARKETER]: { bg: 'bg-pink-50 dark:bg-pink-900/30', text: 'text-pink-600 dark:text-pink-400', border: 'border-pink-100 dark:border-pink-800' },
-  [UserTier.BUILDER]: { bg: 'bg-purple-50 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-400', border: 'border-purple-100 dark:border-purple-800' },
-  [UserTier.EXECUTIVE]: { bg: 'bg-amber-50 dark:bg-amber-900/30', text: 'text-amber-600 dark:text-amber-400', border: 'border-amber-100 dark:border-amber-800' }
+  [UserTier.STARTER]: { bg: 'bg-sky-50 dark:bg-sky-900/20', text: 'text-synergy-blue dark:text-blue-400', border: 'border-sky-100 dark:border-sky-800/50' },
+  [UserTier.MARKETER]: { bg: 'bg-pink-50 dark:bg-pink-900/20', text: 'text-pink-600 dark:text-pink-400', border: 'border-pink-100 dark:border-pink-800/50' },
+  [UserTier.BUILDER]: { bg: 'bg-indigo-50 dark:bg-indigo-900/20', text: 'text-indigo-700 dark:text-indigo-400', border: 'border-indigo-100 dark:border-indigo-800/50' },
+  [UserTier.EXECUTIVE]: { bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400', border: 'border-amber-100 dark:border-amber-800/50' }
 };
 
 const CountdownTimer: React.FC = () => {
@@ -56,12 +60,6 @@ const CountdownTimer: React.FC = () => {
       const now = getThailandNow();
       const components = getThailandComponents(now);
       
-      // Target is midnight of the next day in Thailand
-      // We create a date object for Thailand midnight by using the components
-      // and then converting it back to a real Date object.
-      // The simplest way is to target the next day at 00:00:00 in Thailand.
-      
-      // Thailand is UTC+7. Thailand Midnight is 17:00 UTC.
       const nowUtc = now.getTime();
       const thailandMidnightUtc = new Date(nowUtc);
       thailandMidnightUtc.setUTCHours(17, 0, 0, 0);
@@ -86,8 +84,8 @@ const CountdownTimer: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex items-center space-x-1.5 bg-white dark:bg-gray-800 px-3 py-1 rounded-full shadow-sm border border-amber-200 dark:border-amber-700">
-      <Flame size={12} className="text-amber-500" />
+    <div className="flex items-center space-x-1.5 bg-white dark:bg-slate-800 px-3 py-1 rounded-full shadow-sm border border-amber-200 dark:border-amber-700/50">
+      <Flame size={12} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-amber-500" />
       <span className="text-xs font-mono font-black text-amber-600 dark:text-amber-400 tabular-nums w-[60px] text-center">
         {timeLeft}
       </span>
@@ -225,7 +223,7 @@ const Leaderboard: React.FC = () => {
                     border: 'border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.3)]',
                     badge: 'bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 shadow-lg',
                     card: 'bg-gradient-to-br from-amber-50/80 via-white to-white dark:from-amber-900/20 dark:via-gray-800 dark:to-gray-800 border-amber-200/60 dark:border-amber-700/50',
-                    icon: <Trophy size={16} className="text-amber-500 animate-pulse" />,
+                    icon: <Trophy size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-amber-500 animate-pulse" />,
                     glow: 'shadow-[0_0_25px_rgba(251,191,36,0.2)]'
                 };
             case 1: // Silver/Purple
@@ -234,7 +232,7 @@ const Leaderboard: React.FC = () => {
                     border: 'border-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]',
                     badge: 'bg-gradient-to-br from-purple-400 via-purple-500 to-purple-700 shadow-lg',
                     card: 'bg-gradient-to-br from-purple-50/80 via-white to-white dark:from-purple-900/20 dark:via-gray-800 dark:to-gray-800 border-purple-200/60 dark:border-purple-700/50',
-                    icon: <Medal size={16} className="text-purple-400" />,
+                    icon: <Medal size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-purple-400" />,
                     glow: 'shadow-[0_0_20px_rgba(168,85,247,0.15)]'
                 };
             case 2: // Bronze
@@ -243,7 +241,7 @@ const Leaderboard: React.FC = () => {
                     border: 'border-orange-300 shadow-[0_0_15px_rgba(249,115,22,0.2)]',
                     badge: 'bg-gradient-to-br from-orange-400 via-orange-500 to-orange-700 shadow-lg',
                     card: 'bg-gradient-to-br from-orange-50/80 via-white to-white dark:from-orange-900/20 dark:via-gray-800 dark:to-gray-800 border-orange-200/60 dark:border-orange-700/50',
-                    icon: <Medal size={16} className="text-orange-500" />,
+                    icon: <Medal size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-orange-500" />,
                     glow: 'shadow-[0_0_20px_rgba(249,115,22,0.15)]'
                 };
             default:
@@ -289,7 +287,7 @@ const Leaderboard: React.FC = () => {
                     </div>
                     <div className="flex items-center space-x-2 mt-1">
                         <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter border ${tierStyle.bg} ${tierStyle.text} ${tierStyle.border}`}>{item.tier}</span>
-                        <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Ref: {item.referralCode}</span>
+                        <span className="text-[9px] text-gray-600 font-bold uppercase tracking-widest">Ref: {item.referralCode}</span>
                     </div>
                 </div>
             </div>
@@ -297,8 +295,8 @@ const Leaderboard: React.FC = () => {
                 <div className="flex flex-col items-end">
                     <p className={`text-base ${isTopRank ? 'font-black ' + styles.text : 'font-bold text-gray-900 dark:text-white'}`}>฿{Math.floor(item.dailyIncome).toLocaleString()}</p>
                     <div className="flex items-center space-x-1 mt-0.5">
-                        <TrendingUp size={10} className="text-emerald-500" />
-                        <p className="text-[9px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">Profit</p>
+                        <TrendingUp size={10} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-emerald-500" />
+                        <p className="text-[9px] text-gray-600 dark:text-gray-300 font-bold uppercase tracking-tighter">Profit</p>
                     </div>
                 </div>
             </div>
@@ -332,9 +330,17 @@ const Leaderboard: React.FC = () => {
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-          <Loader2 className="animate-spin mb-4" size={32} />
-          <p className="text-xs font-black uppercase tracking-widest">Loading Intel...</p>
+        <div className="space-y-4 animate-in fade-in duration-500">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="bg-white dark:bg-slate-800 rounded-[32px] p-4 border border-slate-100 dark:border-slate-800 flex items-center space-x-4">
+              <Skeleton variant="circular" className="w-12 h-12 shrink-0" />
+              <div className="flex-1 space-y-2">
+                <Skeleton variant="text" className="w-1/2 h-4" />
+                <Skeleton variant="text" className="w-1/3 h-3" />
+              </div>
+              <Skeleton variant="rectangular" className="w-16 h-6 rounded-full" />
+            </div>
+          ))}
         </div>
       ) : error ? (
         <div className="flex flex-col items-center justify-center py-20 text-center px-6">
@@ -356,7 +362,7 @@ const Leaderboard: React.FC = () => {
               <div className="relative z-10">
                   <div className="flex items-center space-x-3 mb-5">
                       <div className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shadow-inner">
-                          <theme.icon size={26} className="text-white" />
+                          <theme.icon size={26} strokeWidth={1.5} fill="currentColor" fillOpacity={0.2} className="text-white" />
                       </div>
                       <div>
                           <h2 className="text-lg font-black tracking-tight uppercase leading-tight">{theme.title}</h2>
@@ -382,7 +388,7 @@ const Leaderboard: React.FC = () => {
 
           {isSearchVisible && (
             <div className="relative mb-6 animate-in slide-in-from-top-2 duration-300">
-                <div className="absolute left-4 top-3 text-gray-400">
+                <div className="absolute left-4 top-3 text-gray-500">
                     <Search size={18} />
                 </div>
                 <input 
@@ -391,12 +397,12 @@ const Leaderboard: React.FC = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={`Search leaders...`}
-                    className="w-full bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-2xl py-3.5 pl-12 pr-10 shadow-soft focus:ring-2 focus:ring-synergy-blue/20 outline-none dark:text-white text-sm font-medium"
+                    className="w-full bg-white dark:bg-slate-800 border border-transparent dark:border-slate-800 rounded-2xl py-3.5 pl-12 pr-10 shadow-soft focus:ring-2 focus:ring-synergy-blue/20 outline-none dark:text-white text-sm font-medium"
                 />
                 {searchQuery && (
                     <button 
                         onClick={() => setSearchQuery('')}
-                        className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+                        className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600"
                     >
                         <X size={18} />
                     </button>
@@ -406,7 +412,7 @@ const Leaderboard: React.FC = () => {
 
           <div className="space-y-4">
               {!searchQuery && (
-                <div className="px-4 py-3 mb-2 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between">
+                <div className="px-4 py-3 mb-2 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between shadow-soft">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
                     <p className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Next Daily Reset In</p>
@@ -420,7 +426,7 @@ const Leaderboard: React.FC = () => {
                       <DataCard key={idx} item={item} idx={idx} />
                   ))
               ) : searchQuery ? (
-                  <div className="text-center py-20 text-gray-400 bg-white dark:bg-gray-800 rounded-[32px] border border-dashed border-gray-200 dark:border-gray-700">
+                  <div className="text-center py-20 text-slate-600 bg-white dark:bg-slate-800 rounded-[32px] border border-dashed border-slate-200 dark:border-slate-700">
                       <Users size={40} className="mx-auto mb-3 opacity-20" />
                       <p className="text-[10px] font-black uppercase tracking-widest">No matching results</p>
                   </div>
@@ -429,18 +435,18 @@ const Leaderboard: React.FC = () => {
 
           {/* Info Card - Only show if there is data or searching */}
           {(displayedList.length > 0 || searchQuery) && (
-            <div className={`mt-8 rounded-[32px] p-6 border transition-all animate-in fade-in slide-in-from-bottom-4 shadow-sm ${currentColors.bg} ${currentColors.border}`}>
+            <div className={`mt-8 rounded-[32px] p-6 border transition-all animate-in fade-in slide-in-from-bottom-4 shadow-soft ${currentColors.bg} ${currentColors.border}`}>
                 <h4 className={`text-xs font-black uppercase tracking-widest mb-4 flex items-center ${currentColors.text}`}>
-                    <ShieldCheck size={18} className="mr-2" />
-                    Daily Insights
+                    <ShieldCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="mr-2" />
+                    Elite Daily Insights
                 </h4>
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-white dark:bg-gray-800 rounded-xl flex items-center justify-center text-synergy-blue shadow-sm shrink-0">
-                    <ArrowUpRight size={20} />
+                  <div className="w-10 h-10 bg-white dark:bg-slate-900/50 rounded-xl flex items-center justify-center text-synergy-blue shadow-sm shrink-0">
+                    <ArrowUpRight size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                      Earnings are calculated daily and reset at midnight. Keep sharing to climb the ranks and unlock exclusive rewards!
+                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                      Daily earnings are verified every midnight. Maintain consistent performance to climb the ranks and access high-tier affiliate rewards!
                     </p>
                   </div>
                 </div>

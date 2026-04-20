@@ -133,7 +133,7 @@ export const Cart: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => confirmStep ? setConfirmStep(false) : navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
-              <ArrowLeft size={24} />
+              <ArrowLeft size={24} strokeWidth={2} />
             </button>
             <h1 className="text-xl font-bold ml-2 text-gray-900 dark:text-white tracking-tight">
                 {confirmStep ? 'Confirm Order' : 'Checkout'}
@@ -158,7 +158,7 @@ export const Cart: React.FC = () => {
             {/* Order Summary Card */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-[32px] shadow-soft border border-gray-100 dark:border-gray-700">
                 <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest mb-4 flex items-center">
-                    <ShoppingBagIcon size={16} className="mr-2 text-synergy-blue" />
+                    <ShoppingBagIcon size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="mr-2 text-synergy-blue" />
                     Order Summary
                 </h3>
                 <div className="space-y-3">
@@ -177,7 +177,7 @@ export const Cart: React.FC = () => {
                                         <span className="text-[10px] font-bold text-synergy-blue">{item.quantity}x</span>
                                         <span className="text-xs font-medium text-gray-700 dark:text-gray-300 line-clamp-1 max-w-[120px]">{item.name}</span>
                                     </div>
-                                    <span className="text-[9px] text-gray-400 dark:text-gray-500 font-medium">฿{item.price.toLocaleString()} / unit</span>
+                                    <span className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">฿{item.price.toLocaleString()} / unit</span>
                                 </div>
                             </div>
                             <span className="text-xs font-bold text-gray-900 dark:text-white">฿{(item.price * item.quantity).toLocaleString()}</span>
@@ -197,7 +197,7 @@ export const Cart: React.FC = () => {
                         </div>
                     )}
                     <div className="flex justify-between items-center pt-2">
-                        <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Total Amount</span>
+                        <span className="text-xs font-black text-gray-600 uppercase tracking-widest">Total Amount</span>
                         <span className="text-xl font-black text-synergy-blue">฿{total.toLocaleString()}</span>
                     </div>
                 </div>
@@ -207,16 +207,16 @@ export const Cart: React.FC = () => {
             <div className="space-y-3">
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700">
                     <div className="flex items-center space-x-2 mb-2 text-gray-400">
-                        <MapPin size={14} />
+                        <MapPin size={14} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-[10px] font-black uppercase tracking-widest">Delivery Address</span>
                     </div>
                     <p className="text-xs font-bold text-gray-800 dark:text-white">{selectedAddress?.name}</p>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{selectedAddress?.address}, {selectedAddress?.city}</p>
+                    <p className="text-[11px] text-gray-700 dark:text-gray-300 mt-0.5">{selectedAddress?.address}, {selectedAddress?.city}</p>
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700">
                     <div className="flex items-center space-x-2 mb-2 text-gray-400">
-                        <CreditCard size={14} />
+                        <CreditCard size={14} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-[10px] font-black uppercase tracking-widest">Payment Method</span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -241,12 +241,12 @@ export const Cart: React.FC = () => {
                     >
                         <div className="relative flex items-center mt-0.5">
                             <div 
-                                className={`h-5 w-5 rounded-md border flex items-center justify-center transition-all ${agreedToTerms ? 'bg-synergy-blue border-synergy-blue text-white' : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'}`}
+                                className={`h-5 w-5 rounded-md border flex items-center justify-center transition-all ${agreedToTerms ? 'bg-synergy-blue border-synergy-blue text-white' : 'bg-white dark:bg-gray-800 border-gray-400 dark:border-gray-500'}`}
                             >
                                 {agreedToTerms && <Check size={14} strokeWidth={4} />}
                             </div>
                         </div>
-                        <span className="text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight">
+                        <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300 leading-tight">
                             {t('cart.terms_agree')}
                         </span>
                     </div>
@@ -267,7 +267,7 @@ export const Cart: React.FC = () => {
                 </button>
                 <button 
                     onClick={() => setConfirmStep(false)}
-                    className="w-full mt-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] py-2 hover:text-gray-600 transition"
+                    className="w-full mt-4 text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] py-2 hover:text-gray-800 transition"
                 >
                     Back to Cart
                 </button>
@@ -279,15 +279,15 @@ export const Cart: React.FC = () => {
              <div onClick={() => navigate('/address-book')} className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm active:scale-[0.99] transition cursor-pointer border border-transparent dark:border-gray-700">
                 <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center space-x-2 text-gray-500">
-                        <MapPin size={16} />
+                        <MapPin size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-xs font-bold uppercase tracking-wide">Shipping To</span>
                     </div>
                     <span className="text-synergy-blue text-xs font-semibold">Change</span>
                 </div>
                 {selectedAddress ? (
                     <div>
-                        <p className="text-sm font-bold text-gray-800 dark:text-white">{selectedAddress.name} <span className="text-gray-400 font-normal">| {selectedAddress.phone}</span></p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{selectedAddress.address}, {selectedAddress.city}</p>
+                        <p className="text-sm font-bold text-gray-800 dark:text-white">{selectedAddress.name} <span className="text-gray-500 font-normal">| {selectedAddress.phone}</span></p>
+                        <p className="text-xs text-gray-700 dark:text-gray-300 mt-1 truncate">{selectedAddress.address}, {selectedAddress.city}</p>
                     </div>
                 ) : (
                     <p className="text-sm text-red-500 font-medium">Please select an address</p>
@@ -304,7 +304,7 @@ export const Cart: React.FC = () => {
                 />
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 line-clamp-1">{item.name}</h3>
-                  <p className="text-xs text-gray-400 mb-2">{item.category}</p>
+                  <p className="text-xs text-gray-600 mb-2">{item.category}</p>
                   <div className="flex justify-between items-center">
                     <span className="text-synergy-blue font-bold">฿{item.price.toLocaleString()}</span>
                     <div className="flex flex-col items-end">
@@ -336,10 +336,10 @@ export const Cart: React.FC = () => {
                  <div onClick={() => navigate('/payment-selection')} className={`bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer active:scale-[0.99] transition border ${hasInsufficientBalance ? 'border-red-200 dark:border-red-900/50' : 'border-transparent dark:border-gray-700'}`}>
                      <div className="flex items-center space-x-3">
                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasInsufficientBalance ? 'bg-red-50 text-red-500' : 'bg-blue-50 dark:bg-blue-900/20 text-synergy-blue'}`}>
-                             <CardIcon size={16} />
+                             <CardIcon size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                          </div>
                          <div>
-                             <p className="text-xs text-gray-400 font-medium">Payment Method</p>
+                             <p className="text-xs text-gray-600 font-medium">Payment Method</p>
                              <div className="flex items-center space-x-2">
                                 <p className={`text-sm font-bold ${hasInsufficientBalance ? 'text-red-600' : 'text-gray-800 dark:text-gray-100'}`}>
                                     {paymentMethod === 'CreditCard' 
@@ -366,7 +366,7 @@ export const Cart: React.FC = () => {
 
                  <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-transparent dark:border-gray-700">
                      <div className="flex items-center space-x-2 mb-2">
-                         <Ticket size={16} className="text-synergy-blue" />
+                         <Ticket size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} className="text-synergy-blue" />
                          <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Promo Code</span>
                      </div>
                      {appliedCoupon ? (
@@ -400,7 +400,7 @@ export const Cart: React.FC = () => {
 
             <div className="mt-6 bg-white dark:bg-gray-800 p-6 rounded-[32px] shadow-soft border border-gray-100 dark:border-gray-700 relative overflow-hidden group">
                 <div className="space-y-2.5 mb-6 relative z-10">
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex justify-between text-xs text-gray-600 dark:text-gray-300">
                         <span>Subtotal</span>
                         <span>฿{subtotal.toLocaleString()}</span>
                     </div>
@@ -416,17 +416,17 @@ export const Cart: React.FC = () => {
                             <span>-฿{couponDiscount.toLocaleString()}</span>
                         </div>
                     )}
-                    <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500">
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>VAT (7%)</span>
                         <span>฿{vat.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500">
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                         <span>Shipping</span>
-                        <span className="text-emerald-500 font-bold uppercase tracking-widest text-[9px]">Free</span>
+                        <span className="text-emerald-600 font-bold uppercase tracking-widest text-[9px]">Free</span>
                     </div>
                     <div className="h-px bg-gray-100 dark:bg-gray-700 my-3"></div>
                     <div className="flex justify-between items-center">
-                        <span className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Grand Total</span>
+                        <span className="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Grand Total</span>
                         <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">฿{total.toLocaleString()}</span>
                     </div>
                 </div>
@@ -467,14 +467,14 @@ export const Cart: React.FC = () => {
                               <CheckCircle2 size={32} strokeWidth={3} />
                           </div>
                           <h2 className="text-base font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Payment Success</h2>
-                          <p className="text-gray-400 dark:text-gray-500 text-[10px] mt-2 font-bold uppercase tracking-tight">Redirecting to My Orders...</p>
+                          <p className="text-gray-600 dark:text-gray-400 text-[10px] mt-2 font-bold uppercase tracking-tight">Redirecting to My Orders...</p>
                       </div>
                   )}
 
                   <div className="flex justify-between items-center mb-6">
                       <div className="flex items-center space-x-2">
                           <div className="w-8 h-8 bg-gray-900 dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-gray-900">
-                              <ShieldCheck size={20} />
+                              <ShieldCheck size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.2} />
                           </div>
                           <span className="text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest italic">Confirm Payment</span>
                       </div>
@@ -510,7 +510,7 @@ export const Cart: React.FC = () => {
                       {confirmStep && (
                           <div className="animate-in fade-in slide-in-from-bottom-2">
                               <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-2xl mb-6 border border-gray-100 dark:border-gray-700 text-left">
-                                  <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-1">Total Amount</p>
+                                  <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-1">Total Amount</p>
                                   <p className="text-2xl font-black text-gray-900 dark:text-white">฿{total.toLocaleString()}</p>
                               </div>
                               <button 
@@ -532,7 +532,7 @@ export const Cart: React.FC = () => {
                                    </div>
                                </div>
                                <p className="text-[11px] font-black text-synergy-blue uppercase tracking-[0.2em] animate-pulse">Authorizing Card...</p>
-                               <p className="text-[8px] text-gray-400 dark:text-gray-500 mt-2 uppercase font-bold tracking-tighter">Do not close this window</p>
+                               <p className="text-[8px] text-gray-600 dark:text-gray-400 mt-2 uppercase font-bold tracking-tighter">Do not close this window</p>
                            </div>
                       )}
                   </div>
@@ -580,12 +580,12 @@ export const Cart: React.FC = () => {
                   </div>
 
                   <div className="space-y-1 mb-6">
-                      <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Total Amount to Pay</p>
+                      <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest">Total Amount to Pay</p>
                       <h2 className="text-2xl font-black text-gray-900 dark:text-white">฿{total.toLocaleString()}</h2>
                   </div>
 
                   <div className="flex flex-col items-center space-y-3">
-                      <div className="flex items-center space-x-1.5 text-[9px] font-black uppercase text-gray-400 animate-pulse">
+                      <div className="flex items-center space-x-1.5 text-[9px] font-black uppercase text-gray-600 animate-pulse">
                           {isVerifying ? (
                               <>
                                 <span className="w-1 h-1 rounded-full bg-blue-500"></span>
@@ -595,7 +595,7 @@ export const Cart: React.FC = () => {
                               <span>Waiting for payment...</span>
                           )}
                       </div>
-                      <p className="text-[8px] text-gray-400 leading-relaxed max-w-[180px] uppercase font-bold tracking-tight">
+                      <p className="text-[8px] text-gray-600 leading-relaxed max-w-[180px] uppercase font-bold tracking-tight">
                           Please scan the QR code within 5 minutes. The system will verify automatically.
                       </p>
                   </div>
