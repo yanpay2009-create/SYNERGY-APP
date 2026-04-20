@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { Share2, Copy, Heart, MessageCircle, Send, X, Check, Clock, ChevronUp, Sparkles, Play, ShieldCheck, UserPlus, Search, Scan, Plus, User, ArrowRight, Volume2, VolumeX, Maximize2 } from 'lucide-react';
+import { ShoppingBag, Share2, Copy, Heart, MessageCircle, Send, X, Check, Clock, ChevronUp, Sparkles, Play, ShieldCheck, UserPlus, Search, Scan, Plus, User, ArrowRight, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { FeedItem } from '../types';
 import { CountdownTimer } from '../components/CountdownTimer';
@@ -117,6 +117,24 @@ export const Feed: React.FC = () => {
     toggleFeedLike(id);
   };
 
+  const handleProductAction = (post: FeedItem) => {
+    if (post.productId) {
+      const product = products.find(p => p.id === post.productId);
+      if (product) {
+        addToCart(product, 1);
+        showToast({
+          type: 'success',
+          title: 'Added to Cart',
+          message: `${product.name} has been added to your basket.`
+        });
+      } else {
+        navigate('/shop');
+      }
+    } else {
+      navigate('/shop');
+    }
+  };
+
   const submitComment = (e: React.FormEvent) => {
       e.preventDefault();
       if (!isLoggedIn || !user) {
@@ -149,7 +167,7 @@ export const Feed: React.FC = () => {
     <div className="h-screen w-full max-w-md mx-auto relative bg-black transition-colors duration-300">
       
       {/* Top Header Bar (Floating Tabs) */}
-      <div className={`fixed top-0 left-0 right-0 z-[100] px-4 pt-12 pb-4 pointer-events-none transition-all duration-500`}>
+      <div className={`fixed top-0 left-0 right-0 z-[100] px-4 pt-10 pb-4 pointer-events-none transition-all duration-500`}>
         <div className="max-w-md mx-auto flex items-center justify-center">
           <div className="flex space-x-1 p-1 rounded-full bg-black/20 backdrop-blur-md border border-white/10 shadow-lg pointer-events-auto">
             <button 
@@ -255,6 +273,14 @@ export const Feed: React.FC = () => {
                      >
                         <Share2 size={28} className="text-white drop-shadow-lg" />
                         <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">Share</span>
+                     </button>
+
+                     <button 
+                        onClick={() => handleProductAction(post)} 
+                        className="flex flex-col items-center group transition active:scale-90"
+                     >
+                        <ShoppingBag size={28} className="text-white drop-shadow-lg" />
+                        <span className="text-[10px] mt-1 font-bold text-white drop-shadow-md">Shop</span>
                      </button>
                   </div>
                   
