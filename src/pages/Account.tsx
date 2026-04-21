@@ -376,7 +376,7 @@ export const Account: React.FC = () => {
     <div className="pb-0 pt-0 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative overflow-x-hidden">
       
       {/* TOP BACKGROUND HEADER */}
-      <div className={`absolute top-0 left-0 right-0 h-48 bg-gradient-to-br ${colors.gradient} border-b-4 ${colors.border} z-0 shadow-lg`}>
+      <div className={`absolute top-0 left-0 right-0 h-64 bg-gradient-to-br ${colors.gradient} border-b-4 ${colors.border} z-0 shadow-lg`}>
           <div className="absolute top-[-20px] left-[-20px] w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-[-10px] right-[-10px] w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
           <div className="absolute top-8 right-6 z-20">
@@ -442,7 +442,7 @@ export const Account: React.FC = () => {
       />
 
       {/* MAIN CONTENT AREA */}
-      <div className="relative z-10 bg-white dark:bg-gray-900 rounded-t-[40px] mt-32 pt-10 px-4 pb-16 shadow-[0_-15px_40px_rgba(0,0,0,0.08)] min-h-[calc(100vh-8rem)]">
+      <div className="relative z-10 bg-white dark:bg-gray-900 rounded-t-[40px] mt-32 pt-8 px-4 pb-10 shadow-[0_-15px_40px_rgba(0,0,0,0.08)] min-h-[calc(100vh-6rem)]">
           
           {/* Action Icons Area */}
           <div className="absolute top-6 right-6 flex items-center space-x-2.5 z-30">
@@ -452,7 +452,7 @@ export const Account: React.FC = () => {
           </div>
 
           {/* PROFILE SECTION */}
-          <div className="mb-4 relative z-20 flex flex-col items-start -mt-[100px] px-5 w-full">
+          <div className="mb-2 relative z-20 flex flex-col items-start -mt-[100px] px-5 w-full">
               <div className="flex flex-col items-center space-y-3 w-24">
                   <button onClick={() => triggerPinGate('/edit-profile')} className="relative w-24 h-24 group block active:scale-95 transition-transform shrink-0">
                     <div className="w-24 h-24 rounded-full shadow-2xl overflow-hidden bg-white dark:bg-gray-700 transition-all group-hover:ring-8 group-hover:ring-synergy-blue/10 border-2 border-white/90">
@@ -470,7 +470,7 @@ export const Account: React.FC = () => {
           </div>
 
           {/* Today's Earnings Card */}
-          <div onClick={() => navigate('/leaderboard')} className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-xl p-6 mb-4 shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 relative overflow-hidden group transition-all duration-200 cursor-pointer active:scale-[0.98]`}>
+          <div onClick={() => navigate('/leaderboard')} className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-xl p-6 mb-3 shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 relative overflow-hidden group transition-all duration-200 cursor-pointer active:scale-[0.98]`}>
             <div className="text-center mb-6 relative z-10">
                 <div className={`inline-flex items-center space-x-2 ${colors.bgLight} px-3 py-1.5 rounded-full mb-2 border border-white/50 dark:border-gray-600 shadow-sm`}>
                     <span className={`text-[10px] ${colors.text} font-black uppercase tracking-wider`}>Today's Earnings</span>
@@ -514,7 +514,7 @@ export const Account: React.FC = () => {
             activeAd ? (
                 <div 
                   onClick={() => navigate('/promotions')}
-                  className="w-full h-32 rounded-xl overflow-hidden shadow-soft mb-5 relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-gray-700 animate-in slide-in-from-bottom-2 duration-700"
+                  className="w-full h-32 rounded-xl overflow-hidden shadow-soft mb-4 relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-gray-700 animate-in slide-in-from-bottom-2 duration-700"
                 >
                     <img src={activeAd.image || undefined} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="Account Ad" />
                     
@@ -537,7 +537,7 @@ export const Account: React.FC = () => {
             ) : (
                 <div 
                   onClick={() => navigate('/promotions')}
-                  className={`w-full h-32 rounded-xl ${colors.bgLight} backdrop-blur-xl mb-5 p-6 flex flex-col justify-center shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}
+                  className={`w-full h-32 rounded-xl ${colors.bgLight} backdrop-blur-xl mb-4 p-6 flex flex-col justify-center shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}
                 >
                     {/* Content Overlay */}
                     <div className="relative z-10">
@@ -578,7 +578,7 @@ export const Account: React.FC = () => {
 
           {/* Admin Management Section */}
           {isAdmin && (
-            <div className="mb-8 animate-in slide-in-from-bottom-2">
+            <div className="mb-6 animate-in slide-in-from-bottom-2">
               <h3 className="text-[10px] font-black text-indigo-500 uppercase ml-4 mb-4 tracking-[0.25em] flex items-center">
                 <ShieldCheck size={14} className="mr-2" />
                 {t('account.admin')}
@@ -596,7 +596,7 @@ export const Account: React.FC = () => {
           )}
 
           {/* Business Section (Affiliate) */}
-          <div className="mb-8">
+          <div className="mb-6">
             <h3 className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase ml-4 mb-4 tracking-[0.25em] flex items-center">
                 <BarChart3 size={14} className="mr-2" />
                 {t('account.business')}
@@ -613,7 +613,7 @@ export const Account: React.FC = () => {
           </div>
 
           {/* Account Section (Personal) */}
-          <div className="pb-12">
+          <div className="pb-8">
              <h3 className="text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase ml-4 mb-4 tracking-[0.25em] flex items-center">
                  <UserCog size={14} className="mr-2" />
                  {t('account.account_section')}
