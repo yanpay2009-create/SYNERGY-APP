@@ -97,8 +97,6 @@ const Leaderboard: React.FC = () => {
   const navigate = useNavigate();
   const [leaders, setLeaders] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [globalStats, setGlobalStats] = useState({ totalIncome: 0, activeUsers: 0 });
   
   // Use Thailand Date (UTC+7) as state to allow dynamic updates
@@ -118,8 +116,6 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     // Query for Today's Leaders
-    // Note: We use only one filter to avoid composite index requirements.
-    // Sorting and additional filtering are handled in memory.
     const qToday = query(
       collection(db, 'publicProfiles'),
       where('lastIncomeDate', '==', today)
@@ -149,15 +145,12 @@ const Leaderboard: React.FC = () => {
         }
       });
       
-      // Update global stats from the same snapshot to save quota/avoid extra queries
       setGlobalStats({
         totalIncome: totalIncome,
         activeUsers: entries.length
       });
       
-      // Sort for the leaderboard display (showing all users who earned today)
       const sortedEntries = [...entries].sort((a, b) => b.dailyIncome - a.dailyIncome);
-      
       setLeaders(sortedEntries);
       setLoading(false);
       setError(null);
@@ -172,7 +165,7 @@ const Leaderboard: React.FC = () => {
     };
   }, [today]);
 
-  const displayedList = leaders.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  const displayedList = leaders;
 
   const formatCompactNumber = (num: number): string => {
     const val = Math.floor(num);
@@ -204,7 +197,7 @@ const Leaderboard: React.FC = () => {
   };
 
   const DataCard: React.FC<{ item: LeaderboardEntry, idx: number }> = ({ item, idx }) => {
-    const isTopRank = !searchQuery && idx < 3;
+    const isTopRank = idx < 3;
     
     const getRankStyles = () => {
         if (!isTopRank) return { 
@@ -321,10 +314,11 @@ const Leaderboard: React.FC = () => {
             </h1>
           </div>
           <button 
-            onClick={() => setIsSearchVisible(!isSearchVisible)}
-            className={`p-2 rounded-full transition-all ${isSearchVisible ? 'bg-synergy-blue text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'}`}
+            onClick={() => navigate(`/tier-data/Executive`)}
+            className="p-2.5 bg-white dark:bg-gray-800 text-amber-500 rounded-full shadow-sm hover:bg-amber-50 dark:hover:bg-amber-900/30 transition border border-amber-100 dark:border-gray-700 active:scale-95"
+            title="Executive Board"
           >
-            <Search size={20} />
+            <Crown size={20} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
           </button>
         </div>
       </div>
@@ -386,55 +380,22 @@ const Leaderboard: React.FC = () => {
               <div className="absolute left-[-10px] bottom-[-10px] w-32 h-32 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
           </div>
 
-          {isSearchVisible && (
-            <div className="relative mb-6 animate-in slide-in-from-top-2 duration-300">
-                <div className="absolute left-4 top-3 text-gray-500">
-                    <Search size={18} />
-                </div>
-                <input 
-                    type="text"
-                    autoFocus
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={`Search leaders...`}
-                    className="w-full bg-white dark:bg-slate-800 border border-transparent dark:border-slate-800 rounded-2xl py-3.5 pl-12 pr-10 shadow-soft focus:ring-2 focus:ring-synergy-blue/20 outline-none dark:text-white text-sm font-medium"
-                />
-                {searchQuery && (
-                    <button 
-                        onClick={() => setSearchQuery('')}
-                        className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600"
-                    >
-                        <X size={18} />
-                    </button>
-                )}
-            </div>
-          )}
-
           <div className="space-y-4">
-              {!searchQuery && (
-                <div className="px-4 py-3 mb-2 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between shadow-soft">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
-                    <p className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Next Daily Reset In</p>
-                  </div>
-                  <CountdownTimer />
+              <div className="px-4 py-3 mb-2 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between shadow-soft">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
+                  <p className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Next Daily Reset In</p>
                 </div>
-              )}
+                <CountdownTimer />
+              </div>
               
-              {displayedList.length > 0 ? (
-                  displayedList.map((item, idx) => (
-                      <DataCard key={idx} item={item} idx={idx} />
-                  ))
-              ) : searchQuery ? (
-                  <div className="text-center py-20 text-slate-600 bg-white dark:bg-slate-800 rounded-[32px] border border-dashed border-slate-200 dark:border-slate-700">
-                      <Users size={40} className="mx-auto mb-3 opacity-20" />
-                      <p className="text-[10px] font-black uppercase tracking-widest">No matching results</p>
-                  </div>
-              ) : null}
+              {displayedList.map((item, idx) => (
+                  <DataCard key={idx} item={item} idx={idx} />
+              ))}
           </div>
 
-          {/* Info Card - Only show if there is data or searching */}
-          {(displayedList.length > 0 || searchQuery) && (
+          {/* Info Card */}
+          {displayedList.length > 0 && (
             <div className={`mt-8 rounded-[32px] p-6 border transition-all animate-in fade-in slide-in-from-bottom-4 shadow-soft ${currentColors.bg} ${currentColors.border}`}>
                 <h4 className={`text-xs font-black uppercase tracking-widest mb-4 flex items-center ${currentColors.text}`}>
                     <ShieldCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="mr-2" />
