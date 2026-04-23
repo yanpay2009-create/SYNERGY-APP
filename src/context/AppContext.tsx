@@ -496,7 +496,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const searchReferrer = async (code: string): Promise<Referrer | null> => {
+  const searchReferrer = useCallback(async (code: string): Promise<Referrer | null> => {
     try {
       const q = query(collection(db, 'publicProfiles'), where('referralCode', '==', code));
       const snapshot = await getDocs(q);
@@ -524,7 +524,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       handleFirestoreError(err, OperationType.LIST, 'publicProfiles', setIsQuotaExceeded);
       return null;
     }
-  };
+  }, [setIsQuotaExceeded]);
 
   const getReferralCodeByUserId = async (userId: string): Promise<string | null> => {
     try {

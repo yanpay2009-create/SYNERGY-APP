@@ -2,6 +2,7 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft, Wand2, Image as ImageIcon, Send, Sparkles, X, AlertTriangle, Loader2, Video, Film, Clock, CheckCircle2, Layers, Megaphone, Layout, Trophy, PlusSquare, User, Trash2, Edit3, ChevronRight, Calendar, Box, Copy, Check, ShoppingBag } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { generateText, analyzeMedia, transformImage } from '../services/aiService';
 
 export const CreateContent: React.FC = () => {
   const { createPost, updateFeedPost, deleteFeedPost, orders, feed, user, products, showToast } = useApp();
@@ -200,19 +201,12 @@ export const CreateContent: React.FC = () => {
 
     setIsGeneratingImage(true);
     try {
-        const response = await fetch('/api/ai/transform', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                media,
-                prompt: `Transform this user photo into a professional, high-conversion advertisement visual for "${topic}". ${details ? `Focus on these features: ${details}.` : ''} 
-                Style: High-end commercial photography, studio lighting, vibrant colors, premium product placement. 
-                Requirement: Do NOT add any text, logos, or watermarks. Just enhance the visual quality, background, and lighting to make it look like a professional ad. Return the enhanced image.`
-            })
-        });
-
-        if (!response.ok) throw new Error("Transformation failed");
-        const result = await response.json();
+        const result = await transformImage(
+            media,
+            `Transform this user photo into a professional, high-conversion advertisement visual for "${topic}". ${details ? `Focus on these features: ${details}.` : ''} 
+            Style: High-end commercial photography, studio lighting, vibrant colors, premium product placement. 
+            Requirement: Do NOT add any text, logos, or watermarks. Just enhance the visual quality, background, and lighting to make it look like a professional ad. Return the enhanced image.`
+        );
 
         if (result.image) {
             const compressed = await compressImage(result.image);
@@ -234,19 +228,13 @@ export const CreateContent: React.FC = () => {
     if (!media) return;
     setIsAnalyzing(true);
     try {
-        const response = await fetch('/api/ai/analyze', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                media,
-                mediaType,
-                prompt: `Analyze this ${mediaType}. Provide a short, catchy 'Product Subject' (max 5 words) and a list of 'Key Selling Points' (bullet points). Format the response as JSON with keys 'subject' and 'points'.`
-            })
-        });
+        const text = await analyzeMedia(
+            media,
+            mediaType,
+            `Analyze this ${mediaType}. Provide a short, catchy 'Product Subject' (max 5 words) and a list of 'Key Selling Points' (bullet points). Format the response as JSON with keys 'subject' and 'points'.`
+        );
 
-        if (!response.ok) throw new Error("Analysis failed");
-        const result = await response.json();
-        const analysis = JSON.parse(result.text.replace(/```json|```/g, ''));
+        const analysis = JSON.parse(text.replace(/```json|```/g, ''));
         
         if (analysis.subject) setTopic(analysis.subject);
         if (analysis.points) setDetails(Array.isArray(analysis.points) ? analysis.points.join(', ') : analysis.points);
@@ -286,17 +274,10 @@ export const CreateContent: React.FC = () => {
           - Length: Keep it punchy and under 250 characters.
           - Emojis: Use them strategically.`;
 
-          const response = await fetch('/api/ai/generate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ prompt })
-          });
+          const text = await generateText(prompt);
 
-          if (!response.ok) throw new Error("Generation failed");
-          const result = await response.json();
-
-          if (result.text) setGeneratedContent(result.text.trim());
-      } catch (error: any) {
+          if (text) setGeneratedContent(text.trim());
+    } catch (error: any) {
           setApiError("AI Engine busy. Using fallback template.");
           setGeneratedContent(`🔥 LIMITED OFFER: Get the ${topic} now! ${details} 🚀 High performance guaranteed. Tap the link to shop! #Ad #Promo #Synergy`);
       } finally {

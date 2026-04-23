@@ -19,7 +19,7 @@ export const ReferrerModal: React.FC<ReferrerModalProps> = ({
   title = "Referrer Required",
   description = "To proceed with this action, you must link your account to a referrer."
 }) => {
-  const { addReferrer, searchReferrer, t, setInfluencerReferrerCode } = useApp();
+  const { addReferrer, searchReferrer, setInfluencerReferrerCode } = useApp();
   const [referrerCode, setReferrerCode] = useState('');
   const [referrerError, setReferrerError] = useState('');
   const [showScanner, setShowScanner] = useState(false);
@@ -28,19 +28,25 @@ export const ReferrerModal: React.FC<ReferrerModalProps> = ({
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     const delayDebounceFn = setTimeout(async () => {
       if (referrerCode.length >= 3) {
         setIsSearching(true);
         const result = await searchReferrer(referrerCode);
-        setFoundReferrer(result);
-        setIsSearching(false);
+        if (isMounted) {
+          setFoundReferrer(result);
+          setIsSearching(false);
+        }
       } else {
-        setFoundReferrer(null);
+        if (isMounted) setFoundReferrer(null);
       }
     }, 500);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [referrerCode, searchReferrer]);
+    return () => {
+      isMounted = false;
+      clearTimeout(delayDebounceFn);
+    };
+  }, [referrerCode]); // Only depend on code
 
   const handleAddReferrer = async () => {
     if (!referrerCode) return;
@@ -152,7 +158,10 @@ export const ReferrerModal: React.FC<ReferrerModalProps> = ({
                   }`}
                 >
                   <div className={`p-3 rounded-full mb-1.5 transition-all ${selectedSource === source.id ? 'bg-white dark:bg-gray-700 shadow-md ring-2 ring-synergy-blue/20' : ''}`}>
-                    <source.icon size={22} className={source.color} />
+                    {(() => {
+                      const Icon = source.icon;
+                      return <Icon size={22} className={source.color} />;
+                    })()}
                   </div>
                   <span className={`text-[8px] font-black uppercase tracking-tighter ${selectedSource === source.id ? 'text-synergy-blue' : 'text-gray-400'}`}>{source.label}</span>
                 </button>

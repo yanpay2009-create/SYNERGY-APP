@@ -155,29 +155,29 @@ export const TierData: React.FC = () => {
             case 0: // Gold
                 return {
                     text: 'text-amber-600 dark:text-amber-400',
-                    border: 'border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.3)]',
+                    border: 'border-amber-400/30 shadow-[0_0_20px_rgba(251,191,36,0.15)]',
                     badge: 'bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 shadow-lg',
-                    card: 'bg-gradient-to-br from-amber-50/80 via-white to-white dark:from-amber-900/20 dark:via-gray-800 dark:to-gray-800 border-amber-200/60 dark:border-amber-700/50',
+                    card: 'bg-gradient-to-br from-amber-50/50 via-white to-white dark:from-amber-900/10 dark:via-gray-800 dark:to-gray-800 border-amber-400/20 dark:border-amber-700/30',
                     icon: <Trophy size={16} className="text-amber-500 animate-pulse" />,
-                    glow: 'shadow-[0_0_25px_rgba(251,191,36,0.2)]',
+                    glow: 'shadow-[0_0_25px_rgba(251,191,36,0.1)]',
                     decoration: 'from-amber-400/20'
                 };
             case 1: // Silver/Purple
                 return {
                     text: 'text-purple-600 dark:text-purple-400',
-                    border: 'border-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]',
+                    border: 'border-purple-300/30 shadow-[0_0_15px_rgba(168,85,247,0.1)]',
                     badge: 'bg-gradient-to-br from-purple-400 via-purple-500 to-purple-700 shadow-lg',
-                    card: 'bg-gradient-to-br from-purple-50/80 via-white to-white dark:from-purple-900/20 dark:via-gray-800 dark:to-gray-800 border-purple-200/60 dark:border-purple-700/50',
+                    card: 'bg-gradient-to-br from-purple-50/50 via-white to-white dark:from-purple-900/10 dark:via-gray-800 dark:to-gray-800 border-purple-300/20 dark:border-purple-700/30',
                     icon: <Medal size={16} className="text-purple-400" />,
-                    glow: 'shadow-[0_0_20px_rgba(168,85,247,0.15)]',
+                    glow: 'shadow-[0_0_20px_rgba(168,85,247,0.1)]',
                     decoration: 'from-purple-700/20'
                 };
             case 2: // Bronze/Pink
                 return {
                     text: 'text-pink-600 dark:text-pink-400',
-                    border: 'border-pink-300 shadow-[0_0_15px_rgba(236,72,153,0.2)]',
+                    border: 'border-pink-300/30 shadow-[0_0_15px_rgba(236,72,153,0.1)]',
                     badge: 'bg-gradient-to-br from-pink-400 via-pink-500 to-pink-700 shadow-lg',
-                    card: 'bg-gradient-to-br from-pink-50/80 via-white to-white dark:from-pink-900/20 dark:via-gray-800 dark:to-gray-800 border-pink-200/60 dark:border-pink-700/50',
+                    card: 'bg-gradient-to-br from-pink-50/50 via-white to-white dark:from-pink-900/10 dark:via-gray-800 dark:to-gray-800 border-pink-300/20 dark:border-pink-700/30',
                     icon: <Medal size={16} className="text-pink-500" />,
                     glow: 'shadow-[0_0_20px_rgba(236,72,153,0.15)]',
                     decoration: 'from-pink-400/20'
@@ -196,14 +196,14 @@ export const TierData: React.FC = () => {
         >
             <div className="flex items-center space-x-4 relative z-10">
                 <div className="relative shrink-0">
-                    <div className={`rounded-full p-1 transition-all duration-500 ${isTopRank ? 'bg-gradient-to-br ' + (idx === 0 ? 'from-amber-400 via-yellow-300 to-amber-600' : idx === 1 ? 'from-purple-400 via-indigo-300 to-purple-600' : 'from-pink-400 via-rose-300 to-pink-600') : ''}`}>
+                    <div className={`rounded-full p-0.5 transition-all duration-500 ${isTopRank ? 'bg-gradient-to-br ' + (idx === 0 ? 'from-amber-400 via-yellow-300 to-amber-600' : idx === 1 ? 'from-purple-400 via-indigo-300 to-purple-600' : 'from-pink-400 via-rose-300 to-pink-600') : ''}`}>
                         <img 
                             src={item.avatar || undefined} 
                             alt={item.name} 
-                            className={`w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-800 shadow-md bg-gray-100`} 
+                            className={`w-14 h-14 rounded-full object-cover border-[1px] border-white dark:border-gray-800 shadow-md bg-gray-100`} 
                         />
                     </div>
-                    <div className={`absolute -top-1 -right-1 rounded-full border-2 border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-8 h-8' : 'w-6 h-6'} ${styles.badge}`}>
+                    <div className={`absolute -top-1 -right-1 rounded-full border-[1px] border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-8 h-8' : 'w-6 h-6'} ${styles.badge}`}>
                         <span className={`${isTopRank ? 'text-xs' : 'text-[10px]'} font-black text-white`}>{idx + 1}</span>
                     </div>
                 </div>

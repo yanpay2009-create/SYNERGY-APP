@@ -607,7 +607,7 @@ export const Account: React.FC = () => {
                     <MenuRow icon={Trophy} label={t('menu.leaderboard')} subtitle={t('menu.leaderboard_sub')} to="/leaderboard" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Crown} label={t('menu.affiliate_tiers')} subtitle={t('menu.affiliate_tiers_sub')} value={user.tier} to="/tier-benefits" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Users} label={t('menu.my_team')} subtitle={t('menu.my_team_sub')} value={`${team.length}`} valueLabel={t('account.members')} to="/my-team" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <MenuRow icon={Share2} label={t('menu.share_profile')} subtitle={t('menu.share_profile_sub')} to={null} onClick={handleShareProfile} colorClass="bg-green-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
+                    <MenuRow icon={Share2} label={t('menu.share_profile')} subtitle={t('menu.share_profile_sub')} to="/affiliate-links" colorClass="bg-sky-50 text-synergy-blue dark:bg-slate-700/50 dark:text-blue-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
                 </div>
             </div>
           </div>

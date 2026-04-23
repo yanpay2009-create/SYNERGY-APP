@@ -213,29 +213,29 @@ const Leaderboard: React.FC = () => {
             case 0: // Gold
                 return {
                     text: 'text-amber-600 dark:text-amber-400',
-                    border: 'border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.3)]',
+                    border: 'border-amber-400/30 shadow-[0_0_20px_rgba(251,191,36,0.15)]',
                     badge: 'bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 shadow-lg',
-                    card: 'bg-gradient-to-br from-amber-50/80 via-white to-white dark:from-amber-900/20 dark:via-gray-800 dark:to-gray-800 border-amber-200/60 dark:border-amber-700/50',
+                    card: 'bg-gradient-to-br from-amber-50/50 via-white to-white dark:from-amber-900/10 dark:via-gray-800 dark:to-gray-800 border-amber-400/20 dark:border-amber-700/30',
                     icon: <Trophy size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-amber-500 animate-pulse" />,
-                    glow: 'shadow-[0_0_25px_rgba(251,191,36,0.2)]'
+                    glow: 'shadow-[0_0_25px_rgba(251,191,36,0.1)]'
                 };
             case 1: // Silver/Purple
                 return {
                     text: 'text-purple-600 dark:text-purple-400',
-                    border: 'border-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]',
+                    border: 'border-purple-300/30 shadow-[0_0_15px_rgba(168,85,247,0.1)]',
                     badge: 'bg-gradient-to-br from-purple-400 via-purple-500 to-purple-700 shadow-lg',
-                    card: 'bg-gradient-to-br from-purple-50/80 via-white to-white dark:from-purple-900/20 dark:via-gray-800 dark:to-gray-800 border-purple-200/60 dark:border-purple-700/50',
+                    card: 'bg-gradient-to-br from-purple-50/50 via-white to-white dark:from-purple-900/10 dark:via-gray-800 dark:to-gray-800 border-purple-300/20 dark:border-purple-700/30',
                     icon: <Medal size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-purple-400" />,
-                    glow: 'shadow-[0_0_20px_rgba(168,85,247,0.15)]'
+                    glow: 'shadow-[0_0_20px_rgba(168,85,247,0.1)]'
                 };
             case 2: // Bronze
                 return {
                     text: 'text-orange-600 dark:text-orange-400',
-                    border: 'border-orange-300 shadow-[0_0_15px_rgba(249,115,22,0.2)]',
+                    border: 'border-orange-300/30 shadow-[0_0_15px_rgba(249,115,22,0.1)]',
                     badge: 'bg-gradient-to-br from-orange-400 via-orange-500 to-orange-700 shadow-lg',
-                    card: 'bg-gradient-to-br from-orange-50/80 via-white to-white dark:from-orange-900/20 dark:via-gray-800 dark:to-gray-800 border-orange-200/60 dark:border-orange-700/50',
+                    card: 'bg-gradient-to-br from-orange-50/50 via-white to-white dark:from-orange-900/10 dark:via-gray-800 dark:to-gray-800 border-orange-300/20 dark:border-orange-700/30',
                     icon: <Medal size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-orange-500" />,
-                    glow: 'shadow-[0_0_20px_rgba(249,115,22,0.15)]'
+                    glow: 'shadow-[0_0_20px_rgba(249,115,22,0.1)]'
                 };
             default:
                 return { text: '', border: '', badge: '', card: '', icon: null, glow: '' };
@@ -269,7 +269,7 @@ const Leaderboard: React.FC = () => {
                             className={`w-14 h-14 rounded-full object-cover border-[1px] border-white dark:border-gray-800 shadow-sm bg-gray-100`} 
                         />
                     </div>
-                    <div className={`absolute -top-1 -right-1 rounded-full border-2 border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-6 h-6' : 'w-5 h-5'} ${styles.badge}`}>
+                    <div className={`absolute -top-1 -right-1 rounded-full border-[1px] border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-6 h-6' : 'w-5 h-5'} ${styles.badge}`}>
                         <span className={`${isTopRank ? 'text-[10px]' : 'text-[8px]'} font-black text-white`}>{idx + 1}</span>
                     </div>
                 </div>
@@ -351,45 +351,55 @@ const Leaderboard: React.FC = () => {
         </div>
       ) : (
         <>
-          {/* Dynamic Board Header */}
-          <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-[32px] p-6 mb-8 text-white relative overflow-hidden shadow-lg animate-in zoom-in-95 duration-500">
-              <div className="relative z-10">
-                  <div className="flex items-center space-x-3 mb-5">
-                      <div className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shadow-inner">
-                          <theme.icon size={26} strokeWidth={1.5} fill="currentColor" fillOpacity={0.2} className="text-white" />
+          {/* Dynamic Board Header & Timer */}
+          {leaders.length > 0 ? (
+            <>
+              <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-[32px] p-6 mb-4 text-white relative overflow-hidden shadow-lg animate-in zoom-in-95 duration-500">
+                  <div className="relative z-10">
+                      <div className="flex items-center space-x-3 mb-5">
+                          <div className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shadow-inner">
+                              <theme.icon size={26} strokeWidth={1.5} fill="currentColor" fillOpacity={0.2} className="text-white" />
+                          </div>
+                          <div>
+                              <h2 className="text-lg font-black tracking-tight uppercase leading-tight">{theme.title}</h2>
+                              <p className="text-[10px] opacity-80 font-black uppercase tracking-widest">{theme.subtitle}</p>
+                          </div>
                       </div>
-                      <div>
-                          <h2 className="text-lg font-black tracking-tight uppercase leading-tight">{theme.title}</h2>
-                          <p className="text-[10px] opacity-80 font-black uppercase tracking-widest">{theme.subtitle}</p>
+                      <div className="grid grid-cols-2 gap-3">
+                          <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/5 shadow-inner">
+                              <p className="text-[9px] text-white/80 uppercase font-black tracking-widest mb-1">{theme.activeLabel}</p>
+                              <p className="text-xl font-black">{theme.activeVal}</p>
+                          </div>
+                          <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/5 shadow-inner">
+                              <p className="text-[9px] text-white/80 uppercase font-black tracking-widest mb-1">{theme.rewardLabel}</p>
+                              <p className="text-xl font-black text-white">{theme.rewardVal}</p>
+                          </div>
                       </div>
                   </div>
-                  {leaders.length > 0 && (
-                    <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/5 shadow-inner">
-                            <p className="text-[9px] text-white/80 uppercase font-black tracking-widest mb-1">{theme.activeLabel}</p>
-                            <p className="text-xl font-black">{theme.activeVal}</p>
-                        </div>
-                        <div className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/5 shadow-inner">
-                            <p className="text-[9px] text-white/80 uppercase font-black tracking-widest mb-1">{theme.rewardLabel}</p>
-                            <p className="text-xl font-black text-white">{theme.rewardVal}</p>
-                        </div>
-                    </div>
-                  )}
+                  <div className="absolute right-[-20px] top-[-20px] w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+                  <div className="absolute left-[-10px] bottom-[-10px] w-32 h-32 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
               </div>
-              <div className="absolute right-[-20px] top-[-20px] w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="absolute left-[-10px] bottom-[-10px] w-32 h-32 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
-          </div>
 
-          <div className="space-y-4">
-              <div className="px-4 py-3 mb-2 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between shadow-soft">
+              <div className="px-4 py-3 mb-6 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between shadow-soft transition-all">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
                   <p className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Next Daily Reset In</p>
                 </div>
                 <CountdownTimer />
               </div>
-              
-              {displayedList.map((item, idx) => (
+            </>
+          ) : (
+            <div className="py-12 px-6 text-center animate-in fade-in duration-500">
+               <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300 dark:text-gray-600">
+                  <Trophy size={32} />
+               </div>
+               <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">No Earnings Today</h3>
+               <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Check back later once sales start coming in!</p>
+            </div>
+          )}
+
+          <div className="space-y-4">
+              {leaders.length > 0 && leaders.map((item, idx) => (
                   <DataCard key={idx} item={item} idx={idx} />
               ))}
           </div>
