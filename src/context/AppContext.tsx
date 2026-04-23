@@ -470,6 +470,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [liveSales, setLiveSales] = useState<{ id: string, name: string, amount: number, time: string }[]>([]);
 
+  const [influencerReferrerCode, setInfluencerReferrerCode] = useState<string | null>(null);
+
   const [notificationsEnabled, setNotificationsEnabledState] = useState<boolean>(() => {
     const saved = localStorage.getItem('synergy_notifications_enabled');
     return saved === null ? true : saved === 'true';
@@ -520,6 +522,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return null;
     } catch (err) {
       handleFirestoreError(err, OperationType.LIST, 'publicProfiles', setIsQuotaExceeded);
+      return null;
+    }
+  };
+
+  const getReferralCodeByUserId = async (userId: string): Promise<string | null> => {
+    try {
+      // First try by document ID (UID)
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      if (userDoc.exists()) {
+        return userDoc.data().referralCode || null;
+      }
+      
+      // Fallback: try by email (some older data might use email as userId)
+      const q = query(collection(db, 'users'), where('email', '==', userId.toLowerCase()), limit(1));
+      const snapshot = await getDocs(q);
+      if (!snapshot.empty) {
+        return snapshot.docs[0].data().referralCode || null;
+      }
+      return null;
+    } catch (err) {
+      handleFirestoreError(err, OperationType.LIST, 'users', setIsQuotaExceeded);
       return null;
     }
   };
@@ -1779,6 +1802,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       
       setCart([]);
       setAppliedCoupon(null);
+      setInfluencerReferrerCode(null);
       // showToast removed to avoid redundancy with notification:new
       window.location.hash = '#/account';
     } catch (err) {
@@ -3218,7 +3242,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const contextValue: AppContextType = {
-    user, isLoggedIn, cart, products, feed, ads, campaignAssets, onboardingSlides, team: userTeam, referrer, commissions: userCommissions, orders: userOrders, addresses, selectedAddressId, paymentMethod, appliedCoupon, notifications: userNotifications, activePromo, systemSettings, isSearchActive, setIsSearchActive, isQuotaExceeded, liveSales, pendingLevelUp, dismissLevelUp, isSecurityUnlocked, setIsSecurityUnlocked, notificationsEnabled, setNotificationsEnabled, currentToast, showToast, bottomNavHidden, setBottomNavHidden, dismissToast, allOrders, allTeamMembers: allTeam, allCommissions, bankAccounts, selectedBankId, savedCards, selectedCardId, kycStatus, language, setLanguage, fontSize, setFontSize, t, isLoggingIn, login, register, logout, addToCart, removeFromCart, updateCartQuantity, checkout, calculateCommission, getNextTierTarget, getCommissionRate, addAddress, updateAddress, removeAddress, selectAddress, setPaymentMethod, applyCoupon, removeCoupon, getCartTotals, addBankAccount, removeBankAccount, selectBank, addCreditCard, removeCreditCard, selectCreditCard, updateKycStatus, updateUserKycStatus, updateUserProfile, updateUserAdminProfile, updateUserRole, withdrawFunds, markNotificationAsRead, toggleFeedLike, addFeedComment, createPost, addReview, updateUserSocials, updateUserSecurity, addReferrer, searchReferrer, updateOrderAddress, updateProduct, deleteProduct, addProduct, updateAd, deleteAd, addAd, updateCampaignAsset, deleteCampaignAsset, addCampaignAsset, updateOnboardingSlide, deleteOnboardingSlide, addOnboardingSlide, updateOrderStatus, deleteOrder, updateCommissionStatus, deleteCommission, deleteTeamMember, updateMemberTier, updateFeedStatus, deleteFeedPost, updateFeedPost, broadcastPromotion, stopBroadcast, dismissPromotion, updateSystemSettings, updateUserReferralCode, factoryReset, healReferralCodes, healPhoneMap, healTeamSizes, healUplinePaths, seedInitialData, refreshAllData, toggleFavorite, isFavorite
+    user, isLoggedIn, cart, products, feed, ads, campaignAssets, onboardingSlides, team: userTeam, referrer, commissions: userCommissions, orders: userOrders, addresses, selectedAddressId, paymentMethod, appliedCoupon, notifications: userNotifications, activePromo, systemSettings, isSearchActive, setIsSearchActive, isQuotaExceeded, liveSales, pendingLevelUp, dismissLevelUp, isSecurityUnlocked, setIsSecurityUnlocked, notificationsEnabled, setNotificationsEnabled, currentToast, showToast, bottomNavHidden, setBottomNavHidden, dismissToast, allOrders, allTeamMembers: allTeam, allCommissions, bankAccounts, selectedBankId, savedCards, selectedCardId, kycStatus, language, setLanguage, fontSize, setFontSize, t, isLoggingIn, login, register, logout, addToCart, removeFromCart, updateCartQuantity, checkout, calculateCommission, getNextTierTarget, getCommissionRate, addAddress, updateAddress, removeAddress, selectAddress, setPaymentMethod, applyCoupon, removeCoupon, getCartTotals, addBankAccount, removeBankAccount, selectBank, addCreditCard, removeCreditCard, selectCreditCard, updateKycStatus, updateUserKycStatus, updateUserProfile, updateUserAdminProfile, updateUserRole, withdrawFunds, markNotificationAsRead, toggleFeedLike, addFeedComment, createPost, addReview, updateUserSocials, updateUserSecurity, addReferrer, searchReferrer, updateOrderAddress, updateProduct, deleteProduct, addProduct, updateAd, deleteAd, addAd, updateCampaignAsset, deleteCampaignAsset, addCampaignAsset, updateOnboardingSlide, deleteOnboardingSlide, addOnboardingSlide, updateOrderStatus, deleteOrder, updateCommissionStatus, deleteCommission, deleteTeamMember, updateMemberTier, updateFeedStatus, deleteFeedPost, updateFeedPost, broadcastPromotion, stopBroadcast, dismissPromotion, updateSystemSettings, updateUserReferralCode, factoryReset, healReferralCodes, healPhoneMap, healTeamSizes, healUplinePaths, seedInitialData, refreshAllData, toggleFavorite, isFavorite, influencerReferrerCode, setInfluencerReferrerCode, getReferralCodeByUserId
   };
 
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { ArrowLeft, ShieldCheck, Clock, CheckCircle, X, Camera, Lock, Sparkles, RefreshCw, Check, Zap, CreditCard, Globe, FileText, Briefcase, Plus, Image as ImageIcon, Smartphone, Loader2, Scan } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Clock, CheckCircle, X, Camera, Lock, Sparkles, RefreshCw, Check, Zap, CreditCard, Globe, FileText, Briefcase, Plus, Image as ImageIcon, Smartphone, Loader2, Scan, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 type DocType = 'ID' | 'Passport';
@@ -39,6 +39,7 @@ export const KYC: React.FC = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -632,9 +633,50 @@ export const KYC: React.FC = () => {
                         <p className="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed max-w-[260px]">
                             Your account has been fully verified. You can now withdraw funds instantly.
                         </p>
-                        <div className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-emerald-500/20">
-                            Trust Level: Alpha
-                        </div>
+                        
+                        {!showDetails ? (
+                            <button 
+                                onClick={() => setShowDetails(true)}
+                                className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-all flex items-center space-x-2"
+                            >
+                                <Eye size={14} />
+                                <span>View My Verification Details</span>
+                            </button>
+                        ) : (
+                            <div className="w-full space-y-4 animate-in slide-in-from-top-4">
+                                <div className="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-700 space-y-4">
+                                    <div className="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-gray-800">
+                                        <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Verification Details</h3>
+                                        <button onClick={() => setShowDetails(false)} className="text-[10px] font-black text-synergy-blue uppercase">Close</button>
+                                    </div>
+                                    
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between">
+                                            <span className="text-[10px] font-bold text-gray-400 uppercase">Status</span>
+                                            <span className="text-[10px] font-black text-emerald-500 uppercase">Verified</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-[10px] font-bold text-gray-400 uppercase">Document</span>
+                                            <span className="text-[10px] font-black text-gray-700 dark:text-gray-200 uppercase">{user.kycDocumentType || 'ThaiID'}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-[10px] font-bold text-gray-400 uppercase">Full Name</span>
+                                            <span className="text-[10px] font-black text-gray-700 dark:text-gray-200 uppercase">{user.kycFullName || user.name}</span>
+                                        </div>
+                                    </div>
+
+                                    {(user.idCardImage || capturedImage) && (
+                                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2 text-center">Document Proof</p>
+                                            <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                                                <img src={user.idCardImage || capturedImage || undefined} className="w-full h-full object-cover" alt="Verification Doc" />
+                                                <div className="absolute inset-0 bg-emerald-500/10 pointer-events-none"></div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
              </div>

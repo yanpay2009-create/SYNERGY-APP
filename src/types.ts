@@ -457,4 +457,9 @@ export interface AppContextType {
   refreshAllData: () => Promise<void>;
   toggleFavorite: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
+
+  // Influence Tracking
+  influencerReferrerCode: string | null;
+  setInfluencerReferrerCode: (code: string | null) => void;
+  getReferralCodeByUserId: (userId: string) => Promise<string | null>;
 }

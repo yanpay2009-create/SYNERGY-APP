@@ -2,7 +2,6 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ArrowLeft, Wand2, Image as ImageIcon, Send, Sparkles, X, AlertTriangle, Loader2, Video, Film, Clock, CheckCircle2, Layers, Megaphone, Layout, Trophy, PlusSquare, User, Trash2, Edit3, ChevronRight, Calendar, Box, Copy, Check, ShoppingBag } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { GoogleGenAI } from "@google/genai";
 
 export const CreateContent: React.FC = () => {
   const { createPost, updateFeedPost, deleteFeedPost, orders, feed, user, products, showToast } = useApp();
@@ -201,41 +200,27 @@ export const CreateContent: React.FC = () => {
 
     setIsGeneratingImage(true);
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            throw new Error("Gemini API Key is missing.");
-        }
-        const ai = new GoogleGenAI({ apiKey });
-        const base64Data = media.split(',')[1];
-        
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-image',
-            contents: {
-                parts: [
-                    {
-                        inlineData: {
-                            data: base64Data,
-                            mimeType: 'image/png'
-                        }
-                    },
-                    {
-                        text: `Transform this user photo into a professional, high-conversion advertisement visual for "${topic}". ${details ? `Focus on these features: ${details}.` : ''} 
-                        Style: High-end commercial photography, studio lighting, vibrant colors, premium product placement. 
-                        Requirement: Do NOT add any text, logos, or watermarks. Just enhance the visual quality, background, and lighting to make it look like a professional ad. Return the enhanced image.`
-                    }
-                ]
-            }
+        const response = await fetch('/api/ai/transform', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                media,
+                prompt: `Transform this user photo into a professional, high-conversion advertisement visual for "${topic}". ${details ? `Focus on these features: ${details}.` : ''} 
+                Style: High-end commercial photography, studio lighting, vibrant colors, premium product placement. 
+                Requirement: Do NOT add any text, logos, or watermarks. Just enhance the visual quality, background, and lighting to make it look like a professional ad. Return the enhanced image.`
+            })
         });
 
-        if (response.candidates?.[0]?.content?.parts) {
-            for (const part of response.candidates[0].content.parts) {
-                if (part.inlineData) {
-                    const compressed = await compressImage(`data:image/png;base64,${part.inlineData.data}`);
-                    setMedia(compressed);
-                    setMediaType('image');
-                    break;
-                }
-            }
+        if (!response.ok) throw new Error("Transformation failed");
+        const result = await response.json();
+
+        if (result.image) {
+            const compressed = await compressImage(result.image);
+            setMedia(compressed);
+            setMediaType('image');
+        } else if (result.text) {
+            // Handle text fallback or error message from AI
+            showToast({ message: "AI suggested: " + result.text.substring(0, 50) + "...", type: 'info' });
         }
     } catch (error) {
         console.error("AI Image Generation failed:", error);
@@ -249,33 +234,22 @@ export const CreateContent: React.FC = () => {
     if (!media) return;
     setIsAnalyzing(true);
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) throw new Error("Gemini API Key is missing.");
-        const ai = new GoogleGenAI({ apiKey });
-        const base64Data = media.split(',')[1];
-        const mimeType = mediaType === 'video' ? 'video/mp4' : 'image/png';
-        
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: {
-                parts: [
-                    {
-                        inlineData: {
-                            data: base64Data,
-                            mimeType: mimeType
-                        }
-                    },
-                    {
-                        text: `Analyze this ${mediaType}. Provide a short, catchy 'Product Subject' (max 5 words) and a list of 'Key Selling Points' (bullet points). Format the response as JSON with keys 'subject' and 'points'.`
-                    }
-                ]
-            },
-            config: { responseMimeType: "application/json" }
+        const response = await fetch('/api/ai/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                media,
+                mediaType,
+                prompt: `Analyze this ${mediaType}. Provide a short, catchy 'Product Subject' (max 5 words) and a list of 'Key Selling Points' (bullet points). Format the response as JSON with keys 'subject' and 'points'.`
+            })
         });
 
-        const result = JSON.parse(response.text);
-        if (result.subject) setTopic(result.subject);
-        if (result.points) setDetails(Array.isArray(result.points) ? result.points.join(', ') : result.points);
+        if (!response.ok) throw new Error("Analysis failed");
+        const result = await response.json();
+        const analysis = JSON.parse(result.text.replace(/```json|```/g, ''));
+        
+        if (analysis.subject) setTopic(analysis.subject);
+        if (analysis.points) setDetails(Array.isArray(analysis.points) ? analysis.points.join(', ') : analysis.points);
     } catch (error) {
         console.error("Analysis failed:", error);
         showToast({ message: `Could not analyze ${mediaType}. Please fill details manually.`, type: 'error' });
@@ -294,11 +268,6 @@ export const CreateContent: React.FC = () => {
       setApiError(null);
       
       try {
-          const apiKey = process.env.GEMINI_API_KEY;
-          if (!apiKey) {
-              throw new Error("Gemini API Key is missing.");
-          }
-          const ai = new GoogleGenAI({ apiKey });
           const prompt = `Act as a world-class social media marketing expert. 
           Create a high-conversion sales advertisement caption for a product called "${topic}". 
           Key Selling Points to highlight: ${details}. 
@@ -317,13 +286,16 @@ export const CreateContent: React.FC = () => {
           - Length: Keep it punchy and under 250 characters.
           - Emojis: Use them strategically.`;
 
-          const response = await ai.models.generateContent({
-             model: 'gemini-3-flash-preview',
-             contents: [{ parts: [{ text: prompt }] }]
+          const response = await fetch('/api/ai/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ prompt })
           });
 
-          const resultText = response.text;
-          if (resultText) setGeneratedContent(resultText.trim());
+          if (!response.ok) throw new Error("Generation failed");
+          const result = await response.json();
+
+          if (result.text) setGeneratedContent(result.text.trim());
       } catch (error: any) {
           setApiError("AI Engine busy. Using fallback template.");
           setGeneratedContent(`🔥 LIMITED OFFER: Get the ${topic} now! ${details} 🚀 High performance guaranteed. Tap the link to shop! #Ad #Promo #Synergy`);

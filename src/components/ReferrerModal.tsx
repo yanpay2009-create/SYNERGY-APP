@@ -19,7 +19,7 @@ export const ReferrerModal: React.FC<ReferrerModalProps> = ({
   title = "Referrer Required",
   description = "To proceed with this action, you must link your account to a referrer."
 }) => {
-  const { addReferrer, searchReferrer, t } = useApp();
+  const { addReferrer, searchReferrer, t, setInfluencerReferrerCode } = useApp();
   const [referrerCode, setReferrerCode] = useState('');
   const [referrerError, setReferrerError] = useState('');
   const [showScanner, setShowScanner] = useState(false);
@@ -51,6 +51,7 @@ export const ReferrerModal: React.FC<ReferrerModalProps> = ({
     
     const result = await addReferrer(referrerCode);
     if (result.success) {
+      setInfluencerReferrerCode(null);
       onSuccess();
       onClose();
       setReferrerError('');

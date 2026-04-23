@@ -18,7 +18,7 @@ export const PersonalInfo: React.FC = () => {
     }
   }, [user, isSecurityUnlocked, navigate]);
 
-  const MenuLink = ({ to, icon: Icon, title, desc, isLast }: any) => (
+  const MenuLink = ({ to, icon: Icon, title, desc, isLast, badge }: any) => (
     <button 
       onClick={() => navigate(to)}
       className={`w-full p-4 flex items-center justify-between active:scale-[0.99] transition-all ${!isLast ? 'border-b border-gray-50 dark:border-gray-700/50' : ''} group`}
@@ -28,7 +28,14 @@ export const PersonalInfo: React.FC = () => {
           <Icon size={20} />
         </div>
         <div className="text-left">
-          <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight">{title}</h3>
+          <div className="flex items-center space-x-2">
+            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight">{title}</h3>
+            {badge && (
+              <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full border ${badge.className}`}>
+                {badge.label}
+              </span>
+            )}
+          </div>
           <p className="text-[10px] text-gray-400 font-semibold leading-tight mt-0.5">{desc}</p>
         </div>
       </div>
@@ -37,6 +44,15 @@ export const PersonalInfo: React.FC = () => {
   );
 
   if (!user || !isSecurityUnlocked) return null;
+
+  const kycStatusStyles: Record<string, { className: string, label: string }> = {
+    'Verified': { className: 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800/50', label: t('kyc.status.verified') || 'Verified' },
+    'Pending': { className: 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800/50', label: t('kyc.status.pending') || 'Pending' },
+    'Rejected': { className: 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50', label: t('kyc.status.rejected') || 'Rejected' },
+    'Unverified': { className: 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-gray-700/50 dark:text-gray-400 dark:border-gray-600/50', label: t('kyc.status.unverified') || 'Unverified' }
+  };
+
+  const kycBadge = user.kycStatus === 'Verified' ? null : kycStatusStyles[user.kycStatus || 'Unverified'];
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -52,7 +68,14 @@ export const PersonalInfo: React.FC = () => {
       <div className="animate-in slide-in-from-bottom-4 duration-500">
         <div className="bg-white dark:bg-gray-800 rounded-[24px] overflow-hidden shadow-soft border border-gray-100 dark:border-gray-700 relative">
           <MenuLink to="/edit-profile" icon={User} title="Edit Profile" desc="Name, Email, Phone Number" isLast={false} />
-          <MenuLink to="/kyc" icon={ShieldCheck} title="Identity Verification" desc="ID Card, Verification Status" isLast={false} />
+          <MenuLink 
+            to="/kyc" 
+            icon={ShieldCheck} 
+            title="Identity Verification" 
+            desc="ID Card, Verification Status" 
+            badge={kycBadge}
+            isLast={false} 
+          />
           <MenuLink to="/bank-accounts" icon={Landmark} title="Bank Accounts" desc="Manage Withdrawal Accounts" isLast={true} />
         </div>
       </div>

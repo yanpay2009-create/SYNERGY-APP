@@ -5,6 +5,7 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import helmet from "helmet";
+import { GoogleGenAI } from "@google/genai";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,16 +39,10 @@ async function startServer() {
 
   const PORT = 3000;
 
-  app.use(express.json({ limit: "1mb" })); // Limit payload size
+  app.use(express.json({ limit: "10mb" })); // Increased limit for base64 images/videos
 
-  // In-memory "database" for the demo
-  let appState = {
-    orders: [],
-    commissions: [],
-    feed: [],
-    notifications: [],
-    activePromotion: null as any
-  };
+  // Initialize Gemini AI
+  const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
   // API Routes
   app.get("/api/health", (req, res) => {
@@ -85,6 +80,91 @@ async function startServer() {
     io.emit("notification:new", notification);
     res.status(201).json(notification);
   });
+
+  // AI Content Generation Endpoint
+  app.post("/api/ai/generate", authenticate, async (req, res) => {
+    try {
+      const { prompt, model = "gemini-2.0-flash-exp" } = req.body;
+      if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+
+      const response = await genAI.models.generateContent({
+        model: model,
+        contents: prompt
+      });
+      res.json({ text: response.text });
+    } catch (error: any) {
+      console.error("AI Generation failed:", error);
+      res.status(500).json({ error: error.message || "Failed to generate content" });
+    }
+  });
+
+  // AI Media Analysis Endpoint
+  app.post("/api/ai/analyze", authenticate, async (req, res) => {
+    try {
+      const { media, mediaType, prompt, model = "gemini-2.0-flash-exp" } = req.body;
+      if (!media || !mediaType || !prompt) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      const imagePart = {
+        inlineData: {
+          data: media.split(",")[1] || media,
+          mimeType: mediaType === "video" ? "video/mp4" : "image/png"
+        }
+      };
+
+      const response = await genAI.models.generateContent({
+        model: model,
+        contents: { parts: [{ text: prompt }, imagePart] }
+      });
+      res.json({ text: response.text });
+    } catch (error: any) {
+      console.error("AI Analysis failed:", error);
+      res.status(500).json({ error: error.message || "Failed to analyze media" });
+    }
+  });
+
+  // AI Image Transformation Endpoint
+  app.post("/api/ai/transform", authenticate, async (req, res) => {
+    try {
+      const { media, prompt, model = "gemini-2.0-flash-exp" } = req.body;
+      if (!media || !prompt) return res.status(400).json({ error: "Missing media or prompt" });
+
+      const imagePart = {
+        inlineData: {
+          data: media.split(",")[1] || media,
+          mimeType: "image/png"
+        }
+      };
+
+      const response = await genAI.models.generateContent({
+        model: model,
+        contents: { parts: [{ text: prompt }, imagePart] }
+      });
+      
+      const imageResult = response.candidates?.[0]?.content?.parts?.find((p: any) => p.inlineData);
+
+      if (imageResult) {
+        res.json({ 
+          image: `data:${imageResult.inlineData.mimeType};base64,${imageResult.inlineData.data}` 
+        });
+      } else {
+        res.json({ text: response.text });
+      }
+    } catch (error: any) {
+      console.error("AI Transformation failed:", error);
+      res.status(500).json({ error: error.message || "Failed to transform image" });
+    }
+  });
+
+  // Basic In-memory store logic
+  let appState = {
+    orders: [],
+    commissions: [],
+    feed: [],
+    notifications: [],
+    activePromotion: null as any
+  };
 
   // Error Handling Middleware
   app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

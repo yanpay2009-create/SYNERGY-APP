@@ -9,12 +9,13 @@ import { QRScanner } from '../components/QRScanner';
 import { ReferrerModal } from '../components/ReferrerModal';
 
 export const Cart: React.FC = () => {
-  const { cart, updateCartQuantity, removeFromCart, checkout, addresses, selectedAddressId, paymentMethod, applyCoupon, appliedCoupon, removeCoupon, getCartTotals, referrer, addReferrer, user, savedCards, selectedCardId, t, isLoggedIn, showToast } = useApp();
+  const { cart, updateCartQuantity, removeFromCart, checkout, addresses, selectedAddressId, paymentMethod, applyCoupon, appliedCoupon, removeCoupon, getCartTotals, referrer, addReferrer, user, savedCards, selectedCardId, t, isLoggedIn, showToast, influencerReferrerCode, setInfluencerReferrerCode } = useApp();
   const navigate = useNavigate();
   const [couponInput, setCouponInput] = useState('');
   
   // Referrer Modal State
   const [showReferrerModal, setShowReferrerModal] = useState(false);
+  const [showReferrerAutoConfirm, setShowReferrerAutoConfirm] = useState<'link' | 'change' | null>(null);
 
   // Payment UI States
   const [showQrModal, setShowQrModal] = useState(false);
@@ -52,8 +53,23 @@ export const Cart: React.FC = () => {
           navigate('/account');
           return;
       }
+
+      // Check for Referral logic
+      const isFirstPurchase = user.accumulatedSales === 0;
+      
+      // If no referrer exists
       if (!referrer) {
-          setShowReferrerModal(true);
+          if (influencerReferrerCode) {
+              setShowReferrerAutoConfirm('link');
+          } else {
+              setShowReferrerModal(true);
+          }
+          return;
+      }
+
+      // If already has referrer but first purchase, maybe change to influencer's code
+      if (isFirstPurchase && influencerReferrerCode && influencerReferrerCode !== user.referrerCode) {
+          setShowReferrerAutoConfirm('change');
           return;
       }
       
@@ -613,6 +629,65 @@ export const Cart: React.FC = () => {
         title="Referral Code Required"
         description="To process commissions accurately, you must link a referrer before checking out."
       />
+
+      {/* AUTO REFERRER CONFIRM MODAL */}
+      {showReferrerAutoConfirm && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl animate-in zoom-in-95 border border-white/20 p-8 flex flex-col items-center text-center">
+            <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-synergy-blue mb-6">
+              <UserPlus size={32} />
+            </div>
+            
+            <h3 className="text-xl font-black text-gray-900 dark:text-white mb-2">
+              {showReferrerAutoConfirm === 'link' ? 'Link Creator?' : 'Change to Creator?'}
+            </h3>
+            
+            <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium leading-relaxed mb-8">
+              {showReferrerAutoConfirm === 'link' 
+                ? "Would you like to link your account to the creator who shared this post? Their code is "
+                : "This is your first purchase. Would you like to change your referrer to the creator who shared this post? Their code is "}
+              <span className="text-synergy-blue font-black">{influencerReferrerCode}</span>
+            </p>
+            
+            <div className="w-full space-y-3">
+              <button
+                onClick={async () => {
+                  if (influencerReferrerCode) {
+                    const result = await addReferrer(influencerReferrerCode);
+                    if (result.success) {
+                      setShowReferrerAutoConfirm(null);
+                      setConfirmStep(true);
+                      showToast({ message: "Referrer linked successfully!", type: 'success' });
+                    } else {
+                      showToast({ message: result.error || "Failed to link referrer", type: 'error' });
+                      setShowReferrerAutoConfirm(null);
+                      setShowReferrerModal(true);
+                    }
+                  }
+                }}
+                className="w-full h-12 bg-synergy-blue text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-glow active:scale-95 transition-all"
+              >
+                Yes, Link Creator
+              </button>
+              
+              <button
+                onClick={() => {
+                  if (showReferrerAutoConfirm === 'link') {
+                    setShowReferrerAutoConfirm(null);
+                    setShowReferrerModal(true);
+                  } else {
+                    setShowReferrerAutoConfirm(null);
+                    setConfirmStep(true);
+                  }
+                }}
+                className="w-full h-12 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-2xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all"
+              >
+                {showReferrerAutoConfirm === 'link' ? "No, Enter Manually" : "Keep Existing"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Terms and Conditions Modal */}
       {showTermsModal && (

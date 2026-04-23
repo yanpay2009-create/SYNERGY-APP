@@ -9,7 +9,7 @@ import { ReferrerModal } from '../components/ReferrerModal';
 import { formatThailandDate, getThailandNow } from '../utils/dateUtils';
 
 export const Feed: React.FC = () => {
-  const { feed, ads, toggleFeedLike, addFeedComment, user, referrer, addReferrer, setBottomNavHidden, products, addToCart, isLoggedIn, showToast } = useApp();
+  const { feed, ads, toggleFeedLike, addFeedComment, user, referrer, addReferrer, setBottomNavHidden, products, addToCart, isLoggedIn, showToast, getReferralCodeByUserId, setInfluencerReferrerCode } = useApp();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'Trending' | 'For You'>('For You');
   const [currentTime, setCurrentTime] = useState(Date.now());
@@ -292,10 +292,14 @@ export const Feed: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       {post.productId && (
                         <button 
-                          onClick={(e) => { 
+                          onClick={async (e) => { 
                             e.stopPropagation(); 
                             const product = products.find(p => p.id === post.productId);
-                            if (product) addToCart(product);
+                            if (product) {
+                              const code = await getReferralCodeByUserId(post.userId);
+                              if (code) setInfluencerReferrerCode(code);
+                              addToCart(product);
+                            }
                           }}
                           className="flex-1 h-9 rounded-full text-[9px] font-black uppercase tracking-[0.1em] flex items-center justify-center space-x-1.5 bg-gray-100 dark:bg-gray-800 text-synergy-blue border border-gray-200 dark:border-gray-700 active:scale-95 transition-all"
                         >

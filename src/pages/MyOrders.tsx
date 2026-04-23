@@ -29,7 +29,8 @@ import {
   Download,
   Share2,
   Landmark,
-  ShoppingBag
+  ShoppingBag,
+  User
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Order, Address, OrderStatus } from '../types';
@@ -52,6 +53,7 @@ export const MyOrders: React.FC = () => {
   const [isSubmittingReturn, setIsSubmittingReturn] = useState(false);
 
   const [showReceipt, setShowReceipt] = useState<Order | null>(null);
+  const [receiptViewMode, setReceiptViewMode] = useState<'summary' | 'slip'>('summary');
 
   const filteredOrders = activeTab === 'All' 
     ? orders 
@@ -444,7 +446,11 @@ export const MyOrders: React.FC = () => {
                                          <span>Support</span>
                                      </button>
                                      <button 
-                                         onClick={(e) => { e.stopPropagation(); setShowReceipt(order); }}
+                                         onClick={(e) => { 
+                                            e.stopPropagation(); 
+                                            setReceiptViewMode('summary');
+                                            setShowReceipt(order); 
+                                        }}
                                          className="flex-1 py-3.5 rounded-[18px] bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 text-[9px] font-black uppercase tracking-widest flex items-center justify-center space-x-2 border border-gray-100 dark:border-gray-800 active:scale-95 transition"
                                      >
                                          <ExternalLink size={14} />
@@ -557,156 +563,229 @@ export const MyOrders: React.FC = () => {
       )}
 
       {showReceipt && (
-          <div className="fixed inset-0 z-[1000] bg-gray-100 dark:bg-gray-950 font-sans pb-10 overflow-y-auto">
+          <div className="fixed inset-0 z-[1000] bg-gray-50 dark:bg-gray-950 font-sans pb-10 overflow-y-auto">
               <div className="flex items-center px-4 pt-6 mb-4 max-w-md mx-auto">
-                  <button onClick={() => setShowReceipt(null)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
+                  <button 
+                    onClick={() => {
+                        if (receiptViewMode === 'slip') setReceiptViewMode('summary');
+                        else setShowReceipt(null);
+                    }} 
+                    className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition"
+                  >
                     <ArrowLeft size={24} />
                   </button>
-                  <h1 className="text-lg font-bold ml-2 text-gray-900 dark:text-white tracking-tight">Electronic Receipt</h1>
+                  <h1 className="text-lg font-bold ml-2 text-gray-900 dark:text-white tracking-tight">
+                      {receiptViewMode === 'summary' ? 'Order Summary' : 'Electronic Receipt'}
+                  </h1>
               </div>
 
-              <div className="max-w-md mx-auto px-6">
-                  <div 
-                      ref={receiptRef} 
-                      className="bg-white dark:bg-gray-900 rounded-[32px] overflow-hidden shadow-xl relative border border-white dark:border-gray-800 animate-in zoom-in-95 duration-500"
-                  >
-                      {systemSettings.slipBackground && (
-                          <img 
-                              src={systemSettings.slipBackground || undefined} 
-                              alt="Background" 
-                              className="absolute inset-0 w-full h-full object-cover opacity-20" 
-                              referrerPolicy="no-referrer"
-                          />
-                      )}
-                      <div className="p-6 relative z-10">
-                          {/* Header */}
-                          <div className="flex justify-between items-center mb-6">
-                              <h2 className="text-sm font-black text-gray-900 dark:text-white tracking-tighter uppercase">
-                                  Synergy <span className="text-synergy-blue">Flow</span>
-                              </h2>
-                              {systemSettings.logo ? (
-                                  <img 
-                                      src={systemSettings.logo || undefined} 
-                                      alt="Logo" 
-                                      className="h-8 w-auto rounded-lg object-contain bg-transparent" 
-                                      referrerPolicy="no-referrer"
-                                  />
-                              ) : (
-                                  <div className="bg-synergy-blue text-white px-2 py-0.5 rounded-full">
-                                      <span className="text-[8px] font-black uppercase tracking-widest">Receipt</span>
-                                  </div>
-                              )}
+              {receiptViewMode === 'summary' ? (
+                  /* --- SUMMARY VIEW --- */
+                  <div className="max-w-md mx-auto px-6 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-500 min-h-[70vh]">
+                      <div className="relative mb-6">
+                          <div className={`absolute inset-0 blur-xl rounded-full animate-pulse ${showReceipt.status === 'Delivered' ? 'bg-emerald-500/20' : 'bg-blue-500/20'}`}></div>
+                          <div className={`relative w-16 h-16 rounded-full flex items-center justify-center text-white shadow-lg ${showReceipt.status === 'Delivered' ? 'bg-emerald-500' : 'bg-synergy-blue'}`}>
+                              {showReceipt.status === 'Delivered' ? <CheckCircle2 size={32} strokeWidth={4} /> : <Clock size={32} strokeWidth={4} />}
                           </div>
+                      </div>
+                      
+                      <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-1 tracking-tight text-center uppercase">
+                          {showReceipt.status === 'Delivered' ? 'Delivery Confirmed' : 'Purchase Receipt'}
+                      </h2>
+                      <p className="text-[10px] text-gray-500 dark:text-gray-400 font-black mb-8 text-center uppercase tracking-[0.2em]">
+                          {showReceipt.id}
+                      </p>
 
-                          {/* Order Details */}
-                          <div className="space-y-6 mb-6">
-                              <div className="flex flex-col items-center py-3 border-y border-gray-50 dark:border-gray-800/50">
-                                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Amount</span>
-                                  <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">฿{(showReceipt.total ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</h3>
+                      <div className="w-full bg-white dark:bg-gray-900 rounded-[32px] p-6 shadow-soft border border-gray-100 dark:border-gray-800 space-y-6">
+                          <div className="flex justify-between items-center pb-4 border-b border-gray-50 dark:border-gray-800">
+                              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Investment</span>
+                              <span className="text-xl font-black text-synergy-blue">฿{(showReceipt.total ?? 0).toLocaleString()}</span>
+                          </div>
+                          
+                          <div className="space-y-4">
+                              <div className="flex justify-between items-center">
+                                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Customer</span>
+                                  <span className="text-xs font-black text-gray-900 dark:text-white truncate max-w-[150px]">{showReceipt.shippingAddress.name}</span>
                               </div>
-
-                              <div className="space-y-4">
-                                  <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                          <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Order ID</span>
-                                          <p className="text-[10px] font-black text-gray-900 dark:text-white font-mono">{showReceipt.id}</p>
-                                      </div>
-                                      <div className="text-right">
-                                          <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Date</span>
-                                          <p className="text-[10px] font-black text-gray-900 dark:text-white">{showReceipt.date}</p>
-                                      </div>
-                                  </div>
-                                  
-                                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-100 dark:border-gray-800/50">
-                                      <div className="flex items-center space-x-3 mb-3">
-                                          <div className="w-8 h-8 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center text-synergy-blue shadow-sm">
-                                              <ShoppingBag size={16} />
-                                          </div>
-                                          <div>
-                                              <span className="text-[7px] font-black text-gray-400 uppercase tracking-widest block">Customer</span>
-                                              <p className="text-xs font-black text-gray-900 dark:text-white">{showReceipt.shippingAddress.name}</p>
-                                          </div>
-                                      </div>
-                                      <div className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-gray-700/50">
-                                          <div className="flex justify-between text-[9px]">
-                                              <span className="font-bold text-gray-400">Address</span>
-                                              <span className="font-black text-gray-900 dark:text-white text-right max-w-[150px] truncate">{showReceipt.shippingAddress.address}</span>
-                                          </div>
-                                          <div className="flex justify-between text-[9px]">
-                                              <span className="font-bold text-gray-400">Phone</span>
-                                              <span className="font-black text-gray-900 dark:text-white">{showReceipt.shippingAddress.phone}</span>
-                                          </div>
-                                      </div>
-                                  </div>
+                              <div className="flex justify-between items-center">
+                                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Items Count</span>
+                                  <span className="text-xs font-black text-gray-900 dark:text-white">{showReceipt.items.reduce((acc, i) => acc + i.quantity, 0)} Units</span>
                               </div>
-
-                              <div className="space-y-2">
-                                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest block ml-1">Items</span>
-                                  <div className="space-y-2">
-                                      {showReceipt.items.map((item, idx) => (
-                                          <div key={idx} className="flex justify-between items-center text-[9px]">
-                                              <div className="flex items-center space-x-2">
-                                                  <span className="font-black text-gray-900 dark:text-white">{item.quantity}x</span>
-                                                  <span className="font-bold text-gray-600 dark:text-gray-400 truncate max-w-[120px]">{item.name}</span>
-                                              </div>
-                                              <span className="font-black text-gray-900 dark:text-white">฿{(item.price * item.quantity).toLocaleString()}</span>
-                                          </div>
-                                      ))}
-                                  </div>
+                              <div className="flex justify-between items-center">
+                                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Status</span>
+                                  <span className={`text-[9px] px-2.5 py-0.5 rounded-full font-black uppercase border ${getStatusConfig(showReceipt.status).color}`}>
+                                      {showReceipt.status}
+                                  </span>
                               </div>
                           </div>
 
-                          {/* Footer */}
-                          <div className="flex flex-col items-center pt-3 border-t border-dashed border-gray-200 dark:border-gray-700">
-                               <ShieldCheck size={16} className="text-emerald-500 mb-1" />
-                               <p className="text-[7px] font-black text-gray-400 uppercase tracking-[0.2em] text-center">Verified Electronic Receipt</p>
+                          <div className="pt-4 flex flex-col items-center space-y-3">
+                              <button 
+                                  onClick={() => setReceiptViewMode('slip')}
+                                  className="w-full h-14 bg-synergy-blue text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-glow active:scale-95 transition flex items-center justify-center space-x-2"
+                              >
+                                  <Download size={16} />
+                                  <span>View E-Slip</span>
+                              </button>
+                              <button 
+                                  onClick={() => setShowReceipt(null)}
+                                  className="w-full h-14 bg-gray-50 dark:bg-gray-800 text-gray-400 font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl active:scale-95 transition"
+                              >
+                                  Done
+                              </button>
                           </div>
                       </div>
                   </div>
+              ) : (
+                  /* --- FULL SLIP VIEW (Like the Withdraw One) --- */
+                  <div className="max-w-md mx-auto px-6 animate-in zoom-in-95 duration-500 pb-10">
+                      <div 
+                          ref={receiptRef} 
+                          className="bg-white dark:bg-gray-900 rounded-[36px] overflow-hidden shadow-2xl relative border border-white dark:border-gray-800"
+                      >
+                          {systemSettings.slipBackground && (
+                              <img 
+                                  src={systemSettings.slipBackground || undefined} 
+                                  alt="Background" 
+                                  className="absolute inset-0 w-full h-full object-cover opacity-20" 
+                                  referrerPolicy="no-referrer"
+                              />
+                          )}
+                          <div className="p-8 relative z-10">
+                              {/* Header */}
+                              <div className="flex justify-between items-center mb-8">
+                                  <h2 className="text-sm font-black text-gray-900 dark:text-white tracking-tighter uppercase">
+                                      Synergy <span className="text-synergy-blue">Flow</span>
+                                  </h2>
+                                  {systemSettings.logo ? (
+                                      <img 
+                                          src={systemSettings.logo || undefined} 
+                                          alt="Logo" 
+                                          className="h-10 w-auto rounded-xl object-contain bg-transparent" 
+                                          referrerPolicy="no-referrer"
+                                      />
+                                  ) : (
+                                      <div className={`px-4 py-1.5 rounded-full ${showReceipt.status === 'Delivered' ? 'bg-emerald-500' : 'bg-synergy-blue'} text-white`}>
+                                          <span className="text-[9px] font-black uppercase tracking-widest">
+                                              {showReceipt.status === 'Delivered' ? 'Completed' : 'Audit Log'}
+                                          </span>
+                                      </div>
+                                  )}
+                              </div>
 
-                  <div className="mt-8 grid grid-cols-2 gap-3">
-                      <button 
-                          onClick={async () => {
-                              if (receiptRef.current) {
-                                  try {
-                                      const canvas = await html2canvas(receiptRef.current, { 
-                                          scale: 3, 
-                                          backgroundColor: '#ffffff',
-                                          useCORS: true,
-                                          logging: false
-                                      });
-                                      const link = document.createElement('a');
-                                      link.href = canvas.toDataURL("image/png");
-                                      link.download = `Synergy-Receipt-${showReceipt.id}.png`;
-                                      link.click();
-                                  } catch (error) {
-                                      console.error('Failed to generate receipt image:', error);
-                                      showToast({ message: 'Could not generate receipt image.', type: 'error' });
+                              {/* Order Details */}
+                              <div className="space-y-8 mb-8">
+                                  <div className="flex flex-col items-center py-5 border-y border-gray-50 dark:border-gray-800/50">
+                                      <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Total Amount</span>
+                                      <h3 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">฿{(showReceipt.total ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</h3>
+                                  </div>
+
+                                  <div className="space-y-5">
+                                      <div className="grid grid-cols-2 gap-6">
+                                          <div>
+                                              <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Receipt ID</span>
+                                              <p className="text-xs font-black text-gray-950 dark:text-white font-mono tracking-tighter">SF-{showReceipt.id.substr(-10).toUpperCase()}</p>
+                                          </div>
+                                          <div className="text-right">
+                                              <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-1">Timestamp</span>
+                                              <p className="text-xs font-black text-gray-950 dark:text-white tracking-tight">{showReceipt.date}</p>
+                                          </div>
+                                      </div>
+                                      
+                                      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-[24px] p-5 border border-gray-100 dark:border-gray-800/50">
+                                          <div className="flex items-center space-x-4 mb-4">
+                                              <div className="w-10 h-10 bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-center text-synergy-blue shadow-sm border border-gray-50 dark:border-gray-800">
+                                                  <User size={20} />
+                                              </div>
+                                              <div>
+                                                  <span className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em] block">End-User Consignee</span>
+                                                  <p className="text-sm font-black text-gray-900 dark:text-white truncate max-w-[160px]">{showReceipt.shippingAddress.name}</p>
+                                              </div>
+                                          </div>
+                                          <div className="space-y-2 pt-3 border-t border-gray-100 dark:border-gray-700/50">
+                                              <div className="flex justify-between items-start text-[10px]">
+                                                  <span className="font-bold text-gray-400 uppercase tracking-tighter">Coordinate</span>
+                                                  <span className="font-black text-gray-900 dark:text-white text-right max-w-[150px] leading-tight font-thai">{showReceipt.shippingAddress.address}</span>
+                                              </div>
+                                              <div className="flex justify-between text-[10px]">
+                                                  <span className="font-bold text-gray-400 uppercase tracking-tighter">Identity Contact</span>
+                                                  <span className="font-black text-gray-900 dark:text-white">{showReceipt.shippingAddress.phone}</span>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                  <div className="space-y-3">
+                                      <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] block ml-1 underline decoration-synergy-blue decoration-2 underline-offset-4">Distribution Goods</span>
+                                      <div className="space-y-3 max-h-[160px] overflow-y-auto no-scrollbar pr-1">
+                                          {showReceipt.items.map((item, idx) => (
+                                              <div key={idx} className="flex justify-between items-center text-[10px] group">
+                                                  <div className="flex items-center space-x-3">
+                                                      <span className="w-5 h-5 bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center font-black text-gray-900 dark:text-white text-[8px]">{item.quantity}</span>
+                                                      <span className="font-bold text-gray-600 dark:text-gray-400 truncate max-w-[140px]">{item.name}</span>
+                                                  </div>
+                                                  <span className="font-black text-gray-900 dark:text-white">฿{(item.price * item.quantity).toLocaleString()}</span>
+                                              </div>
+                                          ))}
+                                      </div>
+                                  </div>
+                              </div>
+
+                              {/* Footer */}
+                              <div className="flex flex-col items-center pt-5 border-t border-dashed border-gray-200 dark:border-gray-700">
+                                   <div className="flex items-center space-x-2 text-emerald-500 mb-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-900/20 rounded-full border border-emerald-100/50 dark:border-emerald-800/30">
+                                       <ShieldCheck size={14} strokeWidth={3} />
+                                       <span className="text-[8px] font-black uppercase tracking-wider">Audit Passed</span>
+                                   </div>
+                                   <p className="text-[7px] font-black text-gray-400 uppercase tracking-[0.25em] text-center">Verified Electronic Logistics Receipt</p>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div className="mt-8 grid grid-cols-2 gap-4">
+                          <button 
+                              onClick={async () => {
+                                  if (receiptRef.current) {
+                                      try {
+                                          const canvas = await html2canvas(receiptRef.current, { 
+                                              scale: 3, 
+                                              backgroundColor: '#ffffff',
+                                              useCORS: true,
+                                              logging: false
+                                          });
+                                          const link = document.createElement('a');
+                                          link.href = canvas.toDataURL("image/png");
+                                          link.download = `Synergy-Receipt-${showReceipt.id}.png`;
+                                          link.click();
+                                      } catch (error) {
+                                          console.error('Failed to generate receipt image:', error);
+                                          showToast({ message: 'Could not generate receipt image.', type: 'error' });
+                                      }
                                   }
-                              }
-                          }}
-                          className="h-14 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center space-x-2 shadow-lg active:scale-95 transition"
-                      >
-                          <Download size={16} />
-                          <span>Save</span>
-                      </button>
-                      <button 
-                          onClick={() => {
-                              const shareText = `Receipt for Order ${showReceipt.id}\nTotal: ฿${showReceipt.total.toLocaleString()}`;
-                              if (navigator.share) {
-                                  navigator.share({ title: 'Order Receipt', text: shareText }).catch(() => {});
-                              } else {
-                                  navigator.clipboard.writeText(shareText);
-                                  showToast({ message: 'Receipt info copied to clipboard', type: 'success' });
-                              }
-                          }}
-                          className="h-14 bg-white dark:bg-gray-800 text-synergy-blue border border-synergy-blue/20 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center space-x-2 active:scale-95 transition shadow-sm"
-                      >
-                          <Share2 size={16} />
-                          <span>Share</span>
-                      </button>
+                              }}
+                              className="h-16 bg-gray-950 dark:bg-white text-white dark:text-gray-900 rounded-[20px] font-black text-[11px] uppercase tracking-widest flex items-center justify-center space-x-3 shadow-2xl active:scale-95 transition"
+                          >
+                              <Download size={20} />
+                              <span>Commit Image</span>
+                          </button>
+                          <button 
+                              onClick={() => {
+                                  const shareText = `Official Receipt Summary\nOrder: ${showReceipt.id}\nAmount: ฿${showReceipt.total.toLocaleString()}\nThank you for choosing Synergy Flow.`;
+                                  if (navigator.share) {
+                                      navigator.share({ title: 'Order Receipt', text: shareText }).catch(() => {});
+                                  } else {
+                                      navigator.clipboard.writeText(shareText);
+                                      showToast({ message: 'Intel registry copied to clipboard', type: 'success' });
+                                  }
+                              }}
+                              className="h-16 bg-white dark:bg-gray-900 text-synergy-blue border border-synergy-blue/20 rounded-[20px] font-black text-[11px] uppercase tracking-widest flex items-center justify-center space-x-3 active:scale-95 transition shadow-soft"
+                          >
+                              <Share2 size={20} />
+                              <span>Broadcast</span>
+                          </button>
+                      </div>
                   </div>
-              </div>
+              )}
           </div>
       )}
     </div>
