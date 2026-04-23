@@ -256,8 +256,6 @@
         "referralCode": { "type": "string" },
         "tier": { "type": "string", "enum": ["Starter", "Marketer", "Builder", "Executive"] },
         "teamSize": { "type": "number" },
-        "phone": { "type": "string" },
-        "lineId": { "type": "string" },
         "dailyIncome": { "type": "number" },
         "accumulatedIncome": { "type": "number" },
         "lastIncomeDate": { "type": "string" }

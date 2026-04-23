@@ -534,15 +534,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return userDoc.data().referralCode || null;
       }
       
-      // Fallback: try by email (some older data might use email as userId)
-      const q = query(collection(db, 'users'), where('email', '==', userId.toLowerCase()), limit(1));
-      const snapshot = await getDocs(q);
-      if (!snapshot.empty) {
-        return snapshot.docs[0].data().referralCode || null;
+      // Try by document ID in publicProfiles
+      const profileDoc = await getDoc(doc(db, 'publicProfiles', userId));
+      if (profileDoc.exists()) {
+        return profileDoc.data().referralCode || null;
       }
+      
+      // Fallback: try by email using emailMap
+      if (userId.includes('@')) {
+        const emailMapDoc = await getDoc(doc(db, 'emailMap', userId.toLowerCase()));
+        if (emailMapDoc.exists()) {
+          const uid = emailMapDoc.data().uid;
+          if (uid) {
+            const profileByUid = await getDoc(doc(db, 'publicProfiles', uid));
+            if (profileByUid.exists()) {
+              return profileByUid.data().referralCode || null;
+            }
+          }
+        }
+      }
+      
       return null;
     } catch (err) {
-      handleFirestoreError(err, OperationType.LIST, 'users', setIsQuotaExceeded);
+      handleFirestoreError(err, OperationType.GET, 'referral-search', setIsQuotaExceeded);
       return null;
     }
   };
@@ -575,7 +589,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       }
       if (u.email) {
-        await setDoc(doc(db, 'emailMap', u.email.toLowerCase()), { exists: true });
+        await setDoc(doc(db, 'emailMap', u.email.toLowerCase()), { uid: uid, email: u.email.toLowerCase() });
       }
     } catch (err) {
       handleFirestoreError(err, OperationType.UPDATE, `publicProfiles/${uid}`, setIsQuotaExceeded);
@@ -708,12 +722,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             const emailFromProvider = firebaseUser.providerData.find(p => p.email)?.email;
             const effectiveEmail = (firebaseUser.email || emailFromProvider || "").toLowerCase();
 
-            // Check if email already exists in Firestore for another user
+            // Check if email already exists using emailMap (safer)
             if (effectiveEmail) {
               try {
-                const qEmail = query(collection(db, 'users'), where('email', '==', effectiveEmail), limit(1));
-                const snapEmail = await getDocs(qEmail);
-                if (!snapEmail.empty) {
+                const emailMapDoc = await getDoc(doc(db, 'emailMap', effectiveEmail.toLowerCase()));
+                if (emailMapDoc.exists()) {
                   // Email already exists in Firestore!
                   await signOut(auth);
                   showToast({ message: "This email is already associated with another account.", type: 'error' });
@@ -721,7 +734,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                   return;
                 }
               } catch (err) {
-                handleFirestoreError(err, OperationType.LIST, 'users', setIsQuotaExceeded);
+                console.error("Email uniqueness check failed:", err);
               }
             }
 
@@ -1002,12 +1015,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       safeSetItem('synergy_cached_notifications', JSON.stringify(data));
     }, (err) => handleFirestoreError(err, OperationType.LIST, 'notifications', setIsQuotaExceeded));
 
-    const usersRef = collection(db, 'users');
+    const teamSourceRef = collection(db, 'publicProfiles');
     let qTeam;
     if (user.role === 'admin') {
-      qTeam = query(usersRef, limit(100));
+      qTeam = query(collection(db, 'users'), limit(100)); // Admins can see full user docs
     } else {
-      qTeam = query(usersRef, where('uplinePath', 'array-contains', auth.currentUser.uid), limit(500));
+      qTeam = query(teamSourceRef, where('uplinePath', 'array-contains', auth.currentUser.uid), limit(500));
     }
 
     const unsubTeam = onSnapshot(qTeam, (snapshot) => {
@@ -2161,11 +2174,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const updateUserProfile = async (data: Partial<User>) => { 
     if (!auth.currentUser || !user) return;
     try {
-      // If email is being updated, check for uniqueness
+      // If email is being updated, check for uniqueness using emailMap
       if (data.email && data.email.toLowerCase() !== user.email?.toLowerCase()) {
-        const qEmail = query(collection(db, 'users'), where('email', '==', data.email.toLowerCase()), limit(1));
-        const snapEmail = await getDocs(qEmail);
-        if (!snapEmail.empty) {
+        const emailMapDoc = await getDoc(doc(db, 'emailMap', data.email.toLowerCase()));
+        if (emailMapDoc.exists() && emailMapDoc.data().uid !== auth.currentUser.uid) {
           showToast({ message: "This email is already associated with another account.", type: 'error' });
           return;
         }
@@ -2233,8 +2245,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (!auth.currentUser) return;
     const normalizedCode = newCode.toUpperCase().trim();
     try {
-      // Check if code is already in use
-      const q = query(collection(db, 'users'), where('referralCode', '==', normalizedCode), limit(1));
+      // Check if code is already in use via publicProfiles
+      const q = query(collection(db, 'publicProfiles'), where('referralCode', '==', normalizedCode), limit(1));
       const snapshot = await getDocs(q);
       
       const isUsedByOther = snapshot.docs.some(d => d.id !== userId);

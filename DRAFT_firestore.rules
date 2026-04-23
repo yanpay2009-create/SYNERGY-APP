@@ -59,19 +59,18 @@ service cloud.firestore {
              data.referralCode is string && data.referralCode.size() <= 20 &&
              data.role in ['admin', 'user'] &&
              (!('kycStatus' in data) || data.kycStatus in ['Unverified', 'Pending', 'Verified', 'Rejected']) &&
-             (!('avatar' in data) || (data.avatar is string && data.avatar.size() <= 1000)) &&
+             (!('avatar' in data) || (data.avatar is string && data.avatar.size() <= 500)) &&
              (!('phone' in data) || (data.phone is string && data.phone.size() <= 20)) &&
-             (!('lineId' in data) || (data.lineId is string && data.lineId.size() <= 100)) &&
+             (!('lineId' in data) || (data.lineId is string && data.lineId.size() <= 50)) &&
              (!('pin' in data) || (data.pin is string && data.pin.size() <= 6)) &&
-             (!('uplineId' in data) || (data.uplineId is string && data.uplineId.size() <= 128)) &&
-             (!('uplinePath' in data) || (data.uplinePath is list && data.uplinePath.size() <= 100)) &&
-             (!('favorites' in data) || (data.favorites is list && data.favorites.size() <= 200));
+             (!('uplineId' in data) || (data.uplineId is string && data.uplineId.size() <= 50)) &&
+             (!('uplinePath' in data) || (data.uplinePath is list && data.uplinePath.size() <= 20));
     }
 
     function isValidPublicProfile(data) {
       return data.keys().hasAll(['name', 'avatar', 'referralCode', 'tier']) &&
              data.name is string && data.name.size() <= 100 &&
-             data.avatar is string && data.avatar.size() <= 1000 &&
+             data.avatar is string && data.avatar.size() <= 600 &&
              data.referralCode is string && data.referralCode.size() <= 20 &&
              data.tier in ['Starter', 'Marketer', 'Builder', 'Executive'] &&
              (!('teamSize' in data) || (data.teamSize is number && data.teamSize >= 0)) &&
@@ -79,28 +78,29 @@ service cloud.firestore {
              (!('accumulatedIncome' in data) || (data.accumulatedIncome is number && data.accumulatedIncome >= 0)) &&
              (!('lastIncomeDate' in data) || (data.lastIncomeDate is string || data.lastIncomeDate == null)) &&
              (!('role' in data) || data.role in ['admin', 'user']) &&
-             (!('uid' in data) || (data.uid is string && data.uid.size() <= 128)) &&
-             (!('uplinePath' in data) || (data.uplinePath is list && data.uplinePath.size() <= 100)) &&
+             (!('uid' in data) || (data.uid is string && data.uid.size() <= 50)) &&
+             (!('uplinePath' in data) || (data.uplinePath is list && data.uplinePath.size() <= 50)) &&
              (!('referrerCode' in data) || (data.referrerCode is string || data.referrerCode == null)) &&
              (!('uplineId' in data) || (data.uplineId is string || data.uplineId == null)) &&
-             data.keys().size() <= 20;
+             data.keys().size() <= 15; // Hardened: limit total keys
     }
 
     function isValidProduct(data) {
       return data.keys().hasAll(['name', 'price', 'image', 'category', 'sold', 'stock']) &&
              data.name is string && data.name.size() <= 200 &&
              data.price is number && data.price >= 0 &&
-             data.image is string && data.image.size() <= 1000 &&
-             data.category is string && data.category.size() <= 100 &&
+             data.image is string && data.image.size() <= 500 &&
+             data.category is string && data.category.size() <= 50 &&
              data.sold is number && data.sold >= 0 &&
              data.stock is number && data.stock >= 0;
     }
 
     function isValidOrder(data) {
       return data.keys().hasAll(['userId', 'date', 'items', 'total', 'status', 'shippingAddress']) &&
-             data.userId is string && data.userId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 50 &&
              data.status in ['Pending', 'To Ship', 'Shipped', 'Delivered', 'Cancelled', 'Return Pending', 'Returned'] &&
-             data.total is number && data.total >= 0;
+             data.total is number && data.total >= 0 &&
+             data.items is list && data.items.size() >= 1 && data.items.size() <= 50;
     }
 
     function isValidFeedItem(data) {
@@ -110,14 +110,14 @@ service cloud.firestore {
              data.status in ['Approved', 'Pending'] &&
              data.likes is number && data.likes >= 0 &&
              data.shares is number && data.shares >= 0 &&
-             data.userId is string && data.userId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 50 &&
              data.caption is string && data.caption.size() <= 2000 &&
-             data.content is string && data.content.size() <= 2000;
+             data.content is string && data.content.size() <= 1000;
     }
 
     function isValidCommission(data) {
       return data.keys().hasAll(['userId', 'date', 'source', 'type', 'amount', 'status']) &&
-             data.userId is string && data.userId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 50 &&
              data.type in ['Direct', 'Team', 'Withdrawal', 'Refund'] &&
              data.amount is number &&
              data.status in ['Pending', 'Paid', 'Completed', 'Waiting', 'Cancelled'];
@@ -125,7 +125,7 @@ service cloud.firestore {
 
     function isValidNotification(data) {
       return data.keys().hasAll(['userId', 'title', 'message', 'date', 'type', 'read']) &&
-             data.userId is string && data.userId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 50 &&
              data.type in ['order', 'promo', 'system'] &&
              data.read is bool;
     }
@@ -135,23 +135,21 @@ service cloud.firestore {
     // ===============================================================
 
     match /users/{userId} {
-      allow read: if isOwner(userId) || isAdmin() || (isSignedIn() && existing().get('uplinePath', []).contains(request.auth.uid));
-      allow create: if isSignedIn() && isOwner(userId) && isValidUser(incoming()) && incoming().role == 'user';
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isVerified() && isOwner(userId) && isValidUser(incoming()) && incoming().role == 'user';
       allow update: if (isOwner(userId) || isAdmin()) && isValidUser(incoming()) && (
         isAdmin() || (
             incoming().role == existing().role &&
             incoming().email == existing().email &&
             incoming().referralCode == existing().referralCode &&
-            // Action: Basic Info (No restricted field modification)
-            (
-                incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'lineId', 'avatar', 'pin', 'socials', 'addresses', 'bankAccounts', 'savedCards', 'selectedAddressId', 'selectedBankId', 'selectedCardId', 'paymentMethod', 'favorites'])
-            ) || (
-                // Action: System Sync (Allow if values haven't changed for protected fields)
-                incoming().walletBalance == existing().walletBalance &&
-                incoming().accumulatedIncome == existing().accumulatedIncome &&
-                incoming().accumulatedSales == existing().accumulatedSales &&
-                incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'lineId', 'avatar', 'pin', 'socials', 'addresses', 'bankAccounts', 'savedCards', 'selectedAddressId', 'selectedBankId', 'selectedCardId', 'paymentMethod', 'favorites', 'walletBalance', 'accumulatedIncome', 'accumulatedSales', 'dailyIncome', 'lastIncomeDate', 'referrerCode', 'referrer', 'uplineId', 'uplinePath', 'teamSize'])
-            )
+            incoming().walletBalance == existing().walletBalance &&
+            incoming().accumulatedIncome == existing().accumulatedIncome &&
+            incoming().accumulatedSales == existing().accumulatedSales &&
+            // Action: Update Profile Info
+            incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'lineId', 'avatar', 'pin', 'socials', 'addresses', 'bankAccounts', 'savedCards', 'selectedAddressId', 'selectedBankId', 'selectedCardId', 'paymentMethod', 'favorites'])
+        ) || (
+            // Action: System Sync (Referral/Team update)
+            incoming().diff(existing()).affectedKeys().hasOnly(['teamSize', 'accumulatedIncome', 'accumulatedSales', 'dailyIncome', 'lastIncomeDate', 'referrerCode', 'referrer', 'uplineId', 'uplinePath'])
         )
       );
       allow delete: if isAdmin();
@@ -159,10 +157,10 @@ service cloud.firestore {
 
     match /publicProfiles/{userId} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn() && isOwner(userId) && isValidPublicProfile(incoming());
+      allow create: if isVerified() && isOwner(userId) && isValidPublicProfile(incoming());
       allow update: if (isOwner(userId) || isAdmin()) && isValidPublicProfile(incoming()) && (
         isAdmin() ||
-        incoming().diff(existing()).affectedKeys().hasOnly(['name', 'avatar', 'dailyIncome', 'lastIncomeDate', 'accumulatedIncome', 'teamSize', 'totalSales', 'uplinePath', 'referralCode', 'tier', 'uplineId', 'referrerCode', 'role', 'uid', 'displayName', 'photoURL'])
+        incoming().diff(existing()).affectedKeys().hasOnly(['name', 'avatar', 'dailyIncome', 'lastIncomeDate', 'accumulatedIncome', 'teamSize', 'totalSales', 'uplinePath'])
       );
       allow delete: if isAdmin();
     }
@@ -170,14 +168,14 @@ service cloud.firestore {
     match /products/{productId} {
       allow read: if true;
       allow create: if isAdmin() && isValidProduct(incoming());
-      allow update: if isAdmin() || (isSignedIn() && incoming().diff(existing()).affectedKeys().hasOnly(['sold', 'stock', 'reviews']));
+      allow update: if isAdmin() || (isVerified() && incoming().diff(existing()).affectedKeys().hasOnly(['sold', 'stock', 'reviews']));
       allow delete: if isAdmin();
     }
 
     match /orders/{orderId} {
       allow get: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
       allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
-      allow create: if isSignedIn() && incoming().userId == request.auth.uid && isValidOrder(incoming()) && incoming().status == 'Pending';
+      allow create: if isVerified() && incoming().userId == request.auth.uid && isValidOrder(incoming()) && incoming().status == 'Pending';
       allow update: if isAdmin() || (
         isOwner(existing().userId) && 
         isValidOrder(incoming()) && 
@@ -192,9 +190,9 @@ service cloud.firestore {
 
     match /feed/{postId} {
       allow read: if true;
-      allow create: if isSignedIn() && incoming().userId == request.auth.uid && isValidFeedItem(incoming());
+      allow create: if isVerified() && incoming().userId == request.auth.uid && isValidFeedItem(incoming());
       allow update: if isAdmin() || (
-        isSignedIn() && (
+        isVerified() && (
           (isOwner(existing().userId) && isValidFeedItem(incoming())) ||
           (incoming().diff(existing()).affectedKeys().hasOnly(['likes', 'likedBy', 'comments', 'shares']))
         )
@@ -205,9 +203,11 @@ service cloud.firestore {
     match /commissions/{txId} {
       allow get: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
       allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
-      allow create: if isAdmin() || 
-        (isVerified() && incoming().type == 'Withdrawal' && incoming().userId == request.auth.uid && isValidCommission(incoming()) && incoming().status == 'Pending') ||
-        (isVerified() && incoming().type == 'Refund' && incoming().userId == request.auth.uid && isValidCommission(incoming()));
+      allow create: if isVerified() && (
+        isAdmin() || 
+        (incoming().type == 'Withdrawal' && incoming().userId == request.auth.uid && isValidCommission(incoming()) && incoming().status == 'Pending') ||
+        (incoming().type == 'Refund' && incoming().userId == request.auth.uid && isValidCommission(incoming()))
+      );
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
@@ -215,25 +215,25 @@ service cloud.firestore {
     match /notifications/{notificationId} {
       allow get: if isSignedIn() && (existing().userId == request.auth.uid || existing().userId == 'global' || isAdmin());
       allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == 'global' || isAdmin());
-      allow create: if isAdmin() || (isSignedIn() && isValidNotification(incoming()));
+      allow create: if isAdmin() || (isVerified() && isValidNotification(incoming()));
       allow update: if isOwner(existing().userId) && incoming().diff(existing()).affectedKeys().hasOnly(['read']);
       allow delete: if isOwner(existing().userId) || isAdmin();
     }
 
     match /counters/{counterId} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow update: if isSignedIn() && incoming().count == existing().count + 1;
+      allow create: if isVerified();
+      allow update: if isVerified() && incoming().count == existing().count + 1;
     }
 
     match /phoneMap/{phone} {
       allow get: if true;
-      allow create, update: if isSignedIn();
+      allow create, update: if isVerified();
     }
 
     match /emailMap/{email} {
       allow get: if true;
-      allow create, update: if isSignedIn() && (email == request.auth.token.email || isAdmin() || (isSignedIn() && !exists(/databases/$(database)/documents/emailMap/$(email))));
+      allow create, update: if isVerified();
     }
 
     match /ads/{adId} {
