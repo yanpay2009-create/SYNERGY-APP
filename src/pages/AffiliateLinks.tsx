@@ -20,7 +20,7 @@ export const AffiliateLinks: React.FC = () => {
 
   const referralCode = user?.referralCode || 'GUEST';
   const baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
-  const affiliateLink = `${baseUrl}/#/ref/${referralCode}`;
+  const affiliateLink = `${baseUrl}/#/r/${referralCode}`;
   
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(affiliateLink)}&color=000000&bgcolor=FFFFFF`;
 
@@ -45,7 +45,7 @@ export const AffiliateLinks: React.FC = () => {
     checkReferrerAction(() => {
         navigator.clipboard.writeText(referralCode);
         setCodeCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setCodeCopied(false), 2000);
     });
   };
 
@@ -113,7 +113,7 @@ export const AffiliateLinks: React.FC = () => {
 
   const handleGetAssetLink = (id: number) => {
     checkReferrerAction(() => {
-        const assetLink = `${baseUrl}/#/campaigns?id=${id}&ref=${referralCode}`;
+        const assetLink = `${baseUrl}/#/c/${id}/${referralCode}`;
         navigator.clipboard.writeText(assetLink);
         setAssetCopied(id);
         setTimeout(() => setAssetCopied(null), 2000);

@@ -75,6 +75,8 @@ const App: React.FC = () => {
               <Route path="/campaigns" element={<Campaigns />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/ref/:code" element={<ReferralHandler />} />
+              <Route path="/r/:code" element={<ReferralHandler />} />
+              <Route path="/c/:id/:code" element={<ReferralHandler />} />
               
               {/* Protected Routes */}
               <Route path="/affiliate-links" element={<ProtectedRoute><AffiliateLinks /></ProtectedRoute>} />

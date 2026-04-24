@@ -357,7 +357,7 @@ export const Account: React.FC = () => {
     const shareData = {
       title: 'Join Synergy Flow',
       text: `Start earning with Synergy Flow! My Referral Code: ${user.referralCode}`,
-      url: `${baseUrl}/#/ref/${user.referralCode}`
+      url: `${baseUrl}/#/r/${user.referralCode}`
     };
 
     if (navigator.share) {
@@ -442,7 +442,7 @@ export const Account: React.FC = () => {
       />
 
       {/* MAIN CONTENT AREA */}
-      <div className="relative z-10 bg-white dark:bg-gray-900 rounded-t-[40px] mt-32 pt-10 px-4 pb-16 shadow-[0_-15px_40px_rgba(0,0,0,0.08)] min-h-[calc(100vh-8rem)]">
+      <div className="relative z-10 bg-white dark:bg-gray-900 rounded-t-[40px] mt-32 pt-10 px-4 pb-4 shadow-[0_-15px_40px_rgba(0,0,0,0.08)] min-h-[calc(100vh-8rem)]">
           
           {/* Action Icons Area */}
           <div className="absolute top-6 right-6 flex items-center space-x-2.5 z-30">
@@ -626,15 +626,17 @@ export const Account: React.FC = () => {
                     <MenuRow icon={ShieldCheck} label={t('menu.security_privacy')} subtitle={t('menu.security_privacy_sub')} to="/privacy-security" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Settings} label={t('menu.preferences')} subtitle={t('menu.preferences_sub')} to="/preferences" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={HelpCircle} label={t('menu.help_support')} subtitle={t('menu.help_support_sub')} to="/help-support" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <MenuRow icon={Info} label={t('menu.about_us')} subtitle={t('menu.about_us_sub')} to="/about-us" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <button 
-                        onClick={() => logout()}
-                        className="w-full flex items-center px-6 py-5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
-                    >
-                        <Lock size={18} className="mr-3" />
-                        <span className="text-sm font-bold uppercase tracking-widest">{t('pref.logout')}</span>
-                    </button>
+                    <MenuRow icon={Info} label={t('menu.about_us')} subtitle={t('menu.about_us_sub')} to="/about-us" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
                 </div>
+             </div>
+             
+             <div className="mt-4 mb-4 flex justify-center">
+                <button 
+                    onClick={() => logout()}
+                    className="px-8 py-3 text-red-500/70 hover:text-red-500 dark:text-red-400/60 dark:hover:text-red-400 text-xs font-bold uppercase tracking-[0.3em] transition-all duration-300"
+                >
+                    {t('pref.logout')}
+                </button>
              </div>
           </div>
       </div>

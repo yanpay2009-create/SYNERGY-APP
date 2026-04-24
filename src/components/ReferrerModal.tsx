@@ -68,8 +68,9 @@ export const ReferrerModal: React.FC<ReferrerModalProps> = ({
 
   const handleScan = (decodedText: string) => {
     let code = decodedText;
-    if (decodedText.includes('/ref/')) {
-        code = decodedText.split('/ref/').pop() || decodedText;
+    if (decodedText.includes('/ref/') || decodedText.includes('/r/') || decodedText.includes('/c/')) {
+        const parts = decodedText.split('/');
+        code = parts[parts.length - 1] || decodedText;
     }
     setReferrerCode(code.toUpperCase());
     setShowScanner(false);

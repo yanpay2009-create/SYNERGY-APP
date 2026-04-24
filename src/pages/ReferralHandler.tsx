@@ -5,16 +5,22 @@ import { Loader2 } from 'lucide-react';
 import { safeSetItem } from '../utils/storageUtils';
 
 export const ReferralHandler: React.FC = () => {
-    const { code } = useParams<{ code: string }>();
+    const { code, id } = useParams<{ code: string; id?: string }>();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (code) {
             safeSetItem('synergy_referrer_code', code.toUpperCase());
         }
-        // Redirect to home or onboarding
-        navigate('/home', { replace: true });
-    }, [code, navigate]);
+        
+        if (id) {
+            // Redirect to specific campaign
+            navigate(`/campaigns?id=${id}`, { replace: true });
+        } else {
+            // Redirect to home or onboarding
+            navigate('/home', { replace: true });
+        }
+    }, [code, id, navigate]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">

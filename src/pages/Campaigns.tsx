@@ -25,7 +25,7 @@ export const Campaigns: React.FC = () => {
 
   const handleCopyLink = (id: number) => {
     const baseUrl = window.location.origin + window.location.pathname.replace(/\/$/, '');
-    const assetLink = `${baseUrl}/#/campaigns?id=${id}&ref=${referralCode}`;
+    const assetLink = `${baseUrl}/#/c/${id}/${referralCode}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(assetLink).then(() => {
             setCopiedId(id);
