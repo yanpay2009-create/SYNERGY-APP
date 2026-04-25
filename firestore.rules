@@ -24,9 +24,9 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isVerified() && (
-        request.auth.token.email in ["yanpay2009@gmail.com", "synergyflow.my@gmail.com"] ||
-        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+      return isSignedIn() && (
+        request.auth.token.email in ["yanpay2009@gmail.com", "synergyflow.my@gmail.com", "synergyflow@gmail.com"] ||
+        (isVerified() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
       );
     }
@@ -119,7 +119,6 @@ service cloud.firestore {
       return data.keys().hasAll(['userId', 'date', 'source', 'type', 'amount', 'status']) &&
              data.userId is string && data.userId.size() <= 128 &&
              data.type in ['Direct', 'Team', 'Withdrawal', 'Refund'] &&
-             data.amount is number &&
              data.status in ['Pending', 'Paid', 'Completed', 'Waiting', 'Cancelled'];
     }
 
@@ -145,6 +144,10 @@ service cloud.firestore {
             // Action: Basic Info (No restricted field modification)
             (
                 incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'lineId', 'avatar', 'pin', 'socials', 'addresses', 'bankAccounts', 'savedCards', 'selectedAddressId', 'selectedBankId', 'selectedCardId', 'paymentMethod', 'favorites'])
+            ) || (
+                // Action: Withdrawal (Allow decreasing walletBalance)
+                incoming().diff(existing()).affectedKeys().hasOnly(['walletBalance']) &&
+                incoming().walletBalance < existing().walletBalance
             ) || (
                 // Action: System Sync (Allow if values haven't changed for protected fields)
                 incoming().walletBalance == existing().walletBalance &&
@@ -205,9 +208,13 @@ service cloud.firestore {
     match /commissions/{txId} {
       allow get: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
       allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
-      allow create: if isAdmin() || 
-        (isVerified() && incoming().type == 'Withdrawal' && incoming().userId == request.auth.uid && isValidCommission(incoming()) && incoming().status == 'Pending') ||
-        (isVerified() && incoming().type == 'Refund' && incoming().userId == request.auth.uid && isValidCommission(incoming()));
+      allow create: if isAdmin() || (
+        isSignedIn() && isValidCommission(incoming()) && (
+          (incoming().type in ['Direct', 'Team'] && incoming().sourceUid == request.auth.uid) ||
+          (isSignedIn() && incoming().type == 'Withdrawal' && incoming().userId == request.auth.uid && (incoming().status == 'Pending' || incoming().status == 'Waiting')) ||
+          (isSignedIn() && incoming().type == 'Refund' && incoming().userId == request.auth.uid)
+        )
+      );
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }

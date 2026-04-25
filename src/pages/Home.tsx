@@ -22,7 +22,7 @@ const LiveSalesFeed: React.FC<{ sales: any[] }> = ({ sales }) => {
         </div>
         <span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800">Real-time</span>
       </div>
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-soft border border-slate-100 dark:border-slate-800 overflow-hidden relative">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-soft border border-slate-100 dark:border-slate-800 overflow-hidden relative">
         <div className="space-y-3">
           {sales.slice(0, 3).map((sale, idx) => (
             <div key={sale.id || idx} className={`flex items-center justify-between animate-in slide-in-from-right-4 duration-500 delay-${idx * 100} fill-mode-both`}>
@@ -230,7 +230,7 @@ export const Home: React.FC = () => {
           : 'pt-8 pb-4 px-4 bg-transparent'
       }`}>
         <div className="flex items-center space-x-3">
-          <div className={`flex-1 flex items-center px-4 py-2 rounded-2xl border transition-all duration-300 ease-in-out ${
+          <div className={`flex-1 flex items-center px-4 py-2 rounded-xl border transition-all duration-300 ease-in-out ${
             scrolled || homeAds.length === 0
               ? 'bg-slate-100/80 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700' 
               : 'bg-white/40 border-white/50 backdrop-blur-md'
@@ -278,7 +278,11 @@ export const Home: React.FC = () => {
            {homeAds.map((ad, index) => (
              <div key={ad.id} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
                <img src={ad.image || undefined} alt={ad.title} className="w-full h-full object-cover" />
-               <div className="absolute bottom-5 left-6 text-white max-w-[80%]">
+               {/* Professional Overlay */}
+               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+               <div className="absolute inset-0 pointer-events-none overflow-hidden select-none opacity-30">
+               </div>
+               <div className="absolute bottom-5 left-6 text-white max-w-[80%] z-10">
                   <h2 className="text-2xl font-bold mb-1 drop-shadow-lg leading-tight">{ad.title}</h2>
                   <p className="text-xs font-medium opacity-90 drop-shadow-md">{ad.subtitle}</p>
                </div>
@@ -324,13 +328,17 @@ export const Home: React.FC = () => {
                   onClick={() => navigate('/affiliate-links')}
                   className="animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both cursor-pointer active:scale-[0.98] transition-all"
                 >
-                  <div className="w-full h-32 rounded-2xl overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800">
+                  <div className="w-full h-32 rounded-xl overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
                     <img 
                       src={homeBannerAds[0].image} 
                       alt={homeBannerAds[0].title} 
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" 
                       referrerPolicy="no-referrer"
                     />
+                    {/* Professional Overlay */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none opacity-20">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -345,7 +353,7 @@ export const Home: React.FC = () => {
                     <div className="relative z-10">
                       <div className="flex items-start mb-1.5">
                         <div className="flex flex-col">
-                          <h3 className="text-lg font-black tracking-tight leading-tight">
+                          <h3 className="text-xl font-black tracking-tight leading-tight">
                             <span className="text-slate-900 dark:text-white">SYNERGY</span>
                             <span className="text-synergy-blue ml-1.5">FLOW</span>
                           </h3>
@@ -354,7 +362,7 @@ export const Home: React.FC = () => {
                       </div>
                       
                       <div className="mt-3 flex items-center justify-between">
-                        <button className={`${tierColors.progress} text-white px-4 py-1.5 rounded-2xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
+                        <button className={`${tierColors.progress} text-white px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
                           <span>Explore More</span>
                           <ArrowRight size={10} />
                         </button>
@@ -367,19 +375,23 @@ export const Home: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    {/* Background Graphic: Glassy Waves only */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    {/* Professional Premium Background Graphic (Matched with Today's Earnings style) */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
                       {/* Mesh Gradient Base */}
-                      <div className={`absolute inset-0 opacity-30 bg-gradient-to-br ${tierColors.decoration} via-transparent to-transparent`}></div>
+                      <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${tierColors.decoration} via-transparent to-transparent`}></div>
 
-                      {/* Glassy Wave Path */}
-                      <svg className={`absolute bottom-0 left-0 w-full h-24 opacity-[0.15] ${tierColors.text}`} viewBox="0 0 400 100" preserveAspectRatio="none">
-                        <path d="M0,50 C100,0 300,100 400,50 L400,100 L0,100 Z" fill="currentColor" />
-                      </svg>
-
-                      {/* Subtle Light Beam */}
-                      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/30 to-transparent rotate-12 opacity-40"></div>
-                      <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
+                      {/* Subtle Light Beams */}
+                      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
+                      <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                      
+                      {/* Modern Accents */}
+                      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                      
+                      {/* Sweep Animation */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
+                      
+                      {/* Grain Texture */}
+                      <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
                     </div>
                   </div>
                 </div>
@@ -469,22 +481,23 @@ export const Home: React.FC = () => {
                             <span className={user?.tier === UserTier.EXECUTIVE ? 'text-amber-600 font-black' : ''}>Executive</span>
                         </div>
                     </div>
-                    {/* New Sophisticated Background Graphic: Glassy Waves & Floating Rings */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    {/* Professional Level Up Background Graphic (Matched with Today's Earnings style) */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
                         {/* Mesh Gradient Base */}
                         <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${tierColors.decoration} via-transparent to-transparent`}></div>
-                        
-                        {/* Floating Concentric Rings */}
-                        <svg className={`absolute -top-12 -right-12 w-64 h-64 opacity-[0.15] ${tierColors.text}`} viewBox="0 0 200 200">
-                            <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                            <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                            <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                            <circle cx="100" cy="100" r="100" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                        </svg>
 
-                        {/* Subtle Light Beam */}
+                        {/* Subtle Light Beams */}
                         <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                        <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                        
+                        {/* Modern Accents */}
+                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                        
+                        {/* Sweep Animation */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
+                        
+                        {/* Grain Texture */}
+                        <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
                     </div>
                 </button>
             </div>

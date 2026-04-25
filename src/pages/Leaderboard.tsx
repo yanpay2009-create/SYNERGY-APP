@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Trophy, 
@@ -14,7 +14,8 @@ import {
   X,
   Loader2,
   Users,
-  ShieldCheck
+  ShieldCheck,
+  Filter
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -102,6 +103,7 @@ const Leaderboard: React.FC = () => {
   // Use Thailand Date (UTC+7) as state to allow dynamic updates
   const [today, setToday] = useState(getThailandTodayString());
   const [error, setError] = useState<string | null>(null);
+  const [tierFilter, setTierFilter] = useState<UserTier | 'All'>('All');
 
   useEffect(() => {
     // Check for date change every minute
@@ -165,7 +167,10 @@ const Leaderboard: React.FC = () => {
     };
   }, [today]);
 
-  const displayedList = leaders;
+  const displayedList = useMemo(() => {
+    if (tierFilter === 'All') return leaders;
+    return leaders.filter(l => l.tier === tierFilter);
+  }, [leaders, tierFilter]);
 
   const formatCompactNumber = (num: number): string => {
     const val = Math.floor(num);
@@ -380,10 +385,21 @@ const Leaderboard: React.FC = () => {
                   <div className="absolute left-[-10px] bottom-[-10px] w-32 h-32 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
               </div>
 
-              <div className="px-4 py-3 mb-6 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-100 dark:border-amber-800/50 flex items-center justify-between shadow-soft transition-all">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
-                  <p className="text-[10px] font-black text-amber-700 dark:text-amber-400 uppercase tracking-widest">Next Daily Reset In</p>
+              <div className="flex items-center justify-between mb-6">
+                <div className="relative flex items-center group transition-colors">
+                  <div className="absolute left-0 pointer-events-none text-synergy-blue">
+                    <Filter size={12} />
+                  </div>
+                  <select 
+                    value={tierFilter} 
+                    onChange={(e) => setTierFilter(e.target.value as any)}
+                    className="appearance-none bg-transparent text-[10px] font-black uppercase tracking-widest text-synergy-blue py-2 pl-5 focus:outline-none cursor-pointer"
+                  >
+                    <option value="All" className="dark:bg-gray-800">All Tiers</option>
+                    {Object.values(UserTier).map(tier => (
+                      <option key={tier} value={tier} className="dark:bg-gray-800">{tier}</option>
+                    ))}
+                  </select>
                 </div>
                 <CountdownTimer />
               </div>
@@ -399,30 +415,15 @@ const Leaderboard: React.FC = () => {
           )}
 
           <div className="space-y-4">
-              {leaders.length > 0 && leaders.map((item, idx) => (
+              {displayedList.length > 0 && displayedList.map((item, idx) => (
                   <DataCard key={idx} item={item} idx={idx} />
               ))}
-          </div>
-
-          {/* Info Card */}
-          {displayedList.length > 0 && (
-            <div className={`mt-8 rounded-[32px] p-6 border transition-all animate-in fade-in slide-in-from-bottom-4 shadow-soft ${currentColors.bg} ${currentColors.border}`}>
-                <h4 className={`text-xs font-black uppercase tracking-widest mb-4 flex items-center ${currentColors.text}`}>
-                    <ShieldCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="mr-2" />
-                    Elite Daily Insights
-                </h4>
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-white dark:bg-slate-900/50 rounded-xl flex items-center justify-center text-synergy-blue shadow-sm shrink-0">
-                    <ArrowUpRight size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
-                      Daily earnings are verified every midnight. Maintain consistent performance to climb the ranks and access high-tier affiliate rewards!
-                    </p>
-                  </div>
+              {displayedList.length === 0 && (
+                <div className="py-12 text-center bg-white dark:bg-gray-800 rounded-[32px] border border-dashed border-gray-200 dark:border-gray-700">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">No results for {tierFilter}</p>
                 </div>
-            </div>
-          )}
+              )}
+          </div>
         </>
       )}
     </div>

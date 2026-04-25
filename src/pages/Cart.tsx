@@ -171,50 +171,77 @@ export const Cart: React.FC = () => {
       ) : confirmStep ? (
         /* CONFIRMATION STEP VIEW */
         <div className="flex-1 space-y-6 animate-in slide-in-from-right duration-300">
-            {/* Order Summary Card */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-[32px] shadow-soft border border-gray-100 dark:border-gray-700">
-                <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest mb-4 flex items-center">
-                    <ShoppingBagIcon size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="mr-2 text-synergy-blue" />
-                    Order Summary
-                </h3>
-                <div className="space-y-3">
-                    {cart.map(item => (
-                        <div key={item.id} className="flex justify-between items-center">
-                            <div className="flex items-center space-x-3">
-                                <img 
-                                    src={item.image || undefined} 
-                                    alt={item.name} 
-                                    className="w-10 h-10 rounded-lg object-cover bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 cursor-pointer active:scale-95 transition-transform" 
-                                    referrerPolicy="no-referrer"
-                                    onClick={() => navigate(`/product/${item.id}`)}
-                                />
-                                <div className="flex flex-col">
-                                    <div className="flex items-center space-x-1">
-                                        <span className="text-[10px] font-bold text-synergy-blue">{item.quantity}x</span>
-                                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300 line-clamp-1 max-w-[120px]">{item.name}</span>
-                                    </div>
-                                    <span className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">฿{item.price.toLocaleString()} / unit</span>
-                                </div>
-                            </div>
-                            <span className="text-xs font-bold text-gray-900 dark:text-white">฿{(item.price * item.quantity).toLocaleString()}</span>
-                        </div>
-                    ))}
+            {/* Order Summary Card (Enhanced UI) */}
+            <div className="relative overflow-hidden bg-white dark:bg-gray-800 p-8 rounded-[40px] shadow-2xl shadow-black/5 border border-gray-100 dark:border-gray-700">
+                {/* Background Graphics */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+                    <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-gradient-to-br from-synergy-blue/10 to-transparent blur-3xl opacity-50"></div>
+                    <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-gradient-to-tl from-synergy-blue/5 to-transparent blur-3xl opacity-40"></div>
+                    <svg className="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.07]" preserveAspectRatio="none" viewBox="0 0 400 200">
+                        <path d="M0,150 C100,100 200,200 400,100" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                        <path d="M0,170 C150,120 250,220 400,140" fill="none" stroke="currentColor" strokeWidth="0.3" />
+                    </svg>
                 </div>
-                <div className="h-px bg-gray-100 dark:bg-gray-700 my-4"></div>
-                <div className="space-y-2">
-                    <div className="flex justify-between text-xs text-gray-500">
-                        <span>Subtotal</span>
-                        <span>฿{subtotal.toLocaleString()}</span>
-                    </div>
-                    {memberDiscount > 0 && (
-                        <div className="flex justify-between text-xs text-synergy-blue font-bold">
-                            <span>Member Discount</span>
-                            <span>-฿{memberDiscount.toLocaleString()}</span>
+
+                <div className="relative z-10">
+                    <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                        <div className="w-8 h-8 rounded-xl bg-synergy-blue/10 flex items-center justify-center mr-3">
+                            <ShoppingBagIcon size={16} strokeWidth={2.5} className="text-synergy-blue" />
                         </div>
-                    )}
-                    <div className="flex justify-between items-center pt-2">
-                        <span className="text-xs font-black text-gray-600 uppercase tracking-widest">Total Amount</span>
-                        <span className="text-xl font-black text-synergy-blue">฿{total.toLocaleString()}</span>
+                        {t('checkout.order_summary') || 'Order Summary'}
+                    </h3>
+
+                    <div className="space-y-4 mb-6 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
+                        {cart.map(item => (
+                            <div key={item.id} className="flex justify-between items-center group">
+                                <div className="flex items-center space-x-3">
+                                    <div className="relative">
+                                        <img 
+                                            src={item.image || undefined} 
+                                            alt={item.name} 
+                                            className="w-12 h-12 rounded-2xl object-cover bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 group-hover:scale-105 transition-transform" 
+                                            referrerPolicy="no-referrer"
+                                            onClick={() => navigate(`/product/${item.id}`)}
+                                        />
+                                        <div className="absolute -top-1.5 -right-1.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg">
+                                            {item.quantity}
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-bold text-gray-800 dark:text-gray-200 line-clamp-1 max-w-[140px]">{item.name}</span>
+                                        <span className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">฿{item.price.toLocaleString()} / unit</span>
+                                    </div>
+                                </div>
+                                <span className="text-xs font-black text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900/50 px-3 py-1.5 rounded-xl border border-transparent group-hover:border-gray-100 dark:group-hover:border-gray-700 transition-colors">
+                                    ฿{(item.price * item.quantity).toLocaleString()}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="h-px bg-gray-100 dark:bg-gray-700/50 my-6"></div>
+
+                    <div className="space-y-3">
+                        <div className="flex justify-between text-xs text-gray-500 font-medium">
+                            <span>Subtotal</span>
+                            <span className="font-bold text-gray-900 dark:text-gray-100">฿{subtotal.toLocaleString()}</span>
+                        </div>
+                        {memberDiscount > 0 && (
+                            <div className="flex justify-between text-xs text-synergy-blue bg-synergy-blue/5 px-3 py-1.5 rounded-xl border border-synergy-blue/10">
+                                <div className="flex items-center">
+                                    <Sparkles size={12} className="mr-1.5" />
+                                    <span className="font-bold">Member Discount</span>
+                                </div>
+                                <span className="font-black">-฿{memberDiscount.toLocaleString()}</span>
+                            </div>
+                        )}
+                        <div className="flex justify-between items-center pt-4 mt-2 border-t border-gray-100 dark:border-gray-700/50">
+                            <div className="flex flex-col">
+                                <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-0.5">Grand Total</span>
+                                <span className="text-xs font-bold text-gray-900 dark:text-white">Amount to Settle</span>
+                            </div>
+                            <span className="text-3xl font-black text-synergy-blue drop-shadow-sm">฿{total.toLocaleString()}</span>
+                        </div>
                     </div>
                 </div>
             </div>

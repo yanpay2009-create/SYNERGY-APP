@@ -805,8 +805,8 @@ export const CommissionHistory: React.FC = () => {
                     style={{ animationDelay: `${index * 50}ms` }}
                 >
                     <div className="flex items-center space-x-3">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-50 dark:border-gray-700 ${tx.type === 'Direct' ? 'bg-blue-50 text-synergy-blue' : tx.type === 'Withdrawal' ? 'bg-red-50 text-red-500' : tx.type === 'Refund' ? 'bg-orange-50 text-orange-500' : 'bg-purple-50 text-purple-500'}`}>
-                            {tx.type === 'Direct' ? <ShoppingBag size={20} /> : tx.type === 'Withdrawal' ? <ArrowUpRight size={20} /> : tx.type === 'Refund' ? <RotateCcw size={20} /> : <Users size={20} />}
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-50 dark:border-gray-700 ${tx.type === 'Direct' ? 'bg-blue-50 text-synergy-blue' : tx.type === 'Withdrawal' ? 'bg-purple-50 text-purple-500' : tx.type === 'Refund' ? 'bg-orange-50 text-orange-500' : 'bg-purple-50 text-purple-500'}`}>
+                            {tx.type === 'Direct' ? <ShoppingBag size={20} /> : tx.type === 'Withdrawal' ? <Wallet size={20} /> : tx.type === 'Refund' ? <RotateCcw size={20} /> : <Users size={20} />}
                         </div>
                         <div className="min-w-0">
                             <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate max-w-[150px]">
@@ -818,7 +818,7 @@ export const CommissionHistory: React.FC = () => {
                             </h4>
                             <div className="flex items-center space-x-1.5 mt-1">
                                 <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold ${tx.status === 'Paid' || tx.status === 'Completed' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : (tx.status === 'Pending' || tx.status === 'Waiting') ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-gray-50 text-gray-500 border-gray-200'}`}>
-                                    {tx.status}
+                                    {tx.type === 'Withdrawal' && tx.status === 'Completed' ? 'Paid' : tx.status}
                                 </span>
                                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${tx.type === 'Direct' ? 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue' : tx.type === 'Withdrawal' ? 'bg-red-50 dark:bg-red-900/30 text-red-500' : tx.type === 'Refund' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-500' : 'bg-purple-50 dark:bg-purple-900/30 text-purple-500'}`}>
                                     {tx.type}

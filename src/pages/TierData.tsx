@@ -1,16 +1,18 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ArrowLeft, Crown, TrendingUp, Users, ShieldCheck, Star, ChevronRight, Search, X, Zap, BarChart3, Shield, Loader2, Trophy, Medal } from 'lucide-react';
+import { ArrowLeft, Crown, TrendingUp, Users, ShieldCheck, Star, ChevronRight, Search, X, Zap, BarChart3, Shield, Loader2, Trophy, Medal, Filter } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { UserTier } from '../types';
 import { useApp } from '../context/AppContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { getThailandTodayString, getThailandNow, getThailandComponents } from '../utils/dateUtils';
+
 
 export const TierData: React.FC = () => {
   const navigate = useNavigate();
   const { tier } = useParams<{ tier: string }>();
   const { allTeamMembers, user } = useApp();
-  const [isShowingAll, setIsShowingAll] = useState(false);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -18,6 +20,7 @@ export const TierData: React.FC = () => {
 
   const [tierMembers, setTierMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [today, setToday] = useState(getThailandTodayString());
 
   useEffect(() => {
     const fetchTierMembers = async () => {
@@ -37,7 +40,7 @@ export const TierData: React.FC = () => {
       }
     };
     fetchTierMembers();
-  }, [selectedTier]);
+  }, [selectedTier, today]);
 
   const stats = useMemo(() => {
     const activeCount = tierMembers.length;
@@ -125,9 +128,10 @@ export const TierData: React.FC = () => {
       }));
   }, [tierMembers]);
 
-  const displayedList = isShowingAll 
-    ? tierLeaders.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    : tierLeaders.slice(0, 3);
+  const filteredLeaders = useMemo(() => {
+    if (!searchQuery) return tierLeaders;
+    return tierLeaders.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }, [tierLeaders, searchQuery]);
 
   const colors: any = {
       amber: { text: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/30', border: 'border-amber-100 dark:border-amber-800' },
@@ -190,9 +194,13 @@ export const TierData: React.FC = () => {
     const styles = getRankStyles();
 
     return (
-        <div 
-            className={`p-4 rounded-[24px] flex items-center justify-between border transition-all duration-500 animate-in fade-in slide-in-from-bottom-2 ${styles.card} ${styles.glow} hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden mb-3`}
-            style={{ animationDelay: `${idx * 50}ms` }}
+        <motion.div 
+            layout
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`p-4 rounded-[24px] flex items-center justify-between border transition-all duration-500 ${styles.card} ${styles.glow} relative overflow-hidden mb-3`}
         >
             <div className="flex items-center space-x-4 relative z-10">
                 <div className="relative shrink-0">
@@ -203,8 +211,8 @@ export const TierData: React.FC = () => {
                             className={`w-14 h-14 rounded-full object-cover border-[1px] border-white dark:border-gray-800 shadow-md bg-gray-100`} 
                         />
                     </div>
-                    <div className={`absolute -top-1 -right-1 rounded-full border-[1px] border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-8 h-8' : 'w-6 h-6'} ${styles.badge}`}>
-                        <span className={`${isTopRank ? 'text-xs' : 'text-[10px]'} font-black text-white`}>{idx + 1}</span>
+                    <div className={`absolute -top-1 -right-1 rounded-full border-[1px] border-white dark:border-gray-800 shadow-lg flex items-center justify-center transition-all duration-500 ${isTopRank ? 'w-6 h-6' : 'w-5 h-5'} ${styles.badge}`}>
+                        <span className={`${isTopRank ? 'text-[10px]' : 'text-[8px]'} font-black text-white`}>{idx + 1}</span>
                     </div>
                 </div>
                 <div className="min-w-0">
@@ -241,7 +249,7 @@ export const TierData: React.FC = () => {
                     </svg>
                 </div>
             )}
-        </div>
+        </motion.div>
     );
   };
 
@@ -251,37 +259,66 @@ export const TierData: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button 
-                onClick={() => isShowingAll ? setIsShowingAll(false) : navigate(-1)} 
+                onClick={() => navigate(-1)} 
                 className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition"
             >
               <ArrowLeft size={24} />
             </button>
             <h1 className="text-xl font-bold ml-2 text-gray-900 dark:text-white tracking-tight">
-                {isShowingAll ? `Top ${selectedTier}s` : `${selectedTier} Status`}
+                {selectedTier} Status
             </h1>
           </div>
-          {isShowingAll && (
-            <button 
-              onClick={() => setIsSearchVisible(!isSearchVisible)}
-              className={`p-2 rounded-full transition-all ${isSearchVisible ? 'bg-synergy-blue text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'}`}
-            >
-              <Search size={20} />
-            </button>
-          )}
+          <button 
+            onClick={() => setIsSearchVisible(!isSearchVisible)}
+            className={`p-2 rounded-full transition-all ${isSearchVisible ? 'bg-synergy-blue text-white' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'}`}
+          >
+            <Search size={20} />
+          </button>
         </div>
       </div>
 
-      {!isShowingAll ? (
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <Loader2 className="animate-spin mb-4" size={32} />
+          <p className="text-xs font-black uppercase tracking-widest">Loading Intel...</p>
+        </div>
+      ) : (
         <>
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-              <Loader2 className="animate-spin mb-4" size={32} />
-              <p className="text-xs font-black uppercase tracking-widest">Loading Intel...</p>
-            </div>
-          ) : (
+          <AnimatePresence>
+            {isSearchVisible && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="relative mb-6"
+                >
+                    <div className="absolute left-4 top-3 text-gray-400">
+                        <Search size={18} />
+                    </div>
+                    <input 
+                        type="text"
+                        autoFocus
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={`Search ${selectedTier} leaders...`}
+                        className="w-full bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-2xl py-3.5 pl-12 pr-10 shadow-soft focus:ring-2 focus:ring-synergy-blue/20 outline-none dark:text-white text-sm font-medium"
+                    />
+                    {searchQuery && (
+                        <button 
+                            onClick={() => setSearchQuery('')}
+                            className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+                        >
+                            <X size={18} />
+                        </button>
+                    )}
+                </motion.div>
+            )}
+          </AnimatePresence>
+
+          {!searchQuery && (
             <>
               {/* Dynamic Board Header */}
-              <div className={`bg-gradient-to-br ${theme.gradient} rounded-[32px] p-6 mb-8 text-white relative overflow-hidden shadow-lg animate-in zoom-in-95 duration-500`}>
+              <div className={`bg-gradient-to-br ${theme.gradient} rounded-[32px] p-6 mb-4 text-white relative overflow-hidden shadow-lg animate-in zoom-in-95 duration-500`}>
                   <div className="relative z-10">
                       <div className="flex items-center space-x-3 mb-5">
                           <div className="w-11 h-11 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shadow-inner">
@@ -307,93 +344,39 @@ export const TierData: React.FC = () => {
                   <div className="absolute left-[-10px] bottom-[-10px] w-32 h-32 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
               </div>
 
-              <div className="flex justify-between items-center mb-4 px-2">
-                <h3 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Rank Top Performers</h3>
-                <button 
-                    onClick={() => setIsShowingAll(true)}
-                    className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border transition-all ${currentColors.bg} ${currentColors.text} ${currentColors.border}`}
+              {/* Tier Selector Box */}
+              <div className="relative flex items-center mb-6 group transition-colors">
+                <div className="absolute left-0 pointer-events-none text-synergy-blue">
+                  <Filter size={12} />
+                </div>
+                <select 
+                  value={selectedTier} 
+                  onChange={(e) => {
+                      if (e.target.value === 'All') navigate('/leaderboard');
+                      else navigate(`/tier-data/${e.target.value}`);
+                  }}
+                  className="appearance-none bg-transparent text-[10px] font-black uppercase tracking-widest text-synergy-blue py-2 pl-5 focus:outline-none cursor-pointer"
                 >
-                    See all
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                  {displayedList.map((item, idx) => (
-                      <DataCard key={idx} item={item} idx={idx} />
+                  <option value="All" className="dark:bg-gray-800">All Tiers</option>
+                  {Object.values(UserTier).map(t => (
+                    <option key={t} value={t} className="dark:bg-gray-800">{t}</option>
                   ))}
-              </div>
-
-              {/* Dynamic Privileges Info */}
-              <div className={`mt-8 rounded-[32px] p-6 border transition-all animate-in fade-in slide-in-from-bottom-4 shadow-sm ${currentColors.bg} ${currentColors.border}`}>
-                  <h4 className={`text-xs font-black uppercase tracking-widest mb-4 flex items-center ${currentColors.text}`}>
-                      <ShieldCheck size={18} className="mr-2" />
-                      {selectedTier} Privileges
-                  </h4>
-                  <ul className="space-y-4">
-                      {[
-                          selectedTier === UserTier.EXECUTIVE ? "30% Direct Commission" : selectedTier === UserTier.BUILDER ? "20% Direct Commission" : selectedTier === UserTier.MARKETER ? "10% Direct Commission" : "5% Direct Commission",
-                          selectedTier === UserTier.EXECUTIVE ? "Indirect: +25% Starter, +20% MKT, +10% BLD, +1% EXE" : selectedTier === UserTier.BUILDER ? "Indirect: +15% Starter, +10% MKT, +2% BLD" : selectedTier === UserTier.MARKETER ? "Indirect: +5% Starter, +2% MKT" : "Standard Platform Access",
-                          "Access to Advanced AI Studio",
-                          selectedTier === UserTier.EXECUTIVE ? "Quarterly Profit Sharing Pool" : "Tier Performance Bonuses"
-                      ].map((item, i) => (
-                          <li key={i} className="flex items-start space-x-3">
-                              <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${currentColors.bg} border ${currentColors.border}`}>
-                                <TrendingUp size={10} className={currentColors.text} />
-                              </div>
-                              <span className="text-xs font-bold text-gray-700 dark:text-gray-300 opacity-80">{item}</span>
-                          </li>
-                      ))}
-                  </ul>
+                </select>
               </div>
             </>
           )}
-        </>
-      ) : (
-        <div className="animate-in fade-in duration-300">
-            {isSearchVisible && (
-                <div className="relative mb-6 animate-in slide-in-from-top-2 duration-300">
-                    <div className="absolute left-4 top-3 text-gray-400">
-                        <Search size={18} />
-                    </div>
-                    <input 
-                        type="text"
-                        autoFocus
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder={`Search ${selectedTier} leaders...`}
-                        className="w-full bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-2xl py-3.5 pl-12 pr-10 shadow-soft focus:ring-2 focus:ring-synergy-blue/20 outline-none dark:text-white text-sm font-medium"
-                    />
-                    {searchQuery && (
-                        <button 
-                            onClick={() => setSearchQuery('')}
-                            className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
-                        >
-                            <X size={18} />
-                        </button>
-                    )}
+
+          <div className="space-y-4">
+              {filteredLeaders.map((item, idx) => (
+                  <DataCard key={idx} item={item} idx={idx} />
+              ))}
+              {filteredLeaders.length === 0 && (
+                <div className="py-12 text-center bg-white dark:bg-gray-800 rounded-[32px] border border-dashed border-gray-200 dark:border-gray-700">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">No leaders in this tier yet</p>
                 </div>
-            )}
-
-            <div className="space-y-4">
-                {displayedList.length > 0 ? (
-                    displayedList.map((item, idx) => (
-                        <DataCard key={idx} item={item} idx={idx} />
-                    ))
-                ) : (
-                    <div className="text-center py-20 text-gray-400 bg-white dark:bg-gray-800 rounded-[32px] border border-dashed border-gray-200 dark:border-gray-700">
-                        <Users size={40} className="mx-auto mb-3 opacity-20" />
-                        <p className="text-[10px] font-black uppercase tracking-widest">No matching results</p>
-                    </div>
-                )}
-            </div>
-
-            <button 
-                onClick={() => setIsShowingAll(false)}
-                className="w-full mt-8 py-4 bg-white dark:bg-gray-800 text-gray-400 dark:text-gray-500 font-black uppercase tracking-[0.2em] text-[10px] rounded-[20px] shadow-sm border border-transparent active:scale-95 transition-all"
-            >
-                Back to Intel
-            </button>
-        </div>
+              )}
+          </div>
+        </>
       )}
     </div>
   );

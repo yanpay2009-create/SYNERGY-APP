@@ -2236,7 +2236,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       });
       return newTx;
     } catch (err) {
-      handleFirestoreError(err, OperationType.WRITE, `withdraw/${newTx.id}`);
+      handleFirestoreError(err, OperationType.WRITE, `commissions/${newTx.id}`);
       return null;
     }
   };

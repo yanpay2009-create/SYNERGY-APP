@@ -84,13 +84,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isFeatured = 
   return (
       <div 
           onClick={() => product.stock > 0 && navigate(`/product/${product.id}`)}
-          className={`${isFeatured ? 'w-40 shrink-0' : 'w-full'} bg-white dark:bg-slate-800 rounded-2xl shadow-soft hover:shadow-lg transition-all duration-300 cursor-pointer active:scale-[0.98] border border-slate-100 dark:border-slate-800/50 overflow-hidden flex flex-col relative group`}
+          className={`${isFeatured ? 'w-40 shrink-0' : 'w-full'} bg-white dark:bg-slate-800 rounded-xl shadow-soft hover:shadow-lg transition-all duration-300 cursor-pointer active:scale-[0.98] border border-slate-100 dark:border-slate-800/50 overflow-hidden flex flex-col relative group`}
       >
           <div className="relative aspect-square bg-slate-100 dark:bg-slate-800">
               <img src={product.image || undefined} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 
               {/* Commission Badge at Top Right */}
-              <div className={`absolute top-2 right-2 px-1.5 py-0.5 rounded-full backdrop-blur-md flex items-center font-black text-[10px] shadow-sm z-10 ${getTierBadgeStyles(user?.tier)}`}>
+              <div className={`absolute top-1 right-1 px-1.5 py-0.5 rounded-full backdrop-blur-md flex items-center font-black text-[10px] shadow-sm z-10 ${getTierBadgeStyles(user?.tier)}`}>
                   +฿{calculateCommission(product.price).toFixed(0)}
               </div>
 

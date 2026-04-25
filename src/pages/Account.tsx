@@ -490,12 +490,12 @@ export const Account: React.FC = () => {
                     <span className={user.tier === UserTier.EXECUTIVE ? 'text-amber-600 font-black' : ''}>Executive</span>
                 </div>
             </div>
-            {/* New Sophisticated Background Graphic: Glassy Waves & Floating Rings */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Professional Premium Background Graphic (Matched with Affiliate Tiers style) */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
                 {/* Mesh Gradient Base */}
                 <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${colors.decoration} via-transparent to-transparent`}></div>
-                
-                {/* Floating Concentric Rings */}
+
+                {/* Floating Concentric Rings (From Affiliate Tiers) */}
                 <svg className={`absolute -top-12 -right-12 w-64 h-64 opacity-[0.15] ${colors.text}`} viewBox="0 0 200 200">
                     <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
                     <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" />
@@ -503,9 +503,18 @@ export const Account: React.FC = () => {
                     <circle cx="100" cy="100" r="100" fill="none" stroke="currentColor" strokeWidth="0.5" />
                 </svg>
 
-                {/* Subtle Light Beam */}
+                {/* Subtle Light Beams */}
                 <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                
+                {/* Modern Accents */}
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                
+                {/* Shine Animation on Hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                
+                {/* Grain Texture for premium feel */}
+                <div className="absolute inset-0 bg-grain opacity-[0.03] dark:opacity-[0.05] mix-blend-overlay"></div>
             </div>
           </div>
 
@@ -550,7 +559,7 @@ export const Account: React.FC = () => {
                         <p className="text-[10px] text-gray-600 dark:text-gray-300 font-bold line-clamp-1 pl-1">Scale your earnings with 30% direct commission.</p>
                         
                         <div className="mt-3 flex items-center justify-between">
-                            <button className={`${colors.progress} text-white px-4 py-1.5 rounded-2xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
+                            <button className={`${colors.progress} text-white px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
                                 <span>Explore More</span>
                                 <ArrowRight size={10} />
                             </button>
@@ -563,14 +572,23 @@ export const Account: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Background Graphic: Glassy Waves & Floating Rings */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    {/* Professional Network Background Graphic (Matched with Today's Earnings style) */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
                         {/* Mesh Gradient Base */}
                         <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${colors.decoration} via-transparent to-transparent`}></div>
-                        
-                        {/* Subtle Light Beam */}
+
+                        {/* Subtle Light Beams */}
                         <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                        <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                        
+                        {/* Modern Accents */}
+                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                        
+                        {/* Sweep Animation */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
+                        
+                        {/* Grain Texture */}
+                        <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
                     </div>
                 </div>
             )
