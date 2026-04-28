@@ -67,7 +67,7 @@ const RevenueChart: React.FC<{ data: any[], color: string }> = ({ data, color })
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-white dark:bg-gray-900 p-2 rounded-lg shadow-xl border border-gray-100 dark:border-gray-800">
+                  <div className="bg-white dark:bg-gray-900 p-2 rounded-lg shadow-2xl dark:shadow-none border border-gray-100 dark:border-gray-800">
                     <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">{payload[0].payload.name}</p>
                     <p className="text-xs font-black text-gray-900 dark:text-white">฿{payload[0].value?.toLocaleString()}</p>
                   </div>
@@ -505,7 +505,7 @@ export const CommissionHistory: React.FC = () => {
             <div className="flex-1 px-6 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="relative mb-6">
                     <div className={`absolute inset-0 ${selectedTx.status === 'Paid' || selectedTx.status === 'Completed' ? 'bg-emerald-500/20' : 'bg-amber-500/20'} blur-xl rounded-full animate-pulse`}></div>
-                    <div className={`relative w-16 h-16 ${selectedTx.status === 'Paid' || selectedTx.status === 'Completed' ? 'bg-emerald-500' : 'bg-amber-500'} rounded-full flex items-center justify-center text-white shadow-lg`}>
+                    <div className={`relative w-16 h-16 ${selectedTx.status === 'Paid' || selectedTx.status === 'Completed' ? 'bg-emerald-500' : 'bg-amber-500'} rounded-full flex items-center justify-center text-white shadow-2xl dark:shadow-none`}>
                         {selectedTx.status === 'Paid' || selectedTx.status === 'Completed' ? (
                             <Check size={32} strokeWidth={4} className="animate-in zoom-in-50 duration-300 delay-100" />
                         ) : (
@@ -529,7 +529,7 @@ export const CommissionHistory: React.FC = () => {
                         : 'Commission earned successfully'}
                 </p>
 
-                <div className="w-full bg-white dark:bg-gray-900 rounded-[28px] p-6 shadow-soft border border-gray-100 dark:border-gray-800 space-y-5">
+                <div className="w-full bg-white dark:bg-gray-900 rounded-[28px] p-6 shadow-2xl dark:shadow-none border border-gray-100 dark:border-gray-800 space-y-5">
                     <div className="flex justify-between items-center">
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Amount</span>
                         <span className={`text-xl font-bold ${(selectedTx.type === 'Refund' || selectedTx.status === 'Cancelled' || selectedTx.type === 'Withdrawal') ? 'text-red-500' : 'text-emerald-500'}`}>
@@ -575,7 +575,7 @@ export const CommissionHistory: React.FC = () => {
                                                     <img 
                                                         src={item.image || undefined} 
                                                         alt={item.name} 
-                                                        className="w-8 h-8 rounded-lg object-cover shadow-sm" 
+                                                        className="w-8 h-8 rounded-lg object-cover shadow-2xl dark:shadow-none" 
                                                         referrerPolicy="no-referrer"
                                                     />
                                                     <span className="text-[10px] font-bold text-gray-700 dark:text-gray-300 truncate max-w-[150px]">{item.name}</span>
@@ -613,7 +613,7 @@ export const CommissionHistory: React.FC = () => {
       {isVerifyingPin && (
           <div className="fixed inset-0 z-[110] bg-white dark:bg-gray-900 flex flex-col items-center justify-start pt-20 px-6 transition-all duration-300">
               <button onClick={() => setIsVerifyingPin(false)} className="absolute top-6 right-6 p-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-400"><X size={20} /></button>
-              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl mb-8 transition-all duration-500 ${showPinSuccess ? 'bg-emerald-50 text-white' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none mb-8 transition-all duration-500 ${showPinSuccess ? 'bg-emerald-50 text-white' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
                 {showPinSuccess ? <CheckCircle2 size={40} /> : <Lock size={32} />}
               </div>
               <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
@@ -639,7 +639,7 @@ export const CommissionHistory: React.FC = () => {
           </div>
       )}
 
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -655,7 +655,7 @@ export const CommissionHistory: React.FC = () => {
           {/* Weekly */}
           <div 
             onClick={() => setSelectedCard(selectedCard === 'Weekly' ? null : 'Weekly')}
-            className={`p-4 rounded-3xl shadow-sm border transition-all cursor-pointer active:scale-95 ${selectedCard === 'Weekly' ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-purple-100 dark:hover:border-purple-900/30'}`}
+            className={`p-4 rounded-3xl shadow-2xl dark:shadow-none border transition-all cursor-pointer active:scale-95 ${selectedCard === 'Weekly' ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-purple-100 dark:hover:border-purple-900/30'}`}
           >
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-500 flex items-center justify-center">
@@ -672,7 +672,7 @@ export const CommissionHistory: React.FC = () => {
           {/* Monthly */}
           <div 
             onClick={() => setSelectedCard(selectedCard === 'Monthly' ? null : 'Monthly')}
-            className={`p-4 rounded-3xl shadow-sm border transition-all cursor-pointer active:scale-95 ${selectedCard === 'Monthly' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-blue-100 dark:hover:border-blue-900/30'}`}
+            className={`p-4 rounded-3xl shadow-2xl dark:shadow-none border transition-all cursor-pointer active:scale-95 ${selectedCard === 'Monthly' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-blue-100 dark:hover:border-blue-900/30'}`}
           >
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 text-synergy-blue flex items-center justify-center">
@@ -689,7 +689,7 @@ export const CommissionHistory: React.FC = () => {
           {/* Accumulated */}
           <div 
             onClick={() => setSelectedCard(selectedCard === 'Total' ? null : 'Total')}
-            className={`p-4 rounded-3xl shadow-sm border transition-all cursor-pointer active:scale-95 ${selectedCard === 'Total' ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-emerald-100 dark:hover:border-emerald-900/30'}`}
+            className={`p-4 rounded-3xl shadow-2xl dark:shadow-none border transition-all cursor-pointer active:scale-95 ${selectedCard === 'Total' ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-emerald-100 dark:hover:border-emerald-900/30'}`}
           >
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center">
@@ -704,7 +704,7 @@ export const CommissionHistory: React.FC = () => {
           </div>
 
           {/* Withdrawable */}
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-sm border border-transparent dark:border-gray-700 hover:border-blue-100 dark:hover:border-blue-900/30 transition-all">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 hover:border-blue-100 dark:hover:border-blue-900/30 transition-all">
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 text-synergy-blue flex items-center justify-center">
                       <Wallet size={16} />
@@ -719,7 +719,7 @@ export const CommissionHistory: React.FC = () => {
       {/* Detail View (Rendered above Withdraw button) */}
       {detailCardInfo && (
         <div className="mb-6 animate-in slide-in-from-top-4 duration-300">
-          <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-gray-100 dark:border-gray-700 relative overflow-hidden">
             <button 
               onClick={() => setSelectedCard(null)}
               className="absolute top-4 right-4 p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition"
@@ -762,7 +762,7 @@ export const CommissionHistory: React.FC = () => {
       <div className="mb-8">
           <button 
             onClick={() => triggerPinGate('/withdraw')} 
-            className="w-full bg-emerald-500 text-white py-4 rounded-full font-black uppercase tracking-widest shadow-glow active:scale-[0.98] transition-all flex items-center justify-center space-x-2"
+            className="w-full bg-emerald-500 text-white py-4 rounded-full font-black uppercase tracking-widest shadow-2xl dark:shadow-none active:scale-[0.98] transition-all flex items-center justify-center space-x-2"
           >
               <CreditCard size={18} />
               <span>Withdraw Funds</span>
@@ -775,7 +775,7 @@ export const CommissionHistory: React.FC = () => {
               <button 
                 key={type} 
                 onClick={() => setActiveFilter(type as any)} 
-                className={`px-4 py-2 rounded-full text-[9px] font-black uppercase whitespace-nowrap transition-all duration-300 ${activeFilter === type ? 'bg-synergy-blue text-white shadow-md scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
+                className={`px-4 py-2 rounded-full text-[9px] font-black uppercase whitespace-nowrap transition-all duration-300 ${activeFilter === type ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
               >
                   {type}
               </button>

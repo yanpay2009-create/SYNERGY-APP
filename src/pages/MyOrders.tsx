@@ -168,7 +168,7 @@ export const MyOrders: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -182,7 +182,7 @@ export const MyOrders: React.FC = () => {
           >
             <ShoppingBagIcon size={24} />
             {cart.reduce((acc, item) => acc + item.quantity, 0) > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full px-1 shadow-sm backdrop-blur-sm">
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full px-1 shadow-2xl dark:shadow-none backdrop-blur-sm">
                 {cart.reduce((acc, item) => acc + item.quantity, 0)}
               </span>
             )}
@@ -195,7 +195,7 @@ export const MyOrders: React.FC = () => {
             <button 
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
-                className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeTab === tab ? 'bg-synergy-blue text-white shadow-md scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
+                className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeTab === tab ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
             >
                 {tab}
             </button>
@@ -215,7 +215,7 @@ export const MyOrders: React.FC = () => {
                 const isExpanded = expandedOrder === order.id;
 
                 return (
-                    <div key={order.id} className={`bg-white dark:bg-gray-900 rounded-[24px] overflow-hidden shadow-soft dark:shadow-none border border-transparent transition-all duration-500 ${isExpanded ? 'ring-1 ring-synergy-blue/20' : ''}`}>
+                    <div key={order.id} className={`bg-white dark:bg-gray-900 rounded-[24px] overflow-hidden shadow-2xl dark:shadow-none border border-transparent transition-all duration-500 ${isExpanded ? 'ring-1 ring-synergy-blue/20' : ''}`}>
                         
                         <div className="p-4" onClick={() => toggleExpand(order.id)}>
                             <div className="flex justify-between items-center mb-4">
@@ -244,9 +244,9 @@ export const MyOrders: React.FC = () => {
                                         navigate(`/product/${order.items[0].id}`);
                                     }}
                                 >
-                                    <img src={order.items[0].image || undefined} className="w-full h-full object-cover rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm" alt="p" />
+                                    <img src={order.items[0].image || undefined} className="w-full h-full object-cover rounded-xl border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-none" alt="p" />
                                     {order.items.length > 1 && (
-                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-[9px] font-black border-2 border-white dark:border-gray-900 shadow-md">
+                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-[9px] font-black border-2 border-white dark:border-gray-900 shadow-2xl dark:shadow-none">
                                             +{order.items.length - 1}
                                         </div>
                                     )}
@@ -261,7 +261,7 @@ export const MyOrders: React.FC = () => {
                                         <p className="text-base font-black text-synergy-blue">฿{(order.total ?? 0).toLocaleString()}</p>
                                         <div className="flex items-center space-x-1">
                                             {[1, 2, 3].map(i => (
-                                                <div key={i} className={`w-1 h-1 rounded-full ${i <= status.step ? 'bg-synergy-blue shadow-glow' : 'bg-gray-100 dark:bg-gray-800'}`} />
+                                                <div key={i} className={`w-1 h-1 rounded-full ${i <= status.step ? 'bg-synergy-blue shadow-2xl dark:shadow-none' : 'bg-gray-100 dark:bg-gray-800'}`} />
                                             ))}
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@ export const MyOrders: React.FC = () => {
                                         {order.items.some(item => !order.reviewedProductIds?.includes(item.id)) && (
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); toggleExpand(order.id); }}
-                                                className={`flex-[2] py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 active:scale-95 transition shadow-sm group ${isExpanded ? 'bg-synergy-blue text-white' : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'}`}
+                                                className={`flex-[2] py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 active:scale-95 transition shadow-2xl dark:shadow-none group ${isExpanded ? 'bg-synergy-blue text-white' : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'}`}
                                             >
                                                 <Star size={14} className={isExpanded ? 'fill-current' : 'group-hover:fill-current'} />
                                                 <span>{isExpanded ? 'Close Items' : 'Review Items'}</span>
@@ -302,7 +302,7 @@ export const MyOrders: React.FC = () => {
                                 ) : order.status === 'Return Pending' ? (
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); }}
-                                        className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all shadow-lg active:scale-95"
+                                        className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all shadow-2xl dark:shadow-none active:scale-95"
                                     >
                                         <ShieldCheck size={14} />
                                         <span>Verify & Refund</span>
@@ -319,7 +319,7 @@ export const MyOrders: React.FC = () => {
                                     <button 
                                         onClick={(e) => handleTrackOrder(e, order.id)}
                                         disabled={trackingLoading === order.id}
-                                        className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all ${isExpanded ? 'bg-synergy-blue text-white shadow-md' : 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500'}`}
+                                        className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all ${isExpanded ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none' : 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 shadow-none'}`}
                                     >
                                         {trackingLoading === order.id ? <Loader2 size={14} className="animate-spin" /> : <Truck size={14} />}
                                         <span>{isExpanded ? 'Hide Intel' : (order.status === 'Pending' ? 'View Audit' : 'Live Track')}</span>
@@ -346,7 +346,7 @@ export const MyOrders: React.FC = () => {
 
                                  <div className="space-y-3">
                                      <h4 className="text-[8px] font-black text-gray-400 uppercase tracking-widest ml-1">Distribution Items</h4>
-                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 space-y-3.5 shadow-sm">
+                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 space-y-3.5 shadow-2xl dark:shadow-none">
                                           {order.items.map((item, idx) => {
                                               const isReviewed = order.reviewedProductIds?.includes(item.id);
                                               const canReview = order.status === 'Delivered' && !isReviewed;
@@ -394,10 +394,10 @@ export const MyOrders: React.FC = () => {
                                               );
                                           })}
                                      </div>
-                                 </div>
+                                  </div>
 
-                                 <div className="grid grid-cols-2 gap-3">
-                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 relative shadow-sm">
+                                  <div className="grid grid-cols-2 gap-3">
+                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 relative shadow-2xl dark:shadow-none">
                                          <div className="flex items-center space-x-1.5 text-synergy-blue mb-2">
                                              <MapPin size={12} />
                                              <p className="text-[8px] font-black uppercase tracking-widest">Shipment</p>
@@ -408,7 +408,8 @@ export const MyOrders: React.FC = () => {
                                             <button onClick={(e) => handleStartEdit(e, order)} className="absolute top-3 right-3 text-gray-300 hover:text-synergy-blue transition active:scale-90"><Edit3 size={12} /></button>
                                          )}
                                      </div>
-                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 shadow-sm">
+
+                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-none">
                                          <div className="flex items-center space-x-1.5 text-gray-400 mb-2">
                                              <Navigation size={12} />
                                              <p className="text-[8px] font-black uppercase tracking-widest">Logistics</p>
@@ -419,7 +420,7 @@ export const MyOrders: React.FC = () => {
                                  </div>
 
                                  {order.status !== 'Pending' && order.status !== 'Return Pending' && order.status !== 'Returned' ? (
-                                    <div className="bg-white dark:bg-gray-900 p-4 rounded-[28px] border border-gray-100 dark:border-gray-800 shadow-sm">
+                                    <div className="bg-white dark:bg-gray-900 p-4 rounded-[28px] border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-none">
                                          <div className="flex justify-between items-center mb-5">
                                              <h4 className="text-[9px] font-black text-gray-900 dark:text-white uppercase tracking-[0.15em]">Movement History</h4>
                                              <div className="bg-gray-50 dark:bg-gray-900 px-2.5 py-1 rounded-lg flex items-center border border-gray-100 dark:border-gray-700">
@@ -437,7 +438,7 @@ export const MyOrders: React.FC = () => {
                                              <div className="absolute left-[3px] top-1 bottom-1 w-[1.5px] bg-gray-100 dark:bg-gray-800"></div>
                                              {order.timeline.map((step, idx) => (
                                                  <div key={idx} className="relative pl-6 animate-in slide-in-from-left-2" style={{ animationDelay: `${idx * 100}ms` }}>
-                                                     <div className={`absolute -left-[26px] top-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${step.completed ? 'bg-synergy-blue text-white shadow-glow border-2 border-white dark:border-gray-900' : 'bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 text-gray-300'}`}>
+                                                     <div className={`absolute -left-[26px] top-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${step.completed ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none border-2 border-white dark:border-gray-900' : 'bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 text-gray-300'}`}>
                                                         {step.completed ? <CheckCircle2 size={14} strokeWidth={3} /> : <div className="w-1 h-1 rounded-full bg-gray-200 dark:bg-gray-800" />}
                                                      </div>
                                                      <div className="pt-0.5">
@@ -488,7 +489,7 @@ export const MyOrders: React.FC = () => {
 
       {showReturnModal && (
           <div className="fixed inset-0 z-[120] flex items-center justify-center p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[36px] overflow-hidden shadow-2xl animate-in zoom-in-95 border border-white/10">
+              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[36px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 border border-white/10">
                   <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex items-center space-x-3">
                           <div className="w-9 h-9 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-600">
@@ -513,7 +514,7 @@ export const MyOrders: React.FC = () => {
                                   <button 
                                       key={reason}
                                       onClick={() => setReturnReason(reason)}
-                                      className={`w-full text-left p-3.5 rounded-xl text-xs font-bold transition-all border flex items-center justify-between group ${returnReason === reason ? 'bg-orange-50 dark:bg-orange-900/30 border-orange-200 text-orange-600 shadow-sm' : 'bg-gray-50 dark:bg-gray-950/50 border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-200'}`}
+                                      className={`w-full text-left p-3.5 rounded-xl text-xs font-bold transition-all border flex items-center justify-between group ${returnReason === reason ? 'bg-orange-50 dark:bg-orange-900/30 border-orange-200 text-orange-600 shadow-2xl dark:shadow-none' : 'bg-gray-50 dark:bg-gray-950/50 border-transparent text-gray-500 dark:text-gray-400 hover:border-gray-200'}`}
                                   >
                                       <span className="truncate pr-4">{reason}</span>
                                       <div className={`w-4 h-4 rounded-full border-2 shrink-0 transition-all ${returnReason === reason ? 'bg-orange-500 border-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.4)]' : 'border-gray-200'}`}>
@@ -527,7 +528,7 @@ export const MyOrders: React.FC = () => {
                       <button 
                         onClick={handleSubmitReturn}
                         disabled={!returnReason || isSubmittingReturn}
-                        className="w-full py-4 bg-orange-500 text-white rounded-[20px] font-black text-xs shadow-lg shadow-orange-500/20 flex items-center justify-center space-x-3 active:scale-[0.98] transition uppercase tracking-[0.2em] disabled:opacity-50 disabled:shadow-none"
+                        className="w-full py-4 bg-orange-500 text-white rounded-[20px] font-black text-xs shadow-2xl dark:shadow-none flex items-center justify-center space-x-3 active:scale-[0.98] transition uppercase tracking-[0.2em] disabled:opacity-50 disabled:shadow-none"
                       >
                           {isSubmittingReturn ? <Loader2 size={18} className="animate-spin" /> : <RotateCcw size={18} />}
                           <span>{isSubmittingReturn ? 'Processing...' : 'Request Return'}</span>
@@ -539,7 +540,7 @@ export const MyOrders: React.FC = () => {
 
       {editingOrder && editForm && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white dark:bg-gray-900 w-full max-sm rounded-[36px] overflow-hidden shadow-2xl animate-in zoom-in-95">
+              <div className="bg-white dark:bg-gray-900 w-full max-sm rounded-[36px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95">
                   <div className="p-5 border-b border-gray-50 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                       <h3 className="font-black text-gray-900 dark:text-white text-[10px] uppercase tracking-widest flex items-center">
                           <Edit3 size={14} className="mr-2 text-synergy-blue" /> Re-route Intelligence
@@ -573,7 +574,7 @@ export const MyOrders: React.FC = () => {
                       </div>
                       <button 
                         onClick={handleSaveAddress}
-                        className="w-full py-4 bg-synergy-blue text-white rounded-[20px] font-black text-xs shadow-glow flex items-center justify-center space-x-2 active:scale-[0.98] transition uppercase tracking-[0.2em]"
+                        className="w-full py-4 bg-synergy-blue text-white rounded-[20px] font-black text-xs shadow-2xl dark:shadow-none flex items-center justify-center space-x-2 active:scale-[0.98] transition uppercase tracking-[0.2em]"
                       >
                           <Save size={16} />
                           <span>Commit Update</span>
@@ -621,7 +622,7 @@ export const MyOrders: React.FC = () => {
                                                   referrerPolicy="no-referrer"
                                               />
                                           ) : (
-                                              <div className="w-14 h-14 bg-synergy-blue rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg border-2 border-white">SF</div>
+                                              <div className="w-14 h-14 bg-synergy-blue rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-2xl dark:shadow-none border-2 border-white">SF</div>
                                           )}
                                           <div>
                                               <h2 className="text-2xl font-black text-slate-900 tracking-tighter leading-none">Synergy Flow Co., Ltd.</h2>
@@ -637,7 +638,7 @@ export const MyOrders: React.FC = () => {
                                   </div>
                                   <div className="text-right flex flex-col items-end">
                                       <h1 className="text-3xl font-black text-synergy-blue mb-1 tracking-tighter uppercase whitespace-nowrap italic">Tax Invoice / Receipt</h1>
-                                      <p className="text-[11px] font-bold text-slate-900 mb-6 bg-slate-100 px-4 py-1.5 rounded-md uppercase tracking-[0.3em] whitespace-nowrap shadow-sm">ต้นฉบับ / ORIGINAL</p>
+                                      <p className="text-[11px] font-bold text-slate-900 mb-6 bg-slate-100 px-4 py-1.5 rounded-md uppercase tracking-[0.3em] whitespace-nowrap shadow-2xl dark:shadow-none">ต้นฉบับ / ORIGINAL</p>
                                       
                                       <div className="space-y-2">
                                           <div className="flex flex-col items-end">
@@ -687,7 +688,7 @@ export const MyOrders: React.FC = () => {
 
                               {/* Itemized Table */}
                               <div className="flex-grow">
-                                  <table className="w-full text-left border-collapse border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                                  <table className="w-full text-left border-collapse border border-slate-100 rounded-2xl overflow-hidden shadow-2xl dark:shadow-none">
                                       <thead>
                                           <tr className="bg-slate-900 text-white">
                                               <th className="py-4 px-4 text-[11px] font-black uppercase tracking-widest w-12 text-center border-r border-slate-800">#</th>
@@ -727,7 +728,7 @@ export const MyOrders: React.FC = () => {
                               {/* Totals Section */}
                               <div className="mt-12 mb-10 flex justify-between items-start border-t-4 border-slate-900 pt-8 px-2">
                                   <div className="w-1/2 space-y-6">
-                                      <div className="bg-slate-900 text-white p-5 rounded-2xl shadow-xl border-4 border-white">
+                                      <div className="bg-slate-900 text-white p-5 rounded-2xl shadow-2xl dark:shadow-none border-4 border-white">
                                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2 opacity-80">Total (Amount in Words) / จำนวนเงินตัวอักษร</span>
                                           <p className="text-[12px] font-black italic font-thai text-center py-1 tracking-wide leading-relaxed">
                                               *** {numberToThaiBaht(showReceipt.total)} ***
@@ -758,7 +759,7 @@ export const MyOrders: React.FC = () => {
                                               <span className="font-bold text-slate-400 uppercase tracking-tighter">VAT (7%) / ภาษี</span>
                                               <span className="font-black text-slate-600 font-mono tracking-tighter">฿{(showReceipt.total - (showReceipt.total / 1.07)).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
                                           </div>
-                                          <div className="flex justify-between items-center py-6 border-y-4 border-slate-900 mt-6 relative overflow-hidden bg-slate-50 px-4 rounded-xl">
+                                          <div className="flex justify-between items-center py-6 border-y-4 border-slate-900 mt-6 relative overflow-hidden bg-slate-50 px-4 rounded-xl shadow-2xl dark:shadow-none">
                                               <div className="absolute top-0 left-0 w-1 h-full bg-synergy-blue"></div>
                                               <span className="text-[13px] font-black text-synergy-blue uppercase tracking-widest italic">Grand Total</span>
                                               <span className="text-3xl font-black text-slate-950 font-mono tracking-tighter drop-shadow-sm">฿{(showReceipt.total ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>

@@ -255,7 +255,7 @@ export const TierData: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button 
@@ -340,8 +340,23 @@ export const TierData: React.FC = () => {
                           </div>
                       </div>
                   </div>
-                  <div className="absolute right-[-20px] top-[-20px] w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-                  <div className="absolute left-[-10px] bottom-[-10px] w-32 h-32 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
+                  {/* Enhanced Background Graphics */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+                      {/* Geometric Overlays */}
+                      <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[120%] bg-white/5 rounded-full blur-3xl transform rotate-12"></div>
+                      <div className="absolute bottom-[-20%] left-[-10%] w-[50%] h-[100%] bg-black/5 rounded-full blur-3xl transform -rotate-12"></div>
+                      
+                      {/* Animated Sweep */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '5s' }}></div>
+                      
+                      {/* Abstract Icons */}
+                      <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-10">
+                          <theme.icon size={120} strokeWidth={0.5} className="text-white" />
+                      </div>
+                      
+                      {/* Grain Texture */}
+                      <div className="absolute inset-0 bg-grain opacity-[0.03] mix-blend-overlay"></div>
+                  </div>
               </div>
 
               {/* Tier Selector Box */}

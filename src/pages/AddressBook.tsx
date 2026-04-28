@@ -100,7 +100,7 @@ export const AddressBook: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -112,7 +112,7 @@ export const AddressBook: React.FC = () => {
       </div>
 
       {showAddForm ? (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-[32px] shadow-soft dark:shadow-none border border-transparent dark:border-gray-700 animate-in slide-in-from-bottom-5 duration-300">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-[32px] shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 animate-in slide-in-from-bottom-5 duration-300">
            <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">{editingAddressId ? 'Edit Address' : 'New Address'}</h2>
                 <button 
@@ -187,7 +187,7 @@ export const AddressBook: React.FC = () => {
 
               <div className="flex space-x-3 pt-4">
                 <button type="button" onClick={() => setShowAddForm(false)} className="flex-1 py-3.5 rounded-2xl border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 font-bold text-sm">Cancel</button>
-                <button type="submit" className="flex-1 py-3.5 rounded-2xl bg-synergy-blue text-white font-bold text-sm shadow-glow shadow-synergy-blue/20">{editingAddressId ? 'Update Address' : 'Save Address'}</button>
+                <button type="submit" className="flex-1 py-3.5 rounded-2xl bg-synergy-blue text-white font-bold text-sm shadow-2xl dark:shadow-none">{editingAddressId ? 'Update Address' : 'Save Address'}</button>
               </div>
            </form>
         </div>
@@ -197,7 +197,7 @@ export const AddressBook: React.FC = () => {
               {addresses.map(addr => (
                   <div 
                     key={addr.id} onClick={() => selectAddress(addr.id)}
-                    className={`p-5 rounded-[24px] border transition cursor-pointer relative overflow-hidden ${selectedAddressId === addr.id ? 'bg-blue-50 dark:bg-blue-900/20 border-synergy-blue shadow-sm' : 'bg-white dark:bg-gray-800 border-transparent shadow-soft'}`}
+                    className={`p-5 rounded-[24px] border transition cursor-pointer relative overflow-hidden ${selectedAddressId === addr.id ? 'bg-blue-50 dark:bg-blue-900/20 border-synergy-blue shadow-2xl dark:shadow-none' : 'bg-white dark:bg-gray-800 border-transparent shadow-2xl dark:shadow-none'}`}
                   >
                      <div className="flex items-start space-x-4 relative z-10">
                         <div className={`w-6 h-6 mt-1 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedAddressId === addr.id ? 'border-synergy-blue bg-synergy-blue text-white' : 'border-gray-200 dark:border-gray-700'}`}>
@@ -252,7 +252,7 @@ export const AddressBook: React.FC = () => {
       {showDeleteConfirm !== null && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center px-6">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setShowDeleteConfirm(null)}></div>
-          <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl relative z-10 animate-in zoom-in-95 border border-white/10">
+          <div className="bg-white dark:bg-gray-800 w-full max-sm rounded-[32px] p-8 shadow-2xl dark:shadow-none relative z-10 animate-in zoom-in-95 border border-white/10">
             <div className="text-center">
               <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Trash2 size={32} />

@@ -125,7 +125,7 @@ export const Auth: React.FC = () => {
 
   if (authStep === 'otp') {
       return (
-          <div className="w-full bg-white dark:bg-gray-900 p-8 rounded-[40px] shadow-2xl relative animate-in fade-in duration-500">
+          <div className="w-full bg-white dark:bg-gray-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none relative animate-in fade-in duration-500">
               <button 
                 onClick={() => setAuthStep('form')}
                 className="p-2 -ml-2 text-gray-400 hover:text-gray-900 dark:hover:text-white transition active:scale-90 w-fit mb-2"
@@ -191,7 +191,7 @@ export const Auth: React.FC = () => {
 
   return (
     <div className="w-full animate-in fade-in zoom-in duration-300">
-      <div className="bg-white dark:bg-gray-900 p-8 rounded-[40px] shadow-2xl relative z-10 border border-white/50 dark:border-gray-800 transition-all">
+      <div className="bg-white dark:bg-gray-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none relative z-10 border border-white/50 dark:border-gray-800 transition-all">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-transparent mx-auto mb-4 flex items-center justify-center">
             {systemSettings.logo ? (
@@ -365,7 +365,7 @@ export const Auth: React.FC = () => {
       {/* Terms and Conditions Modal */}
       {showTermsModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center px-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[80vh] border border-white/20">
+              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 flex flex-col max-h-[80vh] border border-white/20">
                   <div className="p-6 border-b border-gray-50 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex items-center space-x-2 text-synergy-blue">
                           <FileText size={20} />
@@ -428,7 +428,7 @@ export const Auth: React.FC = () => {
       {/* Reset Password Modal */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="relative w-full max-w-sm bg-white dark:bg-gray-900 p-8 rounded-[40px] shadow-2xl animate-in zoom-in-95 duration-200 border border-white/10">
+            <div className="relative w-full max-w-sm bg-white dark:bg-gray-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none animate-in zoom-in-95 duration-200 border border-white/10">
                 <div className="text-center mb-6">
                     <div className="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                         <KeyRound size={28} />

@@ -145,7 +145,7 @@ export const Cart: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col relative transition-colors duration-300">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => confirmStep ? setConfirmStep(false) : navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -172,7 +172,7 @@ export const Cart: React.FC = () => {
         /* CONFIRMATION STEP VIEW */
         <div className="flex-1 space-y-6 animate-in slide-in-from-right duration-300">
             {/* Order Summary Card (Enhanced UI) */}
-            <div className="relative overflow-hidden bg-white dark:bg-gray-800 p-8 rounded-[40px] shadow-2xl shadow-black/5 border border-gray-100 dark:border-gray-700">
+            <div className="relative overflow-hidden bg-white dark:bg-slate-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800">
                 {/* Background Graphics */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
                     <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-gradient-to-br from-synergy-blue/10 to-transparent blur-3xl opacity-50"></div>
@@ -184,7 +184,7 @@ export const Cart: React.FC = () => {
                 </div>
 
                 <div className="relative z-10">
-                    <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                    <h3 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.2em] mb-6 flex items-center">
                         <div className="w-8 h-8 rounded-xl bg-synergy-blue/10 flex items-center justify-center mr-3">
                             <ShoppingBagIcon size={16} strokeWidth={2.5} className="text-synergy-blue" />
                         </div>
@@ -199,11 +199,11 @@ export const Cart: React.FC = () => {
                                         <img 
                                             src={item.image || undefined} 
                                             alt={item.name} 
-                                            className="w-12 h-12 rounded-2xl object-cover bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 group-hover:scale-105 transition-transform" 
+                                            className="w-12 h-12 rounded-md object-cover bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 group-hover:scale-105 transition-transform" 
                                             referrerPolicy="no-referrer"
                                             onClick={() => navigate(`/product/${item.id}`)}
                                         />
-                                        <div className="absolute -top-1.5 -right-1.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg">
+                                        <div className="absolute -top-1.5 -right-1.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none">
                                             {item.quantity}
                                         </div>
                                     </div>
@@ -248,22 +248,22 @@ export const Cart: React.FC = () => {
 
             {/* Delivery & Payment Info */}
             <div className="space-y-3">
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700">
-                    <div className="flex items-center space-x-2 mb-2 text-gray-400">
+                <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-2xl dark:shadow-none">
+                    <div className="flex items-center space-x-2 mb-2 text-slate-400">
                         <MapPin size={14} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-[10px] font-black uppercase tracking-widest">Delivery Address</span>
                     </div>
-                    <p className="text-xs font-bold text-gray-800 dark:text-white">{selectedAddress?.name}</p>
-                    <p className="text-[11px] text-gray-700 dark:text-gray-300 mt-0.5">{selectedAddress?.address}, {selectedAddress?.city}</p>
+                    <p className="text-xs font-bold text-slate-800 dark:text-white">{selectedAddress?.name}</p>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-300 mt-0.5">{selectedAddress?.address}, {selectedAddress?.city}</p>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700">
-                    <div className="flex items-center space-x-2 mb-2 text-gray-400">
+                <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-2xl dark:shadow-none">
+                    <div className="flex items-center space-x-2 mb-2 text-slate-400">
                         <CreditCard size={14} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-[10px] font-black uppercase tracking-widest">Payment Method</span>
                     </div>
                     <div className="flex items-center justify-between">
-                        <p className="text-xs font-bold text-gray-800 dark:text-white">
+                        <p className="text-xs font-bold text-slate-800 dark:text-white">
                             {paymentMethod === 'CreditCard' 
                                 ? `Card ending ${selectedPaymentCard?.cardNumber.slice(-4)}` 
                                 : paymentMethod}
@@ -298,12 +298,12 @@ export const Cart: React.FC = () => {
                 <button 
                     onClick={handleFinalPayment}
                     disabled={isFinalConfirmDisabled}
-                    className={`group relative w-full h-16 rounded-full overflow-hidden transition-all duration-300 active:scale-95 flex items-center justify-center ${isFinalConfirmDisabled ? 'bg-gray-200 dark:bg-gray-800 cursor-not-allowed opacity-60 shadow-none' : 'shadow-[0_15px_35px_-5px_rgba(0,181,255,0.4)]'}`}
+                    className={`group relative w-full h-16 rounded-full overflow-hidden transition-all duration-300 active:scale-95 flex items-center justify-center ${isFinalConfirmDisabled ? 'bg-gray-200 dark:bg-gray-800 cursor-not-allowed opacity-60 shadow-none' : 'shadow-2xl dark:shadow-none'}`}
                 >
                     <div className={`absolute inset-0 transition-opacity duration-500 ${isFinalConfirmDisabled ? 'bg-transparent' : 'bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600'}`}></div>
                     <div className="relative w-full flex items-center justify-center space-x-3 text-white">
                          <span className="uppercase tracking-[0.25em] text-[12px] font-black italic">Confirm Payment</span>
-                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-sm">
+                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-2xl dark:shadow-none">
                             <Check size={18} strokeWidth={3} />
                          </div>
                     </div>
@@ -319,9 +319,9 @@ export const Cart: React.FC = () => {
       ) : (
         <>
           <div className="flex-1 space-y-4">
-             <div onClick={() => navigate('/address-book')} className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm active:scale-[0.99] transition cursor-pointer border border-transparent dark:border-gray-700">
+             <div onClick={() => navigate('/address-book')} className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none active:scale-[0.99] transition cursor-pointer border border-slate-100 dark:border-slate-800">
                 <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center space-x-2 text-gray-500">
+                    <div className="flex items-center space-x-2 text-slate-500">
                         <MapPin size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-xs font-bold uppercase tracking-wide">Shipping To</span>
                     </div>
@@ -329,8 +329,8 @@ export const Cart: React.FC = () => {
                 </div>
                 {selectedAddress ? (
                     <div>
-                        <p className="text-sm font-bold text-gray-800 dark:text-white">{selectedAddress.name} <span className="text-gray-500 font-normal">| {selectedAddress.phone}</span></p>
-                        <p className="text-xs text-gray-700 dark:text-gray-300 mt-1 truncate">{selectedAddress.address}, {selectedAddress.city}</p>
+                        <p className="text-sm font-bold text-slate-800 dark:text-white">{selectedAddress.name} <span className="text-slate-500 font-normal">| {selectedAddress.phone}</span></p>
+                        <p className="text-xs text-slate-700 dark:text-slate-300 mt-1 truncate">{selectedAddress.address}, {selectedAddress.city}</p>
                     </div>
                 ) : (
                     <p className="text-sm text-red-500 font-medium">Please select an address</p>
@@ -338,30 +338,30 @@ export const Cart: React.FC = () => {
              </div>
 
             {cart.map(item => (
-              <div key={item.id} className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm flex items-center space-x-4 border border-transparent dark:border-gray-700">
+              <div key={item.id} className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none flex items-center space-x-4 border border-slate-100 dark:border-slate-800">
                 <img 
                     src={item.image || undefined} 
                     alt={item.name} 
-                    className="w-20 h-20 rounded-xl object-cover bg-gray-100 dark:bg-gray-700 cursor-pointer active:scale-95 transition-transform" 
+                    className="w-20 h-20 rounded-xl object-cover bg-slate-50 dark:bg-slate-800 cursor-pointer active:scale-95 transition-transform" 
                     onClick={() => navigate(`/product/${item.id}`)}
                 />
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 line-clamp-1">{item.name}</h3>
-                  <p className="text-xs text-gray-600 mb-2">{item.category}</p>
+                  <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 line-clamp-1">{item.name}</h3>
+                  <p className="text-xs text-slate-500 mb-2">{item.category}</p>
                   <div className="flex justify-between items-center">
                     <span className="text-synergy-blue font-bold">฿{item.price.toLocaleString()}</span>
                     <div className="flex flex-col items-end">
-                      <div className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-900 rounded-lg p-1">
+                      <div className="flex items-center space-x-3 bg-slate-50 dark:bg-slate-900 rounded-lg p-1 border border-slate-100 dark:border-slate-800">
                         <button 
                           onClick={() => item.quantity > 1 ? updateCartQuantity(item.id, -1) : removeFromCart(item.id)}
-                          className="w-6 h-6 rounded-md bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-400"
+                          className="w-6 h-6 rounded-md bg-white dark:bg-slate-800 shadow-2xl dark:shadow-none flex items-center justify-center text-slate-600 dark:text-slate-400"
                         >
                           <Minus size={14} />
                         </button>
-                        <span className="text-xs font-semibold w-4 text-center dark:text-gray-100">{item.quantity}</span>
+                        <span className="text-xs font-semibold w-4 text-center dark:text-slate-100">{item.quantity}</span>
                         <button 
                            onClick={() => updateCartQuantity(item.id, 1)}
-                           className="w-6 h-6 rounded-md bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-400"
+                           className="w-6 h-6 rounded-md bg-white dark:bg-slate-800 shadow-2xl dark:shadow-none flex items-center justify-center text-slate-600 dark:text-slate-400"
                         >
                           <Plus size={14} />
                         </button>
@@ -376,15 +376,15 @@ export const Cart: React.FC = () => {
             ))}
 
             <div className="space-y-3">
-                 <div onClick={() => navigate('/payment-selection')} className={`bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm flex items-center justify-between cursor-pointer active:scale-[0.99] transition border ${hasInsufficientBalance ? 'border-red-200 dark:border-red-900/50' : 'border-transparent dark:border-gray-700'}`}>
+                 <div onClick={() => navigate('/payment-selection')} className={`bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none flex items-center justify-between cursor-pointer active:scale-[0.99] transition border ${hasInsufficientBalance ? 'border-red-200 dark:border-red-900/50' : 'border-slate-100 dark:border-slate-800'}`}>
                      <div className="flex items-center space-x-3">
                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasInsufficientBalance ? 'bg-red-50 text-red-500' : 'bg-blue-50 dark:bg-blue-900/20 text-synergy-blue'}`}>
                              <CardIcon size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                          </div>
                          <div>
-                             <p className="text-xs text-gray-600 font-medium">Payment Method</p>
+                             <p className="text-xs text-slate-500 font-black uppercase tracking-widest text-[8px] mb-0.5 opacity-60">Payment Method</p>
                              <div className="flex items-center space-x-2">
-                                <p className={`text-sm font-bold ${hasInsufficientBalance ? 'text-red-600' : 'text-gray-800 dark:text-gray-100'}`}>
+                                <p className={`text-sm font-bold ${hasInsufficientBalance ? 'text-red-600' : 'text-slate-800 dark:text-slate-100'}`}>
                                     {paymentMethod === 'CreditCard' 
                                         ? (selectedPaymentCard ? `Card ending ${selectedPaymentCard.cardNumber.slice(-4)}` : 'Select Credit Card') 
                                         : paymentMethod}
@@ -397,7 +397,7 @@ export const Cart: React.FC = () => {
                              </div>
                          </div>
                      </div>
-                     <ChevronRight size={16} className="text-gray-300 dark:text-gray-600" />
+                     <ChevronRight size={16} className="text-slate-300 dark:text-slate-600" />
                  </div>
                  
                  {hasInsufficientBalance && (
@@ -407,10 +407,10 @@ export const Cart: React.FC = () => {
                      </div>
                  )}
 
-                 <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-transparent dark:border-gray-700">
-                     <div className="flex items-center space-x-2 mb-2">
+                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800">
+                     <div className="flex items-center space-x-2 mb-3">
                          <Ticket size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} className="text-synergy-blue" />
-                         <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Promo Code</span>
+                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Promo Code</span>
                      </div>
                      {appliedCoupon ? (
                          <div className="flex justify-between items-center bg-green-50 dark:bg-emerald-900/20 border border-green-100 dark:border-emerald-800 p-2.5 rounded-xl">
@@ -441,36 +441,36 @@ export const Cart: React.FC = () => {
                  </div>
             </div>
 
-            <div className="mt-6 bg-white dark:bg-gray-800 p-6 rounded-[32px] shadow-soft border border-gray-100 dark:border-gray-700 relative overflow-hidden group">
+            <div className="mt-6 bg-white dark:bg-slate-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
                 <div className="space-y-2.5 mb-6 relative z-10">
-                    <div className="flex justify-between text-xs text-gray-600 dark:text-gray-300">
+                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-bold">
                         <span>Subtotal</span>
                         <span>฿{subtotal.toLocaleString()}</span>
                     </div>
                     {memberDiscount > 0 && (
-                        <div className="flex justify-between text-xs text-synergy-blue font-bold">
+                        <div className="flex justify-between text-xs text-synergy-blue font-black bg-synergy-blue/5 px-3 py-1.5 rounded-xl">
                             <span>Member Discount ({user?.tier})</span>
                             <span>-฿{memberDiscount.toLocaleString()}</span>
                         </div>
                     )}
                     {couponDiscount > 0 && (
-                        <div className="flex justify-between text-xs text-green-500 dark:text-emerald-400 font-bold">
+                        <div className="flex justify-between text-xs text-emerald-600 dark:text-emerald-400 font-black bg-emerald-50 dark:bg-emerald-900/10 px-3 py-1.5 rounded-xl">
                             <span>Coupon Discount</span>
                             <span>-฿{couponDiscount.toLocaleString()}</span>
                         </div>
                     )}
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
                         <span>VAT (7%)</span>
                         <span>฿{vat.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
                         <span>Shipping</span>
                         <span className="text-emerald-600 font-bold uppercase tracking-widest text-[9px]">Free</span>
                     </div>
-                    <div className="h-px bg-gray-100 dark:bg-gray-700 my-3"></div>
+                    <div className="h-px bg-slate-100 dark:bg-slate-800 my-4 opacity-50"></div>
                     <div className="flex justify-between items-center">
-                        <span className="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Grand Total</span>
-                        <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">฿{total.toLocaleString()}</span>
+                        <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Grand Total</span>
+                        <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">฿{total.toLocaleString()}</span>
                     </div>
                 </div>
 
@@ -488,7 +488,7 @@ export const Cart: React.FC = () => {
                     
                     <div className="relative w-full flex items-center justify-center space-x-3 text-white">
                          <span className="uppercase tracking-[0.25em] text-[12px] font-black italic">Checkout</span>
-                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-sm">
+                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-2xl dark:shadow-none">
                             <ArrowRight size={18} strokeWidth={3} />
                          </div>
                     </div>
@@ -502,11 +502,11 @@ export const Cart: React.FC = () => {
       {showCardModal && selectedPaymentCard && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center px-6">
               <div className="absolute inset-0 bg-black/70 backdrop-blur-md" onClick={() => !isVerifying && !paymentDone && setShowCardModal(false)}></div>
-              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl relative z-10 animate-in zoom-in-95 overflow-hidden flex flex-col border border-white/10">
+              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl dark:shadow-none relative z-10 animate-in zoom-in-95 overflow-hidden flex flex-col border border-white/10">
                   
                   {paymentDone && (
                       <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center animate-in fade-in duration-500">
-                          <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-4 shadow-sm animate-bounce">
+                          <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-4 shadow-2xl dark:shadow-none animate-bounce">
                               <CheckCircle2 size={32} strokeWidth={3} />
                           </div>
                           <h2 className="text-base font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Payment Success</h2>
@@ -526,7 +526,7 @@ export const Cart: React.FC = () => {
                       )}
                   </div>
 
-                  <div className="relative w-full aspect-[1.6/1] bg-gradient-to-br from-indigo-900 to-indigo-700 rounded-[24px] p-6 text-white shadow-xl mb-8 overflow-hidden">
+                  <div className="relative w-full aspect-[1.6/1] bg-gradient-to-br from-indigo-900 to-indigo-700 rounded-[24px] p-6 text-white shadow-2xl dark:shadow-none mb-8 overflow-hidden">
                       <div className="absolute top-0 right-0 p-6 opacity-30">
                          <CardIcon size={40} />
                       </div>
@@ -558,7 +558,7 @@ export const Cart: React.FC = () => {
                               </div>
                               <button 
                                 onClick={executeCardPayment}
-                                className="w-full h-16 bg-synergy-blue text-white rounded-full font-black uppercase tracking-[0.2em] text-[11px] shadow-glow shadow-synergy-blue/30 active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+                                className="w-full h-16 bg-synergy-blue text-white rounded-full font-black uppercase tracking-[0.2em] text-[11px] shadow-2xl dark:shadow-none active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
                               >
                                   <Lock size={18} />
                                   <span>Pay Securely</span>
@@ -587,11 +587,11 @@ export const Cart: React.FC = () => {
       {showQrModal && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center px-6">
               <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => !isVerifying && !paymentDone && setShowQrModal(false)}></div>
-              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl relative z-10 animate-in zoom-in-95 text-center overflow-hidden border border-white/10">
+              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl dark:shadow-none relative z-10 animate-in zoom-in-95 text-center overflow-hidden border border-white/10">
                   
                   {paymentDone && (
                       <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm z-20 flex flex-col items-center justify-center animate-in fade-in duration-500">
-                          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-3 shadow-sm animate-bounce">
+                          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-3 shadow-2xl dark:shadow-none animate-bounce">
                               <CheckCircle2 size={24} strokeWidth={3} />
                           </div>
                           <h2 className="text-sm font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Payment Success</h2>
@@ -615,7 +615,7 @@ export const Cart: React.FC = () => {
                       <img src={qrUrl || undefined} alt="PromptPay QR" className="w-40 h-40 mix-blend-multiply" />
                       {isVerifying && (
                           <div className="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[1px]">
-                              <div className="bg-white p-2.5 rounded-xl shadow-xl border border-blue-50">
+                              <div className="bg-white p-2.5 rounded-xl shadow-2xl dark:shadow-none border border-blue-50">
                                   <Loader2 size={28} className="text-synergy-blue animate-spin" />
                               </div>
                           </div>
@@ -660,7 +660,7 @@ export const Cart: React.FC = () => {
       {/* AUTO REFERRER CONFIRM MODAL */}
       {showReferrerAutoConfirm && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl animate-in zoom-in-95 border border-white/20 p-8 flex flex-col items-center text-center">
+          <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 border border-white/20 p-8 flex flex-col items-center text-center">
             <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-synergy-blue mb-6">
               <UserPlus size={32} />
             </div>
@@ -692,7 +692,7 @@ export const Cart: React.FC = () => {
                     }
                   }
                 }}
-                className="w-full h-12 bg-synergy-blue text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-glow active:scale-95 transition-all"
+                className="w-full h-12 bg-synergy-blue text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-2xl dark:shadow-none active:scale-95 transition-all"
               >
                 Yes, Link Creator
               </button>
@@ -719,7 +719,7 @@ export const Cart: React.FC = () => {
       {/* Terms and Conditions Modal */}
       {showTermsModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center px-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[80vh] border border-white/20">
+              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 flex flex-col max-h-[80vh] border border-white/20">
                   <div className="p-6 border-b border-gray-50 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex items-center space-x-2 text-synergy-blue">
                           <ShieldCheck size={20} />
@@ -770,7 +770,7 @@ export const Cart: React.FC = () => {
                   <div className="p-6 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-50 dark:border-gray-800">
                       <button 
                         onClick={acceptTerms}
-                        className="w-full h-14 bg-synergy-blue text-white font-black rounded-2xl shadow-glow active:scale-[0.98] transition uppercase tracking-[0.2em] text-xs"
+                        className="w-full h-14 bg-synergy-blue text-white font-black rounded-2xl shadow-2xl dark:shadow-none active:scale-[0.98] transition uppercase tracking-[0.2em] text-xs"
                       >
                           {t('cart.terms_accept')}
                       </button>

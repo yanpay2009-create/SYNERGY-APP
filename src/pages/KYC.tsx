@@ -263,7 +263,7 @@ export const KYC: React.FC = () => {
   if (!internalUnlocked) {
     return (
       <div className="fixed inset-0 z-[60] bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center px-6 max-w-md mx-auto left-0 right-0 transition-colors duration-300">
-        <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg mb-6 relative transition-all duration-500 ${flow === 'recovery' ? 'bg-amber-50 text-amber-500' : 'bg-white dark:bg-gray-800 text-synergy-blue'}`}>
+        <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none mb-6 relative transition-all duration-500 ${flow === 'recovery' ? 'bg-amber-50 text-amber-500' : 'bg-white dark:bg-gray-800 text-synergy-blue'}`}>
           {flow === 'recovery' ? <Smartphone size={32} /> : (flow === 'verify' ? <Lock size={32} /> : <Sparkles size={32} />)}
         </div>
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 text-center">{getPinTitle()}</h2>
@@ -297,7 +297,7 @@ export const KYC: React.FC = () => {
                   {[...Array(6)].map((_, i) => (
                     <div 
                       key={i} 
-                      className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length ? 'bg-synergy-blue scale-110 shadow-glow' : 'bg-gray-200 dark:bg-gray-700'} ${pinError ? 'bg-red-50 animate-shake' : ''}`}
+                      className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length ? 'bg-synergy-blue scale-110 shadow-2xl dark:shadow-none' : 'bg-gray-200 dark:bg-gray-700'} ${pinError ? 'bg-red-50 animate-shake' : ''}`}
                     />
                   ))}
                 </div>
@@ -356,7 +356,7 @@ export const KYC: React.FC = () => {
 
       <canvas ref={canvasRef} className="hidden" />
 
-      <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700 animate-in fade-in zoom-in-95 duration-300 min-h-[400px] flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 animate-in fade-in zoom-in-95 duration-300 min-h-[400px] flex flex-col">
          
          {kycStep === 'select' && (
              <div className="space-y-6 animate-in slide-in-from-bottom-2">
@@ -408,7 +408,7 @@ export const KYC: React.FC = () => {
 
          {kycStep === 'camera' && (
              <div className="space-y-6 animate-in fade-in flex-1 flex flex-col">
-                <div className="relative aspect-[4/3] bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-gray-100 dark:border-gray-700">
+                <div className="relative aspect-[4/3] bg-black rounded-3xl overflow-hidden shadow-2xl dark:shadow-none border-4 border-gray-100 dark:border-gray-700">
                     <video 
                         ref={videoRef} 
                         playsInline 
@@ -456,7 +456,7 @@ export const KYC: React.FC = () => {
                         <button 
                             onClick={capturePhoto}
                             disabled={isProcessing}
-                            className="w-20 h-20 bg-white dark:bg-gray-700 border-8 border-synergy-blue/10 rounded-full p-1 shadow-2xl active:scale-90 transition group relative overflow-hidden"
+                            className="w-20 h-20 bg-white dark:bg-gray-700 border-8 border-synergy-blue/10 rounded-full p-1 shadow-2xl dark:shadow-none active:scale-90 transition group relative overflow-hidden"
                         >
                             <div className="w-full h-full bg-synergy-blue rounded-full group-hover:bg-synergy-dark transition flex items-center justify-center text-white">
                                 <Camera size={28} />
@@ -479,14 +479,14 @@ export const KYC: React.FC = () => {
                     <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">Review and confirm your document details</p>
                 </div>
 
-                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-6 shadow-md border border-gray-100 dark:border-gray-700">
+                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-6 shadow-2xl dark:shadow-none border border-gray-100 dark:border-gray-700">
                     <img src={capturedImage || undefined} className="w-full h-full object-cover" alt="Captured Doc" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                     <div className="absolute top-2 right-2">
                         <button 
                             type="button" 
                             onClick={() => { setCapturedImage(null); startCamera(); }} 
-                            className="bg-black/60 backdrop-blur-md text-white p-2.5 rounded-xl active:scale-90 transition shadow-lg flex items-center space-x-2"
+                            className="bg-black/60 backdrop-blur-md text-white p-2.5 rounded-xl active:scale-90 transition shadow-2xl dark:shadow-none flex items-center space-x-2"
                         >
                             <RefreshCw size={14} />
                             <span className="text-[10px] font-black uppercase">Retake</span>
@@ -576,7 +576,7 @@ export const KYC: React.FC = () => {
                                           <button 
                                               type="button" 
                                               onClick={() => setWorkPermitImage(null)}
-                                              className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-lg active:scale-90 transition shadow-lg"
+                                              className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-lg active:scale-90 transition shadow-2xl dark:shadow-none"
                                           >
                                               <X size={14} />
                                           </button>
@@ -590,7 +590,7 @@ export const KYC: React.FC = () => {
 
                 <button 
                     type="submit"
-                    className="w-full bg-synergy-blue text-white font-black py-4 rounded-2xl shadow-glow active:scale-[0.98] transition uppercase tracking-[0.2em] text-xs h-14"
+                    className="w-full bg-synergy-blue text-white font-black py-4 rounded-2xl shadow-2xl dark:shadow-none active:scale-[0.98] transition uppercase tracking-[0.2em] text-xs h-14"
                 >
                     <span>Confirm & Submit</span>
                 </button>
@@ -626,7 +626,7 @@ export const KYC: React.FC = () => {
 
                 {kycStatus === 'Verified' && (
                     <div className="text-center py-10 flex flex-col items-center">
-                        <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-glow shadow-emerald-500/10">
+                        <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-2xl dark:shadow-none shadow-emerald-500/10">
                             <CheckCircle size={40} strokeWidth={3} />
                         </div>
                         <h2 className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mb-2 tracking-tight">Verification Successful</h2>
@@ -637,7 +637,7 @@ export const KYC: React.FC = () => {
                         {!showDetails ? (
                             <button 
                                 onClick={() => setShowDetails(true)}
-                                className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg shadow-emerald-500/20 active:scale-95 transition-all flex items-center space-x-2"
+                                className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-2xl dark:shadow-none shadow-emerald-500/20 active:scale-95 transition-all flex items-center space-x-2"
                             >
                                 <Eye size={14} />
                                 <span>View My Verification Details</span>

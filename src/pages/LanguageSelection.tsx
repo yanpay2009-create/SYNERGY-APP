@@ -23,7 +23,7 @@ export const LanguageSelection: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center">
           <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
             <ArrowLeft size={24} />
@@ -33,7 +33,7 @@ export const LanguageSelection: React.FC = () => {
       </div>
 
       <div className="animate-in slide-in-from-bottom-4 duration-500">
-        <div className="bg-white dark:bg-gray-800 rounded-[24px] overflow-hidden shadow-soft border border-gray-100 dark:border-gray-700 relative">
+        <div className="bg-white dark:bg-gray-800 rounded-[24px] overflow-hidden shadow-2xl dark:shadow-none border border-gray-100 dark:border-gray-700 relative">
           {languages.map((lang, index) => (
             <button
               key={lang.code}
@@ -48,7 +48,7 @@ export const LanguageSelection: React.FC = () => {
                 </div>
               </div>
               {language === lang.code && (
-                <div className="w-6 h-6 bg-synergy-blue rounded-full flex items-center justify-center text-white shadow-sm">
+                <div className="w-6 h-6 bg-synergy-blue rounded-full flex items-center justify-center text-white shadow-2xl dark:shadow-none">
                   <Check size={14} strokeWidth={3} />
                 </div>
               )}

@@ -160,7 +160,7 @@ export const Feed: React.FC = () => {
       {/* Top Header Bar (Always visible, centered tabs) */}
       <div className={`fixed top-0 left-0 right-0 z-[100] px-4 pt-8 pb-4 pointer-events-none transition-all duration-500 ${isScrolled ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
         <div className="max-w-md mx-auto flex items-center justify-center">
-          <div className="flex space-x-1 p-1 rounded-full bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-auto">
+          <div className="flex space-x-1 p-1 rounded-full bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-2xl dark:shadow-none pointer-events-auto">
             <button 
                 onClick={() => setActiveTab('Trending')} 
                 className={`text-[8px] px-2.5 py-1 rounded-full font-black uppercase tracking-wider transition-all duration-300 ${
@@ -232,7 +232,7 @@ export const Feed: React.FC = () => {
                 : post.caption;
 
               return (
-                <div key={post.id} className={`bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden shadow-soft transition-all duration-300 border border-transparent dark:border-gray-700 ${post.status === 'Pending' ? 'opacity-80 grayscale-[0.3]' : ''}`}>
+                <div key={post.id} className={`bg-white dark:bg-gray-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none transition-all duration-300 border border-transparent dark:border-gray-700 ${post.status === 'Pending' ? 'opacity-80 grayscale-[0.3]' : ''}`}>
                   <div className="relative aspect-square bg-gray-100 dark:bg-gray-900">
                     {post.type === 'video' ? (
                         <video src={post.content} className="w-full h-full object-cover" controls playsInline />
@@ -310,7 +310,7 @@ export const Feed: React.FC = () => {
                       <button 
                         onClick={() => handleShare(post)} 
                         disabled={post.status === 'Pending'} 
-                        className={`flex-1 h-9 rounded-full text-[9px] font-black uppercase tracking-[0.1em] flex items-center justify-center space-x-1.5 shadow-glow active:scale-95 transition ${
+                        className={`flex-1 h-9 rounded-full text-[9px] font-black uppercase tracking-[0.1em] flex items-center justify-center space-x-1.5 shadow-2xl dark:shadow-none active:scale-95 transition ${
                           post.status === 'Pending' 
                             ? 'bg-gray-300 dark:bg-gray-700 shadow-none cursor-not-allowed text-gray-500' 
                             : 'bg-synergy-blue text-white'
@@ -343,7 +343,7 @@ export const Feed: React.FC = () => {
       {showComments !== null && activePostForComments && (
           <div className="fixed inset-0 z-[100] flex items-end justify-center">
               <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowComments(null)}></div>
-              <div className={`bg-white dark:bg-gray-900 w-full max-w-md rounded-t-[40px] relative animate-in slide-in-from-bottom-full duration-300 flex flex-col transition-all ease-in-out h-[92vh] border-t border-white/10`}>
+              <div className={`bg-white dark:bg-gray-900 w-full max-w-md rounded-t-[40px] relative animate-in slide-in-from-bottom-full duration-300 flex flex-col transition-all ease-in-out h-[92vh] border-t border-white/10 shadow-2xl dark:shadow-none`}>
                   <div className="w-full pt-4 pb-2 flex flex-col items-center justify-center cursor-default touch-none">
                       <div className="w-12 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full mb-1"></div>
                   </div>
@@ -358,7 +358,7 @@ export const Feed: React.FC = () => {
                         activePostForComments.comments.map(c => (
                             <div key={c.id} className="flex space-x-3 animate-in fade-in slide-in-from-bottom-2">
                                 <img src={c.avatar || undefined} className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 shrink-0 border border-gray-100 dark:border-gray-800" alt="Avatar" />
-                                <div className="bg-gray-50 dark:bg-gray-800 p-3.5 rounded-[20px] rounded-tl-none text-sm border border-gray-100 dark:border-gray-700">
+                                <div className="bg-gray-50 dark:bg-gray-800 p-3.5 rounded-[20px] rounded-tl-none text-sm border border-gray-100 dark:border-gray-700 shadow-2xl dark:shadow-none">
                                     <div className="flex items-center space-x-2 mb-1">
                                         <span className="font-black text-gray-900 dark:text-white text-xs">{c.user}</span>
                                         <span className="text-[10px] text-gray-400 font-bold uppercase">{c.date}</span>
@@ -370,9 +370,9 @@ export const Feed: React.FC = () => {
                       )}
                   </div>
                   <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 pb-safe rounded-b-[40px]">
-                      <form onSubmit={submitComment} className="flex items-center space-x-2 bg-gray-50 dark:bg-gray-800 p-1.5 rounded-full border border-gray-100 dark:border-gray-700">
+                      <form onSubmit={submitComment} className="flex items-center space-x-2 bg-gray-50 dark:bg-gray-800 p-1.5 rounded-full border border-gray-100 dark:border-gray-700 shadow-2xl dark:shadow-none">
                           <input value={commentInput} onChange={(e) => setCommentInput(e.target.value)} placeholder="Add a comment..." className="flex-1 bg-transparent px-4 py-2 text-xs font-bold focus:outline-none dark:text-white" />
-                          <button type="submit" disabled={!commentInput.trim()} className="p-2.5 bg-synergy-blue text-white rounded-full disabled:opacity-50 disabled:bg-gray-300 transition shadow-glow"><Send size={16} /></button>
+                          <button type="submit" disabled={!commentInput.trim()} className="p-2.5 bg-synergy-blue text-white rounded-full disabled:opacity-50 disabled:bg-gray-300 transition shadow-2xl dark:shadow-none"><Send size={16} /></button>
                       </form>
                   </div>
               </div>

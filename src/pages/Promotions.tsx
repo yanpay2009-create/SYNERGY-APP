@@ -50,10 +50,10 @@ export const Promotions: React.FC = () => {
 
   const getTierBadgeStyles = (tier: UserTier | undefined) => {
     switch (tier) {
-      case UserTier.EXECUTIVE: return 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-white/50 dark:border-gray-600 shadow-sm';
-      case UserTier.BUILDER: return 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-white/50 dark:border-gray-600 shadow-sm';
-      case UserTier.MARKETER: return 'bg-pink-50 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 border-white/50 dark:border-gray-600 shadow-sm';
-      default: return 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue dark:text-blue-400 border-white/50 dark:border-gray-600 shadow-sm';
+      case UserTier.EXECUTIVE: return 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-white/50 dark:border-gray-600 shadow-2xl dark:shadow-none';
+      case UserTier.BUILDER: return 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-white/50 dark:border-gray-600 shadow-2xl dark:shadow-none';
+      case UserTier.MARKETER: return 'bg-pink-50 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 border-white/50 dark:border-gray-600 shadow-2xl dark:shadow-none';
+      default: return 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue dark:text-blue-400 border-white/50 dark:border-gray-600 shadow-2xl dark:shadow-none';
     }
   };
 
@@ -84,7 +84,7 @@ export const Promotions: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -98,7 +98,7 @@ export const Promotions: React.FC = () => {
           >
             <ShoppingBagIcon size={24} />
             {cart.reduce((acc, item) => acc + item.quantity, 0) > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full px-1 shadow-sm backdrop-blur-sm">
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full px-1 shadow-2xl dark:shadow-none backdrop-blur-sm">
                 {cart.reduce((acc, item) => acc + item.quantity, 0)}
               </span>
             )}

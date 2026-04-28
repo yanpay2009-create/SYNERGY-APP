@@ -59,6 +59,8 @@ export const dictionary: Record<string, { en: string; th: string; mm: string }> 
   'kyc.upload_id': { en: 'Upload ID Card', th: 'อัปโหลดบัตรประชาชน', mm: 'မှတ်ပုံတင်တင်ရန်' },
   'kyc.pending': { en: 'Verification Pending', th: 'กำลังตรวจสอบข้อมูล', mm: 'စစ်ဆေးနေဆဲ' },
   'kyc.verified': { en: 'Verified', th: 'ยืนยันตัวตนสำเร็จ', mm: 'အတည်ပြုပြီး' },
+  'kyc.unverified': { en: 'Unverified', th: 'ยังไม่ได้ยืนยัน', mm: 'အတည်မပြုရသေးပါ' },
+  'kyc.rejected': { en: 'Rejected', th: 'ปฏิเสธการยืนยัน', mm: 'ငြင်းပယ်ခံရသည်' },
 
   // Withdraw
   'withdraw.title': { en: 'Withdraw Funds', th: 'ถอนเงินเงินสด', mm: 'ငွေထုတ်ယူရန်' },

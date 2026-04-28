@@ -46,17 +46,17 @@ export const PersonalInfo: React.FC = () => {
   if (!user || !isSecurityUnlocked) return null;
 
   const kycStatusStyles: Record<string, { className: string, label: string }> = {
-    'Verified': { className: 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800/50', label: t('kyc.status.verified') || 'Verified' },
-    'Pending': { className: 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800/50', label: t('kyc.status.pending') || 'Pending' },
-    'Rejected': { className: 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50', label: t('kyc.status.rejected') || 'Rejected' },
-    'Unverified': { className: 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-gray-700/50 dark:text-gray-400 dark:border-gray-600/50', label: t('kyc.status.unverified') || 'Unverified' }
+    'Verified': { className: 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800/50', label: t('kyc.verified') },
+    'Pending': { className: 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800/50', label: t('kyc.pending') },
+    'Rejected': { className: 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50', label: t('kyc.rejected') },
+    'Unverified': { className: 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-gray-700/50 dark:text-gray-400 dark:border-gray-600/50', label: t('kyc.unverified') }
   };
 
   const kycBadge = user.kycStatus === 'Verified' ? null : kycStatusStyles[user.kycStatus || 'Unverified'];
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center">
           <button onClick={() => navigate('/account')} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
             <ArrowLeft size={24} />

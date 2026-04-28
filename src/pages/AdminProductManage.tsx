@@ -151,14 +151,14 @@ export const AdminProductManage: React.FC = () => {
             </button>
             <h1 className="text-xl font-bold ml-2 text-gray-900 dark:text-white">Product Assets</h1>
         </div>
-        <button onClick={handleAddNew} className="p-2 bg-indigo-500 text-white rounded-full shadow-lg active:scale-90 transition-transform"><Plus size={20} /></button>
+        <button onClick={handleAddNew} className="p-2 bg-indigo-500 text-white rounded-full shadow-2xl dark:shadow-none active:scale-90 transition-transform"><Plus size={20} /></button>
       </div>
 
       <div className="space-y-4">
           {products.map(product => (
-              <div key={product.id} className="bg-white dark:bg-gray-800 rounded-3xl p-4 shadow-sm border border-transparent dark:border-gray-700 overflow-hidden">
+              <div key={product.id} className="bg-white dark:bg-gray-800 rounded-3xl p-4 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 overflow-hidden">
                   <div className="flex items-start space-x-4 mb-4">
-                      <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-2xl overflow-hidden relative group shrink-0 shadow-sm">
+                      <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-2xl overflow-hidden relative group shrink-0 shadow-2xl dark:shadow-none">
                           <img src={product.image || undefined} className="w-full h-full object-cover" alt="Primary" />
                           <label className="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition cursor-pointer">
                               <Camera size={20} />
@@ -170,7 +170,7 @@ export const AdminProductManage: React.FC = () => {
                               />
                           </label>
                           {product.isPromo && (
-                              <div className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full shadow-sm">
+                              <div className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full shadow-2xl dark:shadow-none">
                                   <Gift size={10} />
                               </div>
                           )}
@@ -309,7 +309,7 @@ export const AdminProductManage: React.FC = () => {
                               </label>
                               <div className="flex flex-wrap gap-2">
                                   {(product.images || []).map((img, idx) => (
-                                      <div key={idx} className="w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-700 overflow-hidden relative group shrink-0 shadow-sm border border-gray-200 dark:border-gray-600">
+                                      <div key={idx} className="w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-700 overflow-hidden relative group shrink-0 shadow-2xl dark:shadow-none border border-gray-200 dark:border-gray-600">
                                           <img src={img || undefined} className="w-full h-full object-cover" alt="Gallery" />
                                           <button 
                                               onClick={() => handleRemoveGalleryImage(product.id, idx, product.images || [])}
@@ -339,7 +339,7 @@ export const AdminProductManage: React.FC = () => {
                               </label>
                               <div className="flex flex-wrap gap-2">
                                   {(product.descriptionImages || []).map((img, idx) => (
-                                      <div key={idx} className="w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-700 overflow-hidden relative group shrink-0 shadow-sm border border-gray-200 dark:border-gray-600">
+                                      <div key={idx} className="w-14 h-14 rounded-lg bg-gray-100 dark:bg-gray-700 overflow-hidden relative group shrink-0 shadow-2xl dark:shadow-none border border-gray-200 dark:border-gray-600">
                                           <img src={img || undefined} className="w-full h-full object-cover" alt="Description" />
                                           <button 
                                               onClick={() => handleRemoveDescriptionImage(product.id, idx, product.descriptionImages || [])}
@@ -373,7 +373,7 @@ export const AdminProductManage: React.FC = () => {
                           
                           <div className="flex space-x-2">
                               <button onClick={() => setEditingId(null)} className="flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-500 rounded-xl text-[10px] font-bold uppercase border border-gray-200 dark:border-gray-600">Cancel</button>
-                              <button onClick={() => handleSave(product.id)} className="flex-1 py-2 bg-indigo-500 text-white rounded-xl text-[10px] font-bold uppercase flex items-center justify-center space-x-1 shadow-sm"><Save size={12} /><span>Save Assets</span></button>
+                              <button onClick={() => handleSave(product.id)} className="flex-1 py-2 bg-indigo-500 text-white rounded-xl text-[10px] font-bold uppercase flex items-center justify-center space-x-1 shadow-2xl dark:shadow-none"><Save size={12} /><span>Save Assets</span></button>
                           </div>
                       </div>
                   ) : (

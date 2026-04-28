@@ -69,7 +69,7 @@ const MenuRow = ({ icon: Icon, label, subtitle, value, valueLabel, to, onClick, 
     className={`w-full flex items-start justify-between p-4 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 active:scale-[0.98] active:bg-slate-100 dark:active:bg-slate-800/60 transition-all duration-200 group ${!isLast ? 'border-b border-slate-50 dark:border-slate-800/50' : ''}`}
   >
     <div className="flex items-start space-x-4 min-w-0 flex-1">
-      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue'} flex items-center justify-center shadow-sm shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
+      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue'} flex items-center justify-center shadow-2xl dark:shadow-none shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
         <Icon size={20} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
       </div>
       <div className="flex flex-col items-start min-w-0 flex-1">
@@ -376,11 +376,11 @@ export const Account: React.FC = () => {
     <div className="pb-0 pt-0 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative overflow-x-hidden">
       
       {/* TOP BACKGROUND HEADER */}
-      <div className={`absolute top-0 left-0 right-0 h-48 bg-gradient-to-br ${colors.gradient} border-b-4 ${colors.border} z-0 shadow-lg`}>
+      <div className={`absolute top-0 left-0 right-0 h-48 bg-gradient-to-br ${colors.gradient} border-b-4 ${colors.border} z-0 shadow-2xl dark:shadow-none`}>
           <div className="absolute top-[-20px] left-[-20px] w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-[-10px] right-[-10px] w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
           <div className="absolute top-8 right-6 z-20">
-              <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-4 py-1.5 flex items-center shadow-lg animate-in fade-in slide-in-from-right-4 duration-700">
+              <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-4 py-1.5 flex items-center shadow-2xl dark:shadow-none animate-in fade-in slide-in-from-right-4 duration-700">
                   <div className="mr-2 p-1 bg-white/20 rounded-full">
                       <Crown size={12} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-white" />
                   </div>
@@ -395,7 +395,7 @@ export const Account: React.FC = () => {
       {isVerifyingPin && (
           <div className="fixed inset-0 z-[100] bg-white dark:bg-gray-900 flex flex-col items-center justify-start pt-20 px-6 transition-all duration-300 animate-in fade-in">
               <button onClick={() => setIsVerifyingPin(false)} className="absolute top-6 right-6 p-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-400"><X size={20} /></button>
-              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl mb-8 transition-all duration-500 ${showSuccess ? 'bg-emerald-50 text-white scale-110' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none mb-8 transition-all duration-500 ${showSuccess ? 'bg-emerald-50 text-white scale-110' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
                 {showSuccess ? <CheckCircle2 size={40} className="animate-in zoom-in" /> : (pinFlow === 'recovery' ? <Smartphone size={32} className="text-amber-500" /> : (pinFlow === 'verify' ? <Lock size={32} /> : <Sparkles size={32} className="animate-pulse" />))}
               </div>
               <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2 text-center">{getPinTitle()}</h2>
@@ -415,7 +415,7 @@ export const Account: React.FC = () => {
                   <>
                     <div className="flex space-x-4 mb-10">
                         {[...Array(6)].map((_, i) => (
-                        <div key={i} className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length ? 'bg-synergy-blue scale-125 shadow-glow' : 'bg-gray-200 dark:bg-gray-700'} ${pinError ? 'bg-red-50' : ''}`} />
+                        <div key={i} className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length ? 'bg-synergy-blue scale-125 shadow-2xl dark:shadow-none' : 'bg-gray-200 dark:bg-gray-700'} ${pinError ? 'bg-red-50' : ''}`} />
                         ))}
                     </div>
                     {pinFlow === 'verify' && (
@@ -446,9 +446,9 @@ export const Account: React.FC = () => {
           
           {/* Action Icons Area */}
           <div className="absolute top-6 right-6 flex items-center space-x-2.5 z-30">
-              <button onClick={() => triggerPinGate('/withdraw')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><Wallet size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
-              <button onClick={() => navigate('/referrer-info')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><UserCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
-              <button onClick={handleShareProfile} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-sm border border-white dark:border-gray-700 active:scale-90 transition-all`}><Share2 size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={() => triggerPinGate('/withdraw')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-2xl dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><Wallet size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={() => navigate('/referrer-info')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-2xl dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><UserCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={handleShareProfile} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-2xl dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><Share2 size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
           </div>
 
           {/* PROFILE SECTION */}
@@ -463,58 +463,67 @@ export const Account: React.FC = () => {
                   <div className="flex flex-col text-center w-64 -mx-20">
                       <div className="flex items-center justify-center space-x-1">
                         <h2 className="text-base font-bold text-gray-900 dark:text-white tracking-tight drop-shadow-sm leading-tight">{user.name}</h2>
-                        {kycStatus === 'Verified' && <div className="bg-emerald-500 text-white rounded-full p-0.5 shadow-sm flex items-center justify-center shrink-0"><Check size={8} strokeWidth={4} /></div>}
+                        {kycStatus === 'Verified' && <div className="bg-emerald-500 text-white rounded-full p-0.5 shadow-2xl dark:shadow-none flex items-center justify-center shrink-0"><Check size={8} strokeWidth={4} /></div>}
                       </div>
                   </div>
               </div>
           </div>
 
           {/* Today's Earnings Card */}
-          <div onClick={() => navigate('/leaderboard')} className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-xl p-6 mb-4 shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 relative overflow-hidden group transition-all duration-200 cursor-pointer active:scale-[0.98]`}>
-            <div className="text-center mb-6 relative z-10">
-                <div className={`inline-flex items-center space-x-2 ${colors.bgLight} px-3 py-1.5 rounded-full mb-2 border border-white/50 dark:border-gray-600 shadow-sm`}>
-                    <span className={`text-[10px] ${colors.text} font-black uppercase tracking-wider`}>Today's Earnings</span>
+          <div onClick={() => navigate('/leaderboard')} className={`w-full text-left bg-white dark:bg-slate-900 rounded-3xl p-7 mb-5 shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}>
+            <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-6">
+                    <div>
+                        <div className={`inline-flex items-center space-x-2 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-full mb-3 border border-slate-100 dark:border-slate-700/50 shadow-sm`}>
+                            <TrendingUp size={12} className={colors.text} strokeWidth={3} />
+                            <span className={`text-[9px] ${colors.text} font-black uppercase tracking-[0.15em]`}>Today's Earnings</span>
+                        </div>
+                        <h2 className="text-3xl font-black tracking-tighter leading-none text-slate-900 dark:text-white">
+                            ฿{Math.floor(animatedEarnings || 0).toLocaleString()}
+                        </h2>
+                    </div>
+                    <div className="flex flex-col items-end">
+                        <div className="text-xs font-black text-synergy-blue tracking-tighter mb-1">
+                            +{globalProgress}%
+                        </div>
+                        <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest leading-none">Activity</span>
+                    </div>
                 </div>
-                <div className="h-10 flex flex-col items-center justify-center">
-                    <h2 className={`text-2xl font-black ${colors.text} tracking-tight leading-none`}>฿{Math.floor(animatedEarnings || 0).toLocaleString()}</h2>
+
+                <div className="mt-auto">
+                    <div className="h-2.5 w-full bg-slate-50 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-100 dark:border-slate-700 shadow-inner relative mb-4">
+                        <div 
+                            className={`h-full ${colors.progress} rounded-full relative transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(37,99,235,0.4)]`} 
+                            style={{ width: `${globalProgress}%` }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                        </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-[0.1em] text-slate-400">
+                        <span className={user.tier === UserTier.STARTER ? 'text-synergy-blue' : ''}>Starter</span>
+                        <span className={user.tier === UserTier.MARKETER ? 'text-pink-600' : ''}>Marketer</span>
+                        <span className={user.tier === UserTier.BUILDER ? 'text-purple-700' : ''}>Builder</span>
+                        <span className={user.tier === UserTier.EXECUTIVE ? 'text-amber-600' : ''}>Executive</span>
+                    </div>
                 </div>
             </div>
-            <div className="relative z-10">
-                <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner relative mb-3">
-                     <div className={`h-full ${colors.progress} rounded-full relative transition-all duration-1000 ease-out`} style={{ width: `${globalProgress}%` }}><div className="absolute right-0 top-0 bottom-0 w-2 bg-white/50 rounded-full"></div></div>
-                </div>
-                <div className="flex justify-between text-[9px] font-black text-gray-500 dark:text-gray-400 px-1 tracking-widest uppercase">
-                    <span className={user.tier === UserTier.STARTER ? 'text-synergy-blue' : ''}>Starter</span>
-                    <span className={user.tier === UserTier.MARKETER ? 'text-pink-600' : ''}>Marketer</span>
-                    <span className={user.tier === UserTier.BUILDER ? 'text-purple-700 font-black' : ''}>Builder</span>
-                    <span className={user.tier === UserTier.EXECUTIVE ? 'text-amber-600 font-black' : ''}>Executive</span>
-                </div>
-            </div>
-            {/* Professional Premium Background Graphic (Matched with Affiliate Tiers style) */}
+
+            {/* Designer Background Graphics */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-                {/* Mesh Gradient Base */}
-                <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${colors.decoration} via-transparent to-transparent`}></div>
+                {/* Large Background Graphic */}
+                <div className="absolute right-[-2%] top-[-5%] font-black text-[8rem] text-slate-900 dark:text-white opacity-[0.03] tracking-tighter italic leading-none pointer-events-none transform -rotate-12 select-none">
+                    ฿
+                </div>
 
-                {/* Floating Concentric Rings (From Affiliate Tiers) */}
-                <svg className={`absolute -top-12 -right-12 w-64 h-64 opacity-[0.15] ${colors.text}`} viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                    <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                    <circle cx="100" cy="100" r="100" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                </svg>
-
-                {/* Subtle Light Beams */}
-                <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                {/* Sub-surface Glow */}
+                <div className="absolute -top-1/2 -right-1/4 w-full h-full bg-synergy-blue/5 rounded-full blur-[80px]"></div>
                 
-                {/* Modern Accents */}
-                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
                 
-                {/* Shine Animation on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
-                
-                {/* Grain Texture for premium feel */}
-                <div className="absolute inset-0 bg-grain opacity-[0.03] dark:opacity-[0.05] mix-blend-overlay"></div>
+                {/* Fine Grain Texture */}
+                <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
             </div>
           </div>
 
@@ -523,7 +532,7 @@ export const Account: React.FC = () => {
             activeAd ? (
                 <div 
                   onClick={() => navigate('/promotions')}
-                  className="w-full h-32 rounded-xl overflow-hidden shadow-soft mb-5 relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-gray-700 animate-in slide-in-from-bottom-2 duration-700"
+                  className="w-full h-32 rounded-xl overflow-hidden shadow-2xl dark:shadow-none mb-5 relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-gray-700 animate-in slide-in-from-bottom-2 duration-700"
                 >
                     <img src={activeAd.image || undefined} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="Account Ad" />
                     
@@ -546,48 +555,59 @@ export const Account: React.FC = () => {
             ) : (
                 <div 
                   onClick={() => navigate('/promotions')}
-                  className={`w-full h-32 rounded-xl ${colors.bgLight} backdrop-blur-xl mb-5 p-6 flex flex-col justify-center shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}
+                  className={`w-full min-h-[110px] rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 mb-5 p-5 shadow-2xl dark:shadow-none relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}
                 >
                     {/* Content Overlay */}
-                    <div className="relative z-10">
-                        <div className="flex items-center space-x-3 mb-1.5">
-                            <div className={`p-1.5 ${colors.bgLight} backdrop-blur-md rounded-xl border border-white/50 dark:border-gray-600 shadow-inner`}>
-                                <Store size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className={colors.text} />
+                    <div className="relative z-10 flex flex-col h-full justify-between">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="text-xl font-black tracking-tighter leading-none text-slate-900 dark:text-white">
+                                  Boost Store <span className="text-synergy-blue">Revenue</span>
+                                </h3>
+                                <p className="text-[9px] text-slate-500 dark:text-slate-400 font-bold leading-tight mt-1.5 max-w-[85%]">
+                                  Unlock priority commission flows & maximum network potential.
+                                </p>
                             </div>
-                            <h3 className={`text-lg font-black tracking-tight ${colors.text}`}>Empower Your Network</h3>
                         </div>
-                        <p className="text-[10px] text-gray-600 dark:text-gray-300 font-bold line-clamp-1 pl-1">Scale your earnings with 30% direct commission.</p>
                         
-                        <div className="mt-3 flex items-center justify-between">
-                            <button className={`${colors.progress} text-white px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
-                                <span>Explore More</span>
-                                <ArrowRight size={10} />
+                        <div className="mt-4 flex items-center justify-between">
+                            <button className="bg-synergy-blue text-white px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest flex items-center space-x-1.5 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-synergy-blue/40 border border-white/20">
+                                <span>Upgrade Now</span>
+                                <ArrowRight size={10} strokeWidth={3} />
                             </button>
-                            <div className="flex -space-x-3">
-                                {[1,2,3].map(i => (
-                                    <div key={i} className={`w-8 h-8 rounded-full border-2 border-white/50 dark:border-gray-600 ${colors.bgLight} backdrop-blur-sm flex items-center justify-center shadow-sm`}>
-                                        <Users size={14} className={colors.text} />
-                                    </div>
-                                ))}
+                            
+                            <div className="flex flex-col items-end">
+                                <div className="text-xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">
+                                    30<span className="text-xs text-synergy-blue"> %</span>
+                                </div>
+                                <span className="text-[6px] font-black text-slate-400 uppercase tracking-widest mt-0.5">Max Earnings</span>
                             </div>
                         </div>
                     </div>
-                    {/* Professional Network Background Graphic (Matched with Today's Earnings style) */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-                        {/* Mesh Gradient Base */}
-                        <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${colors.decoration} via-transparent to-transparent`}></div>
 
-                        {/* Subtle Light Beams */}
-                        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                        <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                    {/* Designer Background Graphics */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+                        {/* Large Background Graphic */}
+                        <div className="absolute right-[-5%] top-[-10%] font-black text-[10rem] text-slate-900 dark:text-white opacity-[0.03] tracking-tighter italic leading-none pointer-events-none transform -rotate-12 select-none flex items-start">
+                          <span>30</span>
+                          <span className="text-[4rem] mt-5 ml-1 opacity-60">%</span>
+                        </div>
+
+                        {/* Store Pattern Overlay */}
+                        <svg className="absolute left-0 top-0 w-full h-full opacity-[0.04]" viewBox="0 0 100 100">
+                            <pattern id="store-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.1" />
+                            </pattern>
+                            <rect width="100%" height="100%" fill="url(#store-grid)" />
+                        </svg>
+
+                        {/* Sub-surface Glow */}
+                        <div className="absolute -bottom-1/2 -left-1/4 w-full h-full bg-synergy-blue/5 rounded-full blur-[100px]"></div>
                         
-                        {/* Modern Accents */}
-                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                        {/* Shimmer Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
                         
-                        {/* Sweep Animation */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
-                        
-                        {/* Grain Texture */}
+                        {/* Fine Grain Texture */}
                         <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
                     </div>
                 </div>
@@ -601,7 +621,7 @@ export const Account: React.FC = () => {
                 <ShieldCheck size={14} className="mr-2" />
                 {t('account.admin')}
               </h3>
-              <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
+              <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={Database} label="System Infrastructure" subtitle="Monitor logs and core infrastructure" to="/admin/dashboard" colorClass="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={ImageIcon} label="Product Catalog" subtitle="Configure product details and media" to="/admin/products" colorClass="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
@@ -619,7 +639,7 @@ export const Account: React.FC = () => {
                 <BarChart3 size={14} className="mr-2" />
                 {t('account.business')}
             </h3>
-            <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
+            <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={BarChart2} label={t('menu.commissions')} subtitle={t('menu.commissions_sub')} value={`${currentRate}%`} valueLabel={t('account.currently')} to="/commissions" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Trophy} label={t('menu.leaderboard')} subtitle={t('menu.leaderboard_sub')} to="/leaderboard" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
@@ -636,7 +656,7 @@ export const Account: React.FC = () => {
                  <UserCog size={14} className="mr-2" />
                  {t('account.account_section')}
              </h3>
-             <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
+             <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={UserCog} label={t('menu.personal_info')} subtitle={t('menu.personal_info_sub')} to="/personal-info" requiresPin={true} navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={MapPin} label={t('menu.address_book')} subtitle={t('menu.address_book_sub')} to="/address-book" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />

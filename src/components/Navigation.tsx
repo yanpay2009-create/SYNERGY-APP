@@ -67,7 +67,7 @@ export const BottomNav: React.FC = () => {
 
   return (
     <div className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-500 ease-in-out ${bottomNavHidden ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-      <div className="max-w-md mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 pb-safe pt-1 px-2 shadow-soft dark:shadow-none rounded-t-3xl">
+      <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800 pb-safe pt-1 px-2 shadow-none rounded-t-3xl">
         <div className="flex justify-between items-center h-14 px-2">
           <NavItem to="/home" icon={Home} label={t('nav.home')} isActive={location.pathname === '/home'} />
           <NavItem to="/feed" icon={Zap} label={t('nav.feed')} isActive={location.pathname === '/feed'} />

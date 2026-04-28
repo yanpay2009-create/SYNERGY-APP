@@ -125,7 +125,7 @@ export const TierBenefits: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -145,7 +145,7 @@ export const TierBenefits: React.FC = () => {
 
       <button 
         onClick={() => navigate(`/tier-data/${user.tier}`)}
-        className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-3xl p-6 shadow-soft dark:shadow-none border border-white/60 dark:border-gray-700 mb-4 active:scale-[0.98] transition-all group relative overflow-hidden`}
+        className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-3xl p-6 shadow-2xl dark:shadow-none border border-white/60 dark:border-gray-700 mb-4 active:scale-[0.98] transition-all group relative overflow-hidden`}
       >
         <div className="relative z-10">
             <div className="flex justify-between items-center mb-4">
@@ -156,7 +156,7 @@ export const TierBenefits: React.FC = () => {
                     </div>
                     <h2 className={`text-2xl font-black ${colors.text}`}>{user.tier} Affiliate</h2>
                 </div>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border transition-transform group-hover:scale-110 ${colors.bgLight} ${colors.text} border-white/50 dark:border-gray-600`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl dark:shadow-none border transition-transform group-hover:scale-110 ${colors.bgLight} ${colors.text} border-white/50 dark:border-gray-600`}>
                     <colors.icon size={24} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
                 </div>
             </div>
@@ -183,18 +183,15 @@ export const TierBenefits: React.FC = () => {
             </div>
         </div>
 
-        {/* New Sophisticated Background Graphic: Glassy Waves & Floating Rings */}
+        {/* Sophisticated Background Graphic: Large Icon Watermark */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {/* Mesh Gradient Base */}
             <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${colors.decoration} via-transparent to-transparent`}></div>
             
-            {/* Floating Concentric Rings */}
-            <svg className={`absolute -top-12 -right-12 w-64 h-64 opacity-[0.15] ${colors.text}`} viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                <circle cx="100" cy="100" r="100" fill="none" stroke="currentColor" strokeWidth="0.5" />
-            </svg>
+            {/* Large Icon Watermark */}
+            <div className={`absolute -right-6 -bottom-6 opacity-[0.08] ${colors.text} transform -rotate-12`}>
+                <colors.icon size={180} strokeWidth={1} fill="currentColor" />
+            </div>
 
             {/* Subtle Light Beam */}
             <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
@@ -203,7 +200,7 @@ export const TierBenefits: React.FC = () => {
       </button>
 
       {user.tier !== UserTier.STARTER && (
-          <div className={`p-4 rounded-2xl mb-6 shadow-sm border flex items-start space-x-3 transition-colors duration-300 ${isEligible ? 'bg-green-50 dark:bg-emerald-900/20 border-green-100 dark:border-emerald-800 text-green-700 dark:text-emerald-400' : 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800 text-red-700 dark:text-red-400'}`}>
+          <div className={`p-4 rounded-2xl mb-6 shadow-2xl dark:shadow-none border flex items-start space-x-3 transition-colors duration-300 ${isEligible ? 'bg-green-50 dark:bg-emerald-900/20 border-green-100 dark:border-emerald-800 text-green-700 dark:text-emerald-400' : 'bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800 text-red-700 dark:text-red-400'}`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border ${isEligible ? 'bg-green-100 border-green-200 dark:bg-emerald-900/40 text-green-600 dark:text-emerald-300 dark:border-emerald-700' : 'bg-red-100 border-red-200 dark:bg-red-900/40 text-red-600 dark:text-red-300 dark:border-red-700'}`}>
                   {isEligible ? <Clock size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /> : <Clock size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} className="animate-pulse" />}
               </div>
@@ -235,11 +232,11 @@ export const TierBenefits: React.FC = () => {
                 (() => {
                     const currentTierColors = getTierColors(tier.name);
                     return (
-                        <div key={tier.name} className={`rounded-2xl p-5 border transition relative overflow-hidden ${isActive ? `shadow-md ring-1 ring-current/20` : 'shadow-sm opacity-90'} ${currentTierColors.bgLight} ${isActive ? `border-current ${currentTierColors.text}` : 'border-white/60 dark:border-gray-700'}`}>
+                        <div key={tier.name} className={`rounded-2xl p-5 border transition relative overflow-hidden ${isActive ? `shadow-2xl dark:shadow-none ring-1 ring-current/20` : 'shadow-2xl dark:shadow-none opacity-90'} ${currentTierColors.bgLight} ${isActive ? `border-current ${currentTierColors.text}` : 'border-white/60 dark:border-gray-700'}`}>
                             <div className="relative z-10">
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="flex items-center space-x-4">
-                                        <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md border ${tier.color} transition-transform`}>
+                                        <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none border ${tier.color} transition-transform`}>
                                             <tier.icon size={32} strokeWidth={1.5} fill="currentColor" fillOpacity={0.15} className="opacity-90" />
                                         </div>
                                         <div>

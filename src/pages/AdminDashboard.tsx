@@ -354,7 +354,7 @@ export const AdminDashboard: React.FC = () => {
             </button>
             <h1 className="text-xl font-black ml-2 text-gray-900 dark:text-white tracking-tight">Admin System</h1>
         </div>
-        <div className="flex items-center space-x-2 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-xl border border-emerald-100 dark:border-emerald-800 shadow-sm">
+        <div className="flex items-center space-x-2 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5 rounded-xl border border-emerald-100 dark:border-emerald-800 shadow-2xl dark:shadow-none">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">System Live</span>
         </div>
@@ -363,7 +363,7 @@ export const AdminDashboard: React.FC = () => {
       <div className="grid grid-cols-2 gap-4 mb-8">
           <div 
             onClick={() => setActiveTab('Orders')}
-            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-transparent dark:border-gray-700 hover:border-emerald-100 dark:hover:border-emerald-900/30 transition-all cursor-pointer active:scale-[0.97]"
+            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 hover:border-emerald-100 dark:hover:border-emerald-900/30 transition-all cursor-pointer active:scale-[0.97]"
           >
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-500">
@@ -377,7 +377,7 @@ export const AdminDashboard: React.FC = () => {
 
           <div 
             onClick={() => setActiveTab('Members')}
-            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-transparent dark:border-gray-700 hover:border-blue-100 dark:hover:border-blue-900/30 transition-all cursor-pointer active:scale-[0.97]"
+            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 hover:border-blue-100 dark:hover:border-blue-900/30 transition-all cursor-pointer active:scale-[0.97]"
           >
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-synergy-blue">
@@ -391,7 +391,7 @@ export const AdminDashboard: React.FC = () => {
 
           <div 
             onClick={() => setActiveTab('Orders')}
-            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-transparent dark:border-gray-700 hover:border-orange-100 dark:hover:border-orange-900/30 transition-all cursor-pointer active:scale-[0.97]"
+            className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 hover:border-orange-100 dark:hover:border-orange-900/30 transition-all cursor-pointer active:scale-[0.97]"
           >
               <div className="flex items-center space-x-2 mb-2">
                   <div className="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-orange-500">
@@ -405,7 +405,7 @@ export const AdminDashboard: React.FC = () => {
 
           <div 
             onClick={() => setActiveTab('Withdrawals')}
-            className={`p-4 rounded-2xl shadow-sm border transition-all cursor-pointer active:scale-[0.97] ${pendingWithdrawalsCount > 0 ? 'bg-red-50/30 border-red-100 dark:bg-red-900/10 dark:border-red-900/40' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-red-100 dark:hover:border-red-900/30'}`}
+            className={`p-4 rounded-2xl shadow-2xl dark:shadow-none border transition-all cursor-pointer active:scale-[0.97] ${pendingWithdrawalsCount > 0 ? 'bg-red-50/30 border-red-100 dark:bg-red-900/10 dark:border-red-900/40' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-red-100 dark:hover:border-red-900/30'}`}
           >
               <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
@@ -422,7 +422,7 @@ export const AdminDashboard: React.FC = () => {
 
           <div 
             onClick={() => setActiveTab('KYC')}
-            className={`p-4 rounded-2xl shadow-sm border transition-all cursor-pointer active:scale-[0.97] ${pendingKycCount > 0 ? 'bg-amber-50/30 border-amber-100 dark:bg-amber-900/10 dark:border-amber-900/40' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-amber-100 dark:hover:border-amber-900/30'}`}
+            className={`p-4 rounded-2xl shadow-2xl dark:shadow-none border transition-all cursor-pointer active:scale-[0.97] ${pendingKycCount > 0 ? 'bg-amber-50/30 border-amber-100 dark:bg-amber-900/10 dark:border-amber-900/40' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-amber-100 dark:hover:border-amber-900/30'}`}
           >
               <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
@@ -439,7 +439,7 @@ export const AdminDashboard: React.FC = () => {
 
           <div 
             onClick={() => setActiveTab('Posts')}
-            className={`p-4 rounded-2xl shadow-sm border transition-all cursor-pointer active:scale-[0.97] ${pendingPostsCount > 0 ? 'bg-purple-50/30 border-purple-100 dark:bg-purple-900/10 dark:border-purple-900/40' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-purple-100 dark:hover:border-purple-900/30'}`}
+            className={`p-4 rounded-2xl shadow-2xl dark:shadow-none border transition-all cursor-pointer active:scale-[0.97] ${pendingPostsCount > 0 ? 'bg-purple-50/30 border-purple-100 dark:bg-purple-900/10 dark:border-purple-900/40' : 'bg-white dark:bg-gray-800 border-transparent dark:border-gray-700 hover:border-purple-100 dark:hover:border-purple-900/30'}`}
           >
               <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
@@ -464,7 +464,7 @@ export const AdminDashboard: React.FC = () => {
                 setStatusFilter('All');
                 setSearchQuery('');
             }}
-            className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeTab === t ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-md scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
+            className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeTab === t ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-2xl dark:shadow-none scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
           >
             {t === 'Posts' && pendingPostsCount > 0 ? `Posts (${pendingPostsCount})` : t}
           </button>
@@ -473,7 +473,7 @@ export const AdminDashboard: React.FC = () => {
 
       {activeTab === 'Settings' ? (
           <div className="space-y-6 animate-in fade-in duration-500">
-              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700">
                   <div className="flex items-center space-x-3 mb-6">
                       <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl flex items-center justify-center text-indigo-500">
                           <Layout size={20} />
@@ -536,7 +536,7 @@ export const AdminDashboard: React.FC = () => {
                   </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700">
                   <div className="flex items-center space-x-3 mb-6">
                       <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-synergy-blue">
                           <ImageIcon size={20} />
@@ -567,7 +567,7 @@ export const AdminDashboard: React.FC = () => {
                   </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700">
                   <div className="flex items-center space-x-3 mb-6">
                       <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl flex items-center justify-center text-emerald-500">
                           <Globe size={20} />
@@ -590,7 +590,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               {/* --- DANGEROUS: FACTORY RESET --- */}
-              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-red-100 dark:border-red-900/30">
+              <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-red-100 dark:border-red-900/30">
                   <div className="flex items-center space-x-3 mb-6">
                       <div className="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center text-red-500">
                           <Trash2 size={20} />
@@ -607,42 +607,42 @@ export const AdminDashboard: React.FC = () => {
                   <div className="space-y-3">
                       <button 
                         onClick={() => seedInitialData()}
-                        className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+                        className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-2xl dark:shadow-none active:scale-95"
                       >
                         Seed Initial Platform Data
                       </button>
 
                       <button 
                         onClick={() => healReferralCodes()}
-                        className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-amber-500/20 active:scale-95"
+                        className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-2xl dark:shadow-none active:scale-95"
                       >
                         Heal Duplicate Referral Codes
                       </button>
 
                       <button 
                         onClick={() => healTeamSizes()}
-                        className="w-full py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+                        className="w-full py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-2xl dark:shadow-none active:scale-95"
                       >
                         Heal Team Sizes (Net Members)
                       </button>
 
                       <button 
                         onClick={() => healUplinePaths()}
-                        className="w-full py-4 bg-purple-500 hover:bg-purple-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-purple-500/20 active:scale-95"
+                        className="w-full py-4 bg-purple-500 hover:bg-purple-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-2xl dark:shadow-none active:scale-95"
                       >
                         Heal Upline Paths (Network Tree)
                       </button>
 
                       <button 
                         onClick={() => healPhoneMap()}
-                        className="w-full py-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
+                        className="w-full py-4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-2xl dark:shadow-none active:scale-95"
                       >
                         Heal Phone/Email Mappings (Login Fix)
                       </button>
                       
                       <button 
                         onClick={() => setShowResetConfirm(true)}
-                        className="w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-red-500/20 active:scale-95"
+                        className="w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-[20px] font-black text-[10px] uppercase tracking-widest transition-all shadow-2xl dark:shadow-none active:scale-95"
                       >
                         Factory Reset System
                       </button>
@@ -652,7 +652,7 @@ export const AdminDashboard: React.FC = () => {
       ) : activeTab === 'Events' ? (
           <div className="bg-transparent animate-in fade-in duration-500 space-y-6">
               <div className="flex items-center space-x-3 mb-2 px-2">
-                  <div className="w-11 h-11 bg-indigo-100 dark:bg-indigo-900/40 rounded-[18px] flex items-center justify-center text-indigo-600 shadow-sm border border-white dark:border-gray-700">
+                  <div className="w-11 h-11 bg-indigo-100 dark:bg-indigo-900/40 rounded-[18px] flex items-center justify-center text-indigo-600 shadow-2xl dark:shadow-none border border-white dark:border-gray-700">
                       <Sparkles size={22} fill="currentColor" />
                   </div>
                   <div>
@@ -662,7 +662,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               <div className="space-y-6">
-                  <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700">
+                  <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700">
                       <div className="flex items-center space-x-3 mb-4">
                           <ImageIcon size={18} className="text-synergy-blue" />
                           <h4 className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-widest">Promotion Image (PNG Transparent Recommended)</h4>
@@ -685,7 +685,7 @@ export const AdminDashboard: React.FC = () => {
                       </div>
                   </div>
                   
-                  <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700">
+                  <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700">
                       <div className="space-y-5">
                           <div className="space-y-2">
                               <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-2">Promotion Title (Optional)</label>
@@ -725,7 +725,7 @@ export const AdminDashboard: React.FC = () => {
                       <button 
                         onClick={activePromo ? stopBroadcast : handleBroadcast}
                         disabled={isBroadcasting || (!activePromo && !promoForm.image)}
-                        className={`w-full h-16 rounded-[24px] font-black uppercase tracking-widest text-[11px] shadow-lg flex items-center justify-center space-x-3 active:scale-95 transition-all ${activePromo ? 'bg-red-500 text-white shadow-red-200' : 'bg-synergy-blue text-white shadow-blue-200'}`}
+                        className={`w-full h-16 rounded-[24px] font-black uppercase tracking-widest text-[11px] shadow-2xl dark:shadow-none flex items-center justify-center space-x-3 active:scale-95 transition-all ${activePromo ? 'bg-red-500 text-white shadow-red-200' : 'bg-synergy-blue text-white shadow-blue-200'}`}
                       >
                           {isBroadcasting ? (
                               <Loader2 size={20} className="animate-spin" />
@@ -747,7 +747,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
           </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-gray-700 transition-all">
+        <div className="bg-white dark:bg-gray-800 rounded-[32px] p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 transition-all">
             <div className="flex justify-between items-center mb-5 px-1">
                 <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-[0.1em] text-xs">
                     {activeTab === 'Posts' ? 'Compliance Queue' : `Registry: ${activeTab}`}
@@ -755,7 +755,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="flex space-x-2">
                     <button 
                       onClick={toggleSearch}
-                      className={`p-2 rounded-xl transition-all ${showSearch ? 'bg-synergy-blue text-white shadow-glow' : 'bg-gray-50 dark:bg-gray-900 text-gray-400 shadow-inner'}`}
+                      className={`p-2 rounded-xl transition-all ${showSearch ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none' : 'bg-gray-50 dark:bg-gray-900 text-gray-400 shadow-inner'}`}
                     >
                       {showSearch ? <X size={16} /> : <Search size={16} />}
                     </button>

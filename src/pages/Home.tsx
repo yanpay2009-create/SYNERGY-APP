@@ -22,12 +22,12 @@ const LiveSalesFeed: React.FC<{ sales: any[] }> = ({ sales }) => {
         </div>
         <span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800">Real-time</span>
       </div>
-      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-soft border border-slate-100 dark:border-slate-800 overflow-hidden relative">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden relative">
         <div className="space-y-3">
           {sales.slice(0, 3).map((sale, idx) => (
             <div key={sale.id || idx} className={`flex items-center justify-between animate-in slide-in-from-right-4 duration-500 delay-${idx * 100} fill-mode-both`}>
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-[10px] font-black shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-[10px] font-black shadow-2xl dark:shadow-none">
                   {sale.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <div>
@@ -51,7 +51,7 @@ const LiveSalesFeed: React.FC<{ sales: any[] }> = ({ sales }) => {
 };
 
 export const Home: React.FC = () => {
-  const { user, products, addToCart, calculateCommission, t, notifications, ads, setIsSearchActive, setBottomNavHidden, referrer, addReferrer, commissions, team, liveSales } = useApp();
+  const { user, products, addToCart, calculateCommission, t, notifications, ads, setIsSearchActive, setBottomNavHidden, referrer, addReferrer, commissions, team, liveSales, getNextTierTarget } = useApp();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -189,25 +189,24 @@ export const Home: React.FC = () => {
   const categories = ['All', 'Health', 'Gadgets', 'Beauty', 'Fashion', 'Home'];
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  let globalProgress = 0; 
-  if (user) {
-    const sales = user.accumulatedSales;
-    const t_marketer = TIER_THRESHOLDS[UserTier.MARKETER];
-    const t_builder = TIER_THRESHOLDS[UserTier.BUILDER];
-    const t_executive = TIER_THRESHOLDS[UserTier.EXECUTIVE];
+  const nextTarget = getNextTierTarget();
 
-    if (sales >= t_executive) {
-        globalProgress = 100;
-    } else if (sales >= t_builder) {
-        globalProgress = 50 + ((sales - t_builder) / (t_executive - t_builder)) * 50;
-    } else if (sales >= t_marketer) {
-        globalProgress = 25 + ((sales - t_marketer) / (t_builder - t_marketer)) * 25;
-    } else {
-        globalProgress = (sales / t_marketer) * 25;
-    }
-  }
+  const currentTierRef = useRef<HTMLDivElement>(null);
+  const tiersOrder = useMemo(() => [UserTier.STARTER, UserTier.MARKETER, UserTier.BUILDER, UserTier.EXECUTIVE], []);
 
-  const tierColors = getTierColors(user?.tier);
+  useEffect(() => {
+    // Small delay to ensure render is complete and currentTierRef is attached
+    const timer = setTimeout(() => {
+      if (currentTierRef.current) {
+        currentTierRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const getDiscountedPrice = useCallback((product: Product) => {
       let tierDiscount = 0;
@@ -222,11 +221,12 @@ export const Home: React.FC = () => {
   }, [user]);
 
   return (
-    <div className="pb-20 pt-0 max-w-md mx-auto min-h-screen bg-slate-50 dark:bg-slate-900 relative transition-colors duration-300 font-sans">
-      {/* Unified Sticky Header */}
-      <div className={`fixed top-0 left-0 right-0 z-[100] max-w-md mx-auto transition-all duration-300 ease-in-out ${
+    <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-900 transition-colors duration-300 overflow-x-hidden">
+      <div className="pb-20 pt-0 relative font-sans w-full">
+        {/* Unified Sticky Header */}
+      <div className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${
         scrolled || homeAds.length === 0
-          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl py-3 px-4 shadow-soft'
+          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl py-3 px-4 shadow-none'
           : 'pt-8 pb-4 px-4 bg-transparent'
       }`}>
         <div className="flex items-center space-x-3">
@@ -292,7 +292,7 @@ export const Home: React.FC = () => {
            {homeAds.length > 1 && (
                <div className="absolute bottom-5 right-6 flex space-x-1.5 z-10">
                   {homeAds.map((_, idx) => (
-                      <div key={idx} className={`h-1.5 rounded-full transition-all duration-500 ease-out backdrop-blur-sm ${currentSlide === idx ? 'bg-white w-6 shadow-glow' : 'bg-white/30 w-1.5'}`} />
+                      <div key={idx} className={`h-1.5 rounded-full transition-all duration-500 ease-out backdrop-blur-sm ${currentSlide === idx ? 'bg-white w-6 shadow-2xl dark:shadow-none' : 'bg-white/30 w-1.5'}`} />
                   ))}
                </div>
            )}
@@ -311,7 +311,7 @@ export const Home: React.FC = () => {
             <button 
               key={i} role="tab" aria-selected={activeCategory === cat}
               onClick={() => setActiveCategory(cat)}
-              className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold transition ${activeCategory === cat ? 'bg-synergy-blue text-white shadow-glow' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
+              className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold transition ${activeCategory === cat ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
             >
               {t(`home.cat.${cat.toLowerCase()}`)}
             </button>
@@ -328,7 +328,7 @@ export const Home: React.FC = () => {
                   onClick={() => navigate('/affiliate-links')}
                   className="animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both cursor-pointer active:scale-[0.98] transition-all"
                 >
-                  <div className="w-full h-32 rounded-xl overflow-hidden shadow-soft border border-slate-100 dark:border-slate-800 relative">
+                  <div className="w-full h-32 rounded-xl overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                     <img 
                       src={homeBannerAds[0].image} 
                       alt={homeBannerAds[0].title} 
@@ -347,50 +347,77 @@ export const Home: React.FC = () => {
                   className="animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both cursor-pointer active:scale-[0.98] transition-all"
                 >
                   <div 
-                    className={`w-full h-32 rounded-xl ${tierColors.bgLight} backdrop-blur-xl p-6 flex flex-col justify-center shadow-soft dark:shadow-none border border-white/60 dark:border-slate-800 relative overflow-hidden group transition-all duration-500`}
+                    className={`w-full min-h-[110px] rounded-2xl bg-white dark:bg-slate-900 p-5 flex flex-col justify-between shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group transition-all duration-700 hover:shadow-synergy-blue/20`}
                   >
                     {/* Content Overlay */}
-                    <div className="relative z-10">
-                      <div className="flex items-start mb-1.5">
-                        <div className="flex flex-col">
-                          <h3 className="text-xl font-black tracking-tight leading-tight">
-                            <span className="text-slate-900 dark:text-white">SYNERGY</span>
-                            <span className="text-synergy-blue ml-1.5">FLOW</span>
-                          </h3>
-                          <p className="text-[10px] text-slate-700 dark:text-slate-300 font-bold line-clamp-1">Affiliate Earn up to 30% Commission</p>
+                    <div className="relative z-10 flex flex-col h-full w-full">
+                      <div className="flex flex-col">
+                        <h3 className="text-2xl font-black tracking-tighter leading-tight mb-1">
+                          <span className="text-slate-900 dark:text-white">SYNERGY</span>
+                          <span className="text-synergy-blue">FLOW</span>
+                        </h3>
+                        
+                        <div className="flex items-center space-x-2 text-synergy-blue">
+                           <div className="p-1 bg-blue-50 dark:bg-blue-900/10 rounded-md">
+                             <Share2 size={12} strokeWidth={2.5} />
+                           </div>
+                           <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-70">Affiliate Program</span>
                         </div>
                       </div>
-                      
-                      <div className="mt-3 flex items-center justify-between">
-                        <button className={`${tierColors.progress} text-white px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center space-x-2 hover:bg-opacity-90 transition-all shadow-lg active:scale-95`}>
-                          <span>Explore More</span>
-                          <ArrowRight size={10} />
+
+                      <div className="flex items-center space-x-4 mt-4">
+                        <button className="bg-synergy-blue text-white px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest flex items-center space-x-1.5 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-synergy-blue/40 border border-white/20">
+                          <span>Join Now</span>
+                          <ArrowRight size={10} strokeWidth={3} />
                         </button>
-                        <div className="flex -space-x-3">
-                          {[1, 2, 3].map(i => (
-                            <div key={i} className={`w-8 h-8 rounded-full border-2 border-white/50 dark:border-slate-700 ${tierColors.bgLight} backdrop-blur-sm flex items-center justify-center shadow-sm`}>
-                              <Users size={14} className={tierColors.text} />
+                      </div>
+                      
+                      {/* Users section positioned absolutely for precise corner placement */}
+                      <div className="absolute bottom-0 right-0 flex flex-col items-end group-hover:translate-y-[-2px] transition-transform duration-500">
+                         <div className="flex -space-x-2 items-center">
+                            {[1, 2, 3].map(i => (
+                              <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-100 dark:bg-slate-800 shadow-2xl dark:shadow-none overflow-hidden transform hover:-translate-y-1 transition-transform">
+                                <img 
+                                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 45}`} 
+                                  alt="User"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            ))}
+                            <div className="w-8 h-8 rounded-full bg-synergy-blue border-2 border-white dark:border-slate-800 flex items-center justify-center shadow-2xl dark:shadow-none transform hover:scale-110 transition-transform cursor-pointer">
+                               <Plus size={10} className="text-white" strokeWidth={3} />
                             </div>
-                          ))}
-                        </div>
+                         </div>
                       </div>
                     </div>
-                    {/* Professional Premium Background Graphic (Matched with Today's Earnings style) */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-                      {/* Mesh Gradient Base */}
-                      <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${tierColors.decoration} via-transparent to-transparent`}></div>
 
-                      {/* Subtle Light Beams */}
-                      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                      <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                    {/* Designer Background Graphics */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+                      {/* Background Large 30% Graphic */}
+                      <div className="absolute right-[-2%] top-[-5%] font-black text-[9rem] text-slate-900 dark:text-white opacity-[0.04] tracking-tighter italic leading-none pointer-events-none transform -rotate-12 select-none flex items-start">
+                        <span>30</span>
+                        <span className="text-[4rem] mt-4 ml-1 opacity-60">%</span>
+                      </div>
+
+                      {/* Sub-surface Glow */}
+                      <div className="absolute -top-1/2 -left-1/4 w-full h-full bg-synergy-blue/10 rounded-full blur-[120px]"></div>
+                      <div className="absolute top-1/4 -right-1/4 w-full h-full bg-synergy-blue/15 rounded-full blur-[100px]"></div>
                       
-                      {/* Modern Accents */}
-                      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                      {/* Vector Patterns */}
+                      <svg className="absolute right-[-5%] top-[-5%] w-[40%] text-slate-50 dark:text-slate-800/20 fill-current opacity-50" viewBox="0 0 100 100">
+                         <circle cx="100" cy="0" r="100" fill="currentColor" fillOpacity="0.1" />
+                         <circle cx="100" cy="0" r="80" fill="currentColor" fillOpacity="0.05" />
+                         <circle cx="100" cy="0" r="60" fill="none" stroke="currentColor" strokeWidth="0.5" strokeOpacity="0.2" />
+                      </svg>
+
+                      {/* Moving Highlight */}
+                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-transparent via-white/5 dark:via-blue-400/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
                       
-                      {/* Sweep Animation */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
-                      
-                      {/* Grain Texture */}
+                      {/* Geometric Decals */}
+                      <div className="absolute bottom-10 left-32 w-12 h-12 border border-slate-100 dark:border-slate-800 rounded-lg rotate-12 opacity-50"></div>
+                      <div className="absolute top-20 right-40 w-8 h-8 border border-synergy-blue/10 rounded-full opacity-30"></div>
+
+                      {/* Fine Grain Texture */}
                       <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
                     </div>
                   </div>
@@ -430,7 +457,7 @@ export const Home: React.FC = () => {
                 <div className="mb-4 animate-in slide-in-from-right-4 duration-700">
                     <div 
                       onClick={() => navigate('/promotions')}
-                      className="w-full h-32 rounded-xl overflow-hidden shadow-soft relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-slate-800"
+                      className="w-full h-32 rounded-xl overflow-hidden shadow-2xl dark:shadow-none relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-slate-800"
                     >
                         <img src={promoAd.image || undefined} alt="Promo Background" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
                         
@@ -454,52 +481,100 @@ export const Home: React.FC = () => {
             )}
 
             <div className="mb-4">
-                <div className="flex items-center space-x-2 mb-3">
-                    <TrendingUp className="text-synergy-blue" size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('home.affiliate_progress')}</h3>
+                <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                        <TrendingUp className="text-synergy-blue" size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('home.affiliate_progress')}</h3>
+                    </div>
+                    <button onClick={() => navigate('/tier-benefits')} className="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        Details
+                    </button>
                 </div>
-                <button onClick={() => navigate('/tier-benefits')} className={`w-full text-left ${tierColors.bgLight} backdrop-blur-xl rounded-xl p-6 shadow-soft dark:shadow-none border border-white/60 dark:border-slate-800 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-200`}>
-                    <div className="text-center mb-6 relative z-10">
-                        <div className={`inline-flex items-center space-x-2 ${tierColors.bgLight} px-3 py-1.5 rounded-full mb-2 border border-white/50 dark:border-slate-700 shadow-sm`}>
-                            {tierColors.icon && <tierColors.icon size={12} className={tierColors.text} />}
-                            <span className={`text-[10px] ${tierColors.text} font-black uppercase tracking-wider`}>{user?.tier === UserTier.EXECUTIVE ? 'Max Level Active' : 'Level Up Path'}</span>
-                        </div>
-                        <div className="h-10 flex flex-col items-center justify-center">
-                            <h2 className={`text-2xl font-black tracking-tight leading-none ${tierColors.text}`}>Road To Executive</h2>
-                            <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1 font-medium">Earn up to 30% Commission</p>
-                        </div>
-                    </div>
+                
+                <div className="flex space-x-0 overflow-x-auto no-scrollbar -mx-4 snap-x snap-mandatory pb-6">
+                    {tiersOrder.map((tier) => {
+                        const colors = getTierColors(tier);
+                        const threshold = TIER_THRESHOLDS[tier];
+                        const isReached = user ? user.accumulatedSales >= threshold : false;
+                        const isCurrent = user?.tier === tier;
+                        
+                        // Calculate progress for this tier card
+                        let progress = 0;
+                        if (isReached) {
+                            progress = 100;
+                        } else {
+                            // Find the previous threshold to calculate % correctly for this level
+                            const tierIdx = tiersOrder.indexOf(tier);
+                            const prevThreshold = tierIdx > 0 ? TIER_THRESHOLDS[tiersOrder[tierIdx - 1]] : 0;
+                            const range = threshold - prevThreshold;
+                            const currentPos = (user?.accumulatedSales ?? 0) - prevThreshold;
+                            progress = Math.max(0, Math.min(100, (currentPos / range) * 100));
+                        }
 
-                    <div className="relative z-10">
-                        <div className="h-2 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner relative mb-3">
-                            <div className={`h-full ${tierColors.progress} rounded-full relative transition-all duration-1000 ease-out`} style={{ width: `${globalProgress}%` }}><div className="absolute right-0 top-0 bottom-0 w-2 bg-white/50 rounded-full"></div></div>
-                        </div>
-                        <div className="flex justify-between text-[9px] font-black text-slate-500 dark:text-slate-400 px-1 uppercase tracking-widest">
-                            <span className={user?.tier === UserTier.STARTER ? 'text-synergy-blue' : ''}>Starter</span>
-                            <span className={user?.tier === UserTier.MARKETER ? 'text-pink-600' : ''}>Marketer</span>
-                            <span className={user?.tier === UserTier.BUILDER ? 'text-purple-700 font-black' : ''}>Builder</span>
-                            <span className={user?.tier === UserTier.EXECUTIVE ? 'text-amber-600 font-black' : ''}>Executive</span>
-                        </div>
-                    </div>
-                    {/* Professional Level Up Background Graphic (Matched with Today's Earnings style) */}
-                    <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-                        {/* Mesh Gradient Base */}
-                        <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${tierColors.decoration} via-transparent to-transparent`}></div>
+                        return (
+                            <div 
+                                key={tier}
+                                ref={isCurrent ? currentTierRef : null}
+                                className="w-full shrink-0 snap-center px-4"
+                            >
+                                <button 
+                                    onClick={() => navigate('/tier-benefits')}
+                                    className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-3xl p-6 shadow-2xl dark:shadow-none border border-white/60 dark:border-slate-800 transition-all active:scale-[0.98] group relative overflow-hidden h-full`}
+                                >
+                                    <div className="relative z-10">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <div>
+                                                <div className="flex items-center space-x-1 mb-1">
+                                                    <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest">
+                                                        {isReached ? (isCurrent ? 'Current Tier' : 'Completed') : 'Level Up Path'}
+                                                    </p>
+                                                    {isReached && <TrendingUp size={10} strokeWidth={2.5} fill="currentColor" fillOpacity={0.2} className="text-synergy-blue" />}
+                                                </div>
+                                                <h2 className={`text-2xl font-black ${colors.text}`}>{tier} Affiliate</h2>
+                                            </div>
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl dark:shadow-none border transition-transform group-hover:scale-110 ${colors.bgLight} ${colors.text} border-white/50 dark:border-slate-700`}>
+                                                {colors.icon && <colors.icon size={24} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="mb-2">
+                                            <div className="flex justify-between text-[10px] font-bold uppercase tracking-tighter mb-1.5">
+                                                <span className="text-slate-500 dark:text-slate-400">
+                                                    {isReached ? 'Threshold Reached' : 'Next Target'}
+                                                </span>
+                                                <span className={colors.text}>{progress.toFixed(0)}% Complete</span>
+                                            </div>
+                                            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                                <div 
+                                                    className={`h-full transition-all duration-1000 ${colors.progress}`} 
+                                                    style={{ width: `${progress}%` }}
+                                                ></div>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between mt-3">
+                                            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">
+                                                {isReached 
+                                                    ? `Goal: ฿${threshold.toLocaleString()}` 
+                                                    : `฿${(threshold - (user?.accumulatedSales ?? 0)).toLocaleString()} remaining`}
+                                            </p>
+                                            <span className={`text-[9px] font-bold ${colors.text} uppercase tracking-widest ${colors.bgLight} px-2 py-0.5 rounded-full`}>View Details</span>
+                                        </div>
+                                    </div>
 
-                        {/* Subtle Light Beams */}
-                        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
-                        <div className="absolute top-0 left-1/3 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
-                        
-                        {/* Modern Accents */}
-                        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-                        
-                        {/* Sweep Animation */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-sweep" style={{ animationDuration: '4s' }}></div>
-                        
-                        {/* Grain Texture */}
-                        <div className="absolute inset-0 bg-grain opacity-[0.02] mix-blend-overlay"></div>
-                    </div>
-                </button>
+                                    {/* Background Graphic */}
+                                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                                        <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${colors.decoration} via-transparent to-transparent`}></div>
+                                        <div className={`absolute -right-6 -bottom-6 opacity-[0.08] ${colors.text} transform -rotate-12`}>
+                                            {colors.icon && <colors.icon size={180} strokeWidth={1} fill="currentColor" />}
+                                        </div>
+                                        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-white/20 to-transparent rotate-12 opacity-30"></div>
+                                        <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent rotate-12 opacity-20"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
           </>
         )}
@@ -531,5 +606,6 @@ export const Home: React.FC = () => {
         )}
       </div>
     </div>
-  );
+  </div>
+);
 };

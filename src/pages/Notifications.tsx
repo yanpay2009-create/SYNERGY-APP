@@ -137,7 +137,7 @@ export const Notifications: React.FC = () => {
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Sticky Blurred Header */}
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -170,9 +170,9 @@ export const Notifications: React.FC = () => {
                     <div 
                         key={notif.id} 
                         onClick={() => handleNotifClick(notif)}
-                        className={`p-4 rounded-[24px] flex items-start space-x-4 transition cursor-pointer active:scale-[0.98] ${notif.read ? 'bg-white/60 dark:bg-gray-800/40 opacity-80' : 'bg-white dark:bg-gray-800 shadow-soft dark:shadow-none border border-transparent hover:border-gray-100 dark:hover:border-gray-700'}`}
+                        className={`p-4 rounded-[24px] flex items-start space-x-4 transition cursor-pointer active:scale-[0.98] ${notif.read ? 'bg-white/60 dark:bg-gray-800/40 opacity-80' : 'bg-white dark:bg-gray-800 shadow-2xl dark:shadow-none border border-transparent hover:border-gray-100 dark:hover:border-gray-700'}`}
                     >
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm relative ${getColor(notif)}`}>
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-2xl dark:shadow-none relative ${getColor(notif)}`}>
                             {getIcon(notif)}
                             {notif.userId === 'global' && (
                                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center border-2 border-transparent">
@@ -204,7 +204,7 @@ export const Notifications: React.FC = () => {
       {/* POPUP 3: GENERAL NOTIF */}
       {selectedNotif && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-8 bg-black/70 backdrop-blur-md animate-in fade-in duration-300" onClick={() => setSelectedNotif(null)}>
-              <div className="bg-white dark:bg-gray-900 w-full max-w-[310px] rounded-[40px] overflow-hidden shadow-2xl animate-in zoom-in-95 relative border border-white/20 dark:border-gray-800" onClick={(e) => e.stopPropagation()}>
+              <div className="bg-white dark:bg-gray-900 w-full max-w-[310px] rounded-[40px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 relative border border-white/20 dark:border-gray-800" onClick={(e) => e.stopPropagation()}>
                   <div className={`p-6 bg-gradient-to-br from-gray-700 to-gray-900 flex justify-between items-start relative overflow-hidden`}>
                       <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-12 -mt-12 blur-2xl"></div>
                       <div className="relative z-10 text-white">

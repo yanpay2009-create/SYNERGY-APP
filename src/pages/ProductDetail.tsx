@@ -152,7 +152,7 @@ export const ProductDetail: React.FC = () => {
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Header Bar */}
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -407,12 +407,11 @@ export const ProductDetail: React.FC = () => {
                                 View All
                             </button>
                         </div>
-                        <div className="flex space-x-4 overflow-x-auto no-scrollbar pb-4 -mx-2 px-2">
+                        <div className="grid grid-cols-2 gap-2 -mx-2">
                             {relatedProducts.map(relProduct => (
                                 <ProductCard 
                                     key={relProduct.id}
                                     product={relProduct}
-                                    isFeatured={true}
                                 />
                             ))}
                         </div>

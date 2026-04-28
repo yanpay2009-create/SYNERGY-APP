@@ -17,7 +17,7 @@ export const AboutUs: React.FC = () => {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm mb-3 active:scale-[0.98] transition hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent dark:border-gray-700"
+        className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-none mb-3 active:scale-[0.98] transition hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent dark:border-gray-700"
       >
         <div className="flex items-center space-x-3">
           <div className={`w-9 h-9 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-blue-900/20 text-synergy-blue'} flex items-center justify-center`}>
@@ -32,7 +32,7 @@ export const AboutUs: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -56,7 +56,7 @@ export const AboutUs: React.FC = () => {
         <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">Version 1.0.1 Stable</p>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-sm border border-transparent dark:border-gray-700 mb-8">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 shadow-2xl dark:shadow-none border border-transparent dark:border-gray-700 mb-8">
           <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed text-center font-medium">
               Synergy Flow is the ultimate affiliate marketing platform designed to empower creators and sellers. We combine the best elements of e-commerce and social influence to create a seamless earning experience for the next generation of digital entrepreneurs.
           </p>

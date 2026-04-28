@@ -216,7 +216,7 @@ export const Withdraw: React.FC = () => {
             <div className="flex-1 px-6 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="relative mb-6">
                     <div className="absolute inset-0 bg-emerald-500/20 blur-xl rounded-full animate-pulse"></div>
-                    <div className="relative w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                    <div className="relative w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-2xl dark:shadow-none">
                         <Check size={32} strokeWidth={4} className="animate-in zoom-in-50 duration-300 delay-100" />
                     </div>
                 </div>
@@ -228,7 +228,7 @@ export const Withdraw: React.FC = () => {
                     {lastTransaction.status === 'Completed' || lastTransaction.status === 'Paid' ? 'Transaction Completed' : 'Processing Request'}
                 </p>
 
-                <div className="w-full bg-white dark:bg-gray-900 rounded-[28px] p-6 shadow-soft border border-gray-100 dark:border-gray-800 space-y-5">
+                <div className="w-full bg-white dark:bg-gray-900 rounded-[28px] p-6 shadow-2xl dark:shadow-none border border-gray-100 dark:border-gray-800 space-y-5">
                     <div className="flex justify-between items-center">
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Amount</span>
                         <span className="text-xl font-black text-gray-900 dark:text-white">฿{(amt ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
@@ -265,7 +265,7 @@ export const Withdraw: React.FC = () => {
             <div className="px-6 space-y-3">
                 <button 
                     onClick={() => setViewMode('slip')}
-                    className="w-full h-14 bg-synergy-blue text-white rounded-full font-black uppercase tracking-[0.2em] text-[10px] shadow-glow active:scale-95 transition flex items-center justify-center space-x-2"
+                    className="w-full h-14 bg-synergy-blue text-white rounded-full font-black uppercase tracking-[0.2em] text-[10px] shadow-2xl dark:shadow-none active:scale-95 transition flex items-center justify-center space-x-2"
                 >
                     <Download size={16} />
                     <span>View E-Slip</span>
@@ -300,7 +300,7 @@ export const Withdraw: React.FC = () => {
             <div className="max-w-md mx-auto px-6">
                 <div 
                     ref={slipRef} 
-                    className="bg-white dark:bg-gray-900 rounded-[32px] overflow-hidden shadow-xl relative border border-white dark:border-gray-800 animate-in zoom-in-95 duration-500"
+                    className="bg-white dark:bg-gray-900 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none relative border border-white dark:border-gray-800 animate-in zoom-in-95 duration-500"
                 >
                     {systemSettings.slipBackground && (
                         <img 
@@ -432,7 +432,7 @@ export const Withdraw: React.FC = () => {
       {isVerifyingPin && (
           <div className="fixed inset-0 z-[110] bg-white dark:bg-gray-900 flex flex-col items-center justify-start pt-20 px-6 transition-all duration-300">
               <button onClick={() => navigate(-1)} className="absolute top-6 right-6 p-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-400"><X size={20} /></button>
-              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl mb-8 transition-all duration-500 ${showPinSuccess ? 'bg-emerald-50 text-white' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none mb-8 transition-all duration-500 ${showPinSuccess ? 'bg-emerald-50 text-white' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
                 {showPinSuccess ? <CheckCircle2 size={40} /> : <Lock size={32} />}
               </div>
               <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
@@ -469,7 +469,7 @@ export const Withdraw: React.FC = () => {
           </div>
       )}
 
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -480,7 +480,7 @@ export const Withdraw: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6 border border-transparent dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl dark:shadow-none mb-6 border border-transparent dark:border-gray-700">
             <div className="flex items-center space-x-2 mb-2">
                 <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 text-synergy-blue flex items-center justify-center">
                     <Wallet size={16} />
@@ -531,7 +531,7 @@ export const Withdraw: React.FC = () => {
                                 setSelectedBank(bank.id);
                                 selectBank(bank.id);
                             }} 
-                            className={`p-5 rounded-[24px] border transition-all cursor-pointer flex justify-between items-center ${selectedBank === bank.id ? 'bg-blue-50 dark:bg-blue-900/20 border-synergy-blue shadow-sm' : 'bg-white dark:bg-gray-800 border-transparent shadow-soft'}`}
+                            className={`p-5 rounded-[24px] border transition-all cursor-pointer flex justify-between items-center ${selectedBank === bank.id ? 'bg-blue-50 dark:bg-blue-900/20 border-synergy-blue shadow-2xl dark:shadow-none' : 'bg-white dark:bg-gray-800 border-transparent shadow-2xl dark:shadow-none'}`}
                         >
                             <div className="flex items-center space-x-4">
                                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedBank === bank.id ? 'bg-synergy-blue text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-400'}`}>
@@ -551,7 +551,7 @@ export const Withdraw: React.FC = () => {
 
         <div className="mb-10">
              <label className="text-[10px] font-black text-gray-400 uppercase block mb-3 ml-2">Amount to withdraw</label>
-             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-soft mb-4 flex items-center">
+             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl dark:shadow-none mb-4 flex items-center">
                  <span className="text-xl font-black text-gray-300 mr-3">฿</span>
                  <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full bg-transparent text-xl font-black text-gray-900 dark:text-white focus:outline-none" placeholder="0.00" />
              </div>
