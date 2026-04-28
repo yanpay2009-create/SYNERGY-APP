@@ -24,8 +24,8 @@ export const PersonalInfo: React.FC = () => {
       className={`w-full p-4 flex items-center justify-between active:scale-[0.99] transition-all ${!isLast ? 'border-b border-gray-50 dark:border-gray-700/50' : ''} group`}
     >
       <div className="flex items-center space-x-4">
-        <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-          <Icon size={20} />
+        <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 text-synergy-blue rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+          <Icon size={20} fill="currentColor" fillOpacity={0.15} />
         </div>
         <div className="text-left">
           <div className="flex items-center space-x-2">

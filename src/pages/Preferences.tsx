@@ -39,8 +39,8 @@ export const Preferences: React.FC = () => {
       className={`w-full p-4 flex items-center justify-between active:scale-[0.99] transition-all ${!isLast ? 'border-b border-gray-50 dark:border-gray-700/50' : ''}`}
     >
       <div className="flex items-center space-x-4">
-        <div className={`w-10 h-10 rounded-xl bg-blue-50 dark:bg-gray-700 flex items-center justify-center ${color} shadow-sm shrink-0`}>
-          <Icon size={20} />
+        <div className={`w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center ${color} shadow-sm shrink-0`}>
+          <Icon size={20} fill="currentColor" fillOpacity={0.15} />
         </div>
         <div className="text-left">
            <span className="text-sm font-bold text-gray-800 dark:text-gray-100 leading-tight block">{label}</span>

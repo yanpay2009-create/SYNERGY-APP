@@ -69,7 +69,7 @@ const MenuRow = ({ icon: Icon, label, subtitle, value, valueLabel, to, onClick, 
     className={`w-full flex items-start justify-between p-4 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 active:scale-[0.98] active:bg-slate-100 dark:active:bg-slate-800/60 transition-all duration-200 group ${!isLast ? 'border-b border-slate-50 dark:border-slate-800/50' : ''}`}
   >
     <div className="flex items-start space-x-4 min-w-0 flex-1">
-      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-sky-50 dark:bg-slate-700/50 text-synergy-blue'} flex items-center justify-center shadow-sm shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
+      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue'} flex items-center justify-center shadow-sm shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
         <Icon size={20} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
       </div>
       <div className="flex flex-col items-start min-w-0 flex-1">
@@ -625,7 +625,7 @@ export const Account: React.FC = () => {
                     <MenuRow icon={Trophy} label={t('menu.leaderboard')} subtitle={t('menu.leaderboard_sub')} to="/leaderboard" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Crown} label={t('menu.affiliate_tiers')} subtitle={t('menu.affiliate_tiers_sub')} value={user.tier} to="/tier-benefits" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Users} label={t('menu.my_team')} subtitle={t('menu.my_team_sub')} value={`${team.length}`} valueLabel={t('account.members')} to="/my-team" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
-                    <MenuRow icon={Share2} label={t('menu.share_profile')} subtitle={t('menu.share_profile_sub')} to="/affiliate-links" colorClass="bg-sky-50 text-synergy-blue dark:bg-slate-700/50 dark:text-blue-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
+                    <MenuRow icon={Share2} label={t('menu.share_profile')} subtitle={t('menu.share_profile_sub')} to="/affiliate-links" colorClass="bg-blue-50 text-synergy-blue dark:bg-blue-900/30 dark:text-blue-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={true} />
                 </div>
             </div>
           </div>

@@ -409,8 +409,6 @@ const Leaderboard: React.FC = () => {
                <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300 dark:text-gray-600">
                   <Trophy size={32} />
                </div>
-               <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">No Earnings Today</h3>
-               <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Check back later once sales start coming in!</p>
             </div>
           )}
 

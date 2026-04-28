@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 // The platform automatically injects GEMINI_API_KEY into the environment
 const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
-export const generateText = async (prompt: string, modelName = "gemini-1.5-flash") => {
+export const generateText = async (prompt: string, modelName = "gemini-3-flash-preview") => {
   try {
     const result = await genAI.models.generateContent({
       model: modelName,
@@ -17,10 +17,11 @@ export const generateText = async (prompt: string, modelName = "gemini-1.5-flash
   }
 };
 
-export const analyzeMedia = async (media: string, mediaType: 'image' | 'video', prompt: string, modelName = "gemini-1.5-flash") => {
+export const analyzeMedia = async (media: string, mediaType: 'image' | 'video', prompt: string, modelName = "gemini-3-flash-preview") => {
   try {
     const base64Data = media.split(",")[1] || media;
-    const mimeType = mediaType === "video" ? "video/mp4" : "image/png";
+    // For Gemini 3 series, mimeType should be part of inlineData
+    const mimeType = mediaType === "video" ? "video/mp4" : "image/jpeg";
 
     const result = await genAI.models.generateContent({
       model: modelName,
@@ -46,7 +47,7 @@ export const analyzeMedia = async (media: string, mediaType: 'image' | 'video', 
   }
 };
 
-export const transformImage = async (media: string, prompt: string, modelName = "gemini-1.5-flash") => {
+export const transformImage = async (media: string, prompt: string, modelName = "gemini-3-flash-preview") => {
   try {
     const base64Data = media.split(",")[1] || media;
 
@@ -59,7 +60,7 @@ export const transformImage = async (media: string, prompt: string, modelName = 
                 {
                     inlineData: {
                         data: base64Data,
-                        mimeType: "image/png"
+                        mimeType: "image/jpeg"
                     }
                 }
             ]
