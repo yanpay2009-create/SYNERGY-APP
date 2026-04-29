@@ -145,7 +145,7 @@ export const Cart: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col relative transition-colors duration-300">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-lg dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => confirmStep ? setConfirmStep(false) : navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -172,7 +172,7 @@ export const Cart: React.FC = () => {
         /* CONFIRMATION STEP VIEW */
         <div className="flex-1 space-y-6 animate-in slide-in-from-right duration-300">
             {/* Order Summary Card (Enhanced UI) */}
-            <div className="relative overflow-hidden bg-white dark:bg-slate-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800">
+            <div className="relative overflow-hidden bg-white dark:bg-slate-900 p-8 rounded-[40px] shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800">
                 {/* Background Graphics */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
                     <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-gradient-to-br from-synergy-blue/10 to-transparent blur-3xl opacity-50"></div>
@@ -203,7 +203,7 @@ export const Cart: React.FC = () => {
                                             referrerPolicy="no-referrer"
                                             onClick={() => navigate(`/product/${item.id}`)}
                                         />
-                                        <div className="absolute -top-1.5 -right-1.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none">
+                                        <div className="absolute -top-1.5 -right-1.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg dark:shadow-none">
                                             {item.quantity}
                                         </div>
                                     </div>
@@ -248,7 +248,7 @@ export const Cart: React.FC = () => {
 
             {/* Delivery & Payment Info */}
             <div className="space-y-3">
-                <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-2xl dark:shadow-none">
+                <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-lg dark:shadow-none">
                     <div className="flex items-center space-x-2 mb-2 text-slate-400">
                         <MapPin size={14} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-[10px] font-black uppercase tracking-widest">Delivery Address</span>
@@ -257,7 +257,7 @@ export const Cart: React.FC = () => {
                     <p className="text-[11px] text-slate-700 dark:text-slate-300 mt-0.5">{selectedAddress?.address}, {selectedAddress?.city}</p>
                 </div>
 
-                <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-2xl dark:shadow-none">
+                <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-lg dark:shadow-none">
                     <div className="flex items-center space-x-2 mb-2 text-slate-400">
                         <CreditCard size={14} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
                         <span className="text-[10px] font-black uppercase tracking-widest">Payment Method</span>
@@ -303,7 +303,7 @@ export const Cart: React.FC = () => {
                     <div className={`absolute inset-0 transition-opacity duration-500 ${isFinalConfirmDisabled ? 'bg-transparent' : 'bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600'}`}></div>
                     <div className="relative w-full flex items-center justify-center space-x-3 text-white">
                          <span className="uppercase tracking-[0.25em] text-[12px] font-black italic">Confirm Payment</span>
-                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-2xl dark:shadow-none">
+                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-lg dark:shadow-none">
                             <Check size={18} strokeWidth={3} />
                          </div>
                     </div>
@@ -319,7 +319,7 @@ export const Cart: React.FC = () => {
       ) : (
         <>
           <div className="flex-1 space-y-4">
-             <div onClick={() => navigate('/address-book')} className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none active:scale-[0.99] transition cursor-pointer border border-slate-100 dark:border-slate-800">
+             <div onClick={() => navigate('/address-book')} className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg dark:shadow-none active:scale-[0.99] transition cursor-pointer border border-slate-100 dark:border-slate-800">
                 <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center space-x-2 text-slate-500">
                         <MapPin size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
@@ -338,7 +338,7 @@ export const Cart: React.FC = () => {
              </div>
 
             {cart.map(item => (
-              <div key={item.id} className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none flex items-center space-x-4 border border-slate-100 dark:border-slate-800">
+              <div key={item.id} className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg dark:shadow-none flex items-center space-x-4 border border-slate-100 dark:border-slate-800">
                 <img 
                     src={item.image || undefined} 
                     alt={item.name} 
@@ -354,14 +354,14 @@ export const Cart: React.FC = () => {
                       <div className="flex items-center space-x-3 bg-slate-50 dark:bg-slate-900 rounded-lg p-1 border border-slate-100 dark:border-slate-800">
                         <button 
                           onClick={() => item.quantity > 1 ? updateCartQuantity(item.id, -1) : removeFromCart(item.id)}
-                          className="w-6 h-6 rounded-md bg-white dark:bg-slate-800 shadow-2xl dark:shadow-none flex items-center justify-center text-slate-600 dark:text-slate-400"
+                          className="w-6 h-6 rounded-md bg-white dark:bg-slate-800 shadow-lg dark:shadow-none flex items-center justify-center text-slate-600 dark:text-slate-400"
                         >
                           <Minus size={14} />
                         </button>
                         <span className="text-xs font-semibold w-4 text-center dark:text-slate-100">{item.quantity}</span>
                         <button 
                            onClick={() => updateCartQuantity(item.id, 1)}
-                           className="w-6 h-6 rounded-md bg-white dark:bg-slate-800 shadow-2xl dark:shadow-none flex items-center justify-center text-slate-600 dark:text-slate-400"
+                           className="w-6 h-6 rounded-md bg-white dark:bg-slate-800 shadow-lg dark:shadow-none flex items-center justify-center text-slate-600 dark:text-slate-400"
                         >
                           <Plus size={14} />
                         </button>
@@ -376,7 +376,7 @@ export const Cart: React.FC = () => {
             ))}
 
             <div className="space-y-3">
-                 <div onClick={() => navigate('/payment-selection')} className={`bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none flex items-center justify-between cursor-pointer active:scale-[0.99] transition border ${hasInsufficientBalance ? 'border-red-200 dark:border-red-900/50' : 'border-slate-100 dark:border-slate-800'}`}>
+                 <div onClick={() => navigate('/payment-selection')} className={`bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg dark:shadow-none flex items-center justify-between cursor-pointer active:scale-[0.99] transition border ${hasInsufficientBalance ? 'border-red-200 dark:border-red-900/50' : 'border-slate-100 dark:border-slate-800'}`}>
                      <div className="flex items-center space-x-3">
                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${hasInsufficientBalance ? 'bg-red-50 text-red-500' : 'bg-blue-50 dark:bg-blue-900/20 text-synergy-blue'}`}>
                              <CardIcon size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
@@ -407,7 +407,7 @@ export const Cart: React.FC = () => {
                      </div>
                  )}
 
-                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800">
+                 <div className="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800">
                      <div className="flex items-center space-x-2 mb-3">
                          <Ticket size={16} strokeWidth={2} fill="currentColor" fillOpacity={0.15} className="text-synergy-blue" />
                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Promo Code</span>
@@ -441,7 +441,7 @@ export const Cart: React.FC = () => {
                  </div>
             </div>
 
-            <div className="mt-6 bg-white dark:bg-slate-900 p-8 rounded-[40px] shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+            <div className="mt-6 bg-white dark:bg-slate-900 p-8 rounded-[40px] shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
                 <div className="space-y-2.5 mb-6 relative z-10">
                     <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-bold">
                         <span>Subtotal</span>
@@ -478,7 +478,7 @@ export const Cart: React.FC = () => {
                 <button 
                     onClick={handleCheckout}
                     disabled={isCheckoutDisabled}
-                    className={`group relative w-full h-16 rounded-full overflow-hidden transition-all duration-300 active:scale-95 flex items-center justify-center ${isCheckoutDisabled ? 'bg-gray-200 dark:bg-gray-800 cursor-not-allowed opacity-60 shadow-none' : 'shadow-[0_15px_35px_-5px_rgba(0,181,255,0.4)]'}`}
+                    className={`group relative w-full h-16 rounded-full overflow-hidden transition-all duration-300 active:scale-95 flex items-center justify-center ${isCheckoutDisabled ? 'bg-gray-200 dark:bg-gray-800 cursor-not-allowed opacity-60 shadow-none' : 'shadow-lg dark:shadow-none'}`}
                 >
                     {/* Background Layer */}
                     <div className={`absolute inset-0 transition-opacity duration-500 ${isCheckoutDisabled ? 'bg-transparent' : 'bg-gradient-to-r from-synergy-blue via-blue-500 to-indigo-600'}`}></div>
@@ -488,7 +488,7 @@ export const Cart: React.FC = () => {
                     
                     <div className="relative w-full flex items-center justify-center space-x-3 text-white">
                          <span className="uppercase tracking-[0.25em] text-[12px] font-black italic">Checkout</span>
-                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-2xl dark:shadow-none">
+                         <div className="bg-white/20 p-1.5 rounded-full group-hover:translate-x-1.5 transition-transform duration-300 shadow-lg dark:shadow-none">
                             <ArrowRight size={18} strokeWidth={3} />
                          </div>
                     </div>
@@ -502,11 +502,11 @@ export const Cart: React.FC = () => {
       {showCardModal && selectedPaymentCard && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center px-6">
               <div className="absolute inset-0 bg-black/70 backdrop-blur-md" onClick={() => !isVerifying && !paymentDone && setShowCardModal(false)}></div>
-              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl dark:shadow-none relative z-10 animate-in zoom-in-95 overflow-hidden flex flex-col border border-white/10">
+              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-lg dark:shadow-none relative z-10 animate-in zoom-in-95 overflow-hidden flex flex-col border border-white/10">
                   
                   {paymentDone && (
                       <div className="absolute inset-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center animate-in fade-in duration-500">
-                          <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-4 shadow-2xl dark:shadow-none animate-bounce">
+                          <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-4 shadow-lg dark:shadow-none animate-bounce">
                               <CheckCircle2 size={32} strokeWidth={3} />
                           </div>
                           <h2 className="text-base font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Payment Success</h2>
@@ -526,7 +526,7 @@ export const Cart: React.FC = () => {
                       )}
                   </div>
 
-                  <div className="relative w-full aspect-[1.6/1] bg-gradient-to-br from-indigo-900 to-indigo-700 rounded-[24px] p-6 text-white shadow-2xl dark:shadow-none mb-8 overflow-hidden">
+                  <div className="relative w-full aspect-[1.6/1] bg-gradient-to-br from-indigo-900 to-indigo-700 rounded-[24px] p-6 text-white shadow-lg dark:shadow-none mb-8 overflow-hidden">
                       <div className="absolute top-0 right-0 p-6 opacity-30">
                          <CardIcon size={40} />
                       </div>
@@ -558,7 +558,7 @@ export const Cart: React.FC = () => {
                               </div>
                               <button 
                                 onClick={executeCardPayment}
-                                className="w-full h-16 bg-synergy-blue text-white rounded-full font-black uppercase tracking-[0.2em] text-[11px] shadow-2xl dark:shadow-none active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+                                className="w-full h-16 bg-synergy-blue text-white rounded-full font-black uppercase tracking-[0.2em] text-[11px] shadow-lg dark:shadow-none active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
                               >
                                   <Lock size={18} />
                                   <span>Pay Securely</span>
@@ -587,11 +587,11 @@ export const Cart: React.FC = () => {
       {showQrModal && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center px-6">
               <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => !isVerifying && !paymentDone && setShowQrModal(false)}></div>
-              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-2xl dark:shadow-none relative z-10 animate-in zoom-in-95 text-center overflow-hidden border border-white/10">
+              <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-[32px] p-8 shadow-lg dark:shadow-none relative z-10 animate-in zoom-in-95 text-center overflow-hidden border border-white/10">
                   
                   {paymentDone && (
                       <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm z-20 flex flex-col items-center justify-center animate-in fade-in duration-500">
-                          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-3 shadow-2xl dark:shadow-none animate-bounce">
+                          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-500 rounded-full flex items-center justify-center mb-3 shadow-lg dark:shadow-none animate-bounce">
                               <CheckCircle2 size={24} strokeWidth={3} />
                           </div>
                           <h2 className="text-sm font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-none">Payment Success</h2>
@@ -660,7 +660,7 @@ export const Cart: React.FC = () => {
       {/* AUTO REFERRER CONFIRM MODAL */}
       {showReferrerAutoConfirm && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 border border-white/20 p-8 flex flex-col items-center text-center">
+          <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[32px] overflow-hidden shadow-lg dark:shadow-none animate-in zoom-in-95 border border-white/20 p-8 flex flex-col items-center text-center">
             <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-synergy-blue mb-6">
               <UserPlus size={32} />
             </div>

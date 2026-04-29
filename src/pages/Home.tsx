@@ -22,12 +22,12 @@ const LiveSalesFeed: React.FC<{ sales: any[] }> = ({ sales }) => {
         </div>
         <span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800">Real-time</span>
       </div>
-      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden relative">
+      <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden relative">
         <div className="space-y-3">
           {sales.slice(0, 3).map((sale, idx) => (
             <div key={sale.id || idx} className={`flex items-center justify-between animate-in slide-in-from-right-4 duration-500 delay-${idx * 100} fill-mode-both`}>
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-[10px] font-black shadow-2xl dark:shadow-none">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-[10px] font-black shadow-lg dark:shadow-none">
                   {sale.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <div>
@@ -102,6 +102,11 @@ export const Home: React.FC = () => {
   useEffect(() => {
     setBottomNavHidden(false);
   }, [setBottomNavHidden]);
+
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Income Calculations for Dashboard
   const lifetimeEarned = useMemo(() => {
@@ -191,22 +196,7 @@ export const Home: React.FC = () => {
 
   const nextTarget = getNextTierTarget();
 
-  const currentTierRef = useRef<HTMLDivElement>(null);
   const tiersOrder = useMemo(() => [UserTier.STARTER, UserTier.MARKETER, UserTier.BUILDER, UserTier.EXECUTIVE], []);
-
-  useEffect(() => {
-    // Small delay to ensure render is complete and currentTierRef is attached
-    const timer = setTimeout(() => {
-      if (currentTierRef.current) {
-        currentTierRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
-        });
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const getDiscountedPrice = useCallback((product: Product) => {
       let tierDiscount = 0;
@@ -311,7 +301,7 @@ export const Home: React.FC = () => {
             <button 
               key={i} role="tab" aria-selected={activeCategory === cat}
               onClick={() => setActiveCategory(cat)}
-              className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold transition ${activeCategory === cat ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
+              className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold transition ${activeCategory === cat ? 'bg-synergy-blue text-white shadow-lg dark:shadow-none' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
             >
               {t(`home.cat.${cat.toLowerCase()}`)}
             </button>
@@ -328,7 +318,7 @@ export const Home: React.FC = () => {
                   onClick={() => navigate('/affiliate-links')}
                   className="animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both cursor-pointer active:scale-[0.98] transition-all"
                 >
-                  <div className="w-full h-32 rounded-xl overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
+                  <div className="w-full h-32 rounded-xl overflow-hidden shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                     <img 
                       src={homeBannerAds[0].image} 
                       alt={homeBannerAds[0].title} 
@@ -347,7 +337,7 @@ export const Home: React.FC = () => {
                   className="animate-in fade-in slide-in-from-left-4 duration-700 fill-mode-both cursor-pointer active:scale-[0.98] transition-all"
                 >
                   <div 
-                    className={`w-full min-h-[110px] rounded-2xl bg-white dark:bg-slate-900 p-5 flex flex-col justify-between shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group transition-all duration-700 hover:shadow-synergy-blue/20`}
+                    className={`w-full min-h-[110px] rounded-2xl bg-white dark:bg-slate-900 p-5 flex flex-col justify-between shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group transition-all duration-700 hover:shadow-synergy-blue/20`}
                   >
                     {/* Content Overlay */}
                     <div className="relative z-10 flex flex-col h-full w-full">
@@ -455,10 +445,10 @@ export const Home: React.FC = () => {
             {/* PROMOTION SECTION (Banner Style) */}
             {promoProducts.length > 0 && promoAd && (
                 <div className="mb-4 animate-in slide-in-from-right-4 duration-700">
-                    <div 
-                      onClick={() => navigate('/promotions')}
-                      className="w-full h-32 rounded-xl overflow-hidden shadow-2xl dark:shadow-none relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-slate-800"
-                    >
+                      <div 
+                        onClick={() => navigate('/promotions')}
+                        className="w-full h-32 rounded-xl overflow-hidden shadow-lg dark:shadow-none relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-slate-800"
+                      >
                         <img src={promoAd.image || undefined} alt="Promo Background" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" referrerPolicy="no-referrer" />
                         
                         {promoAd?.expiryDate && (
@@ -480,7 +470,7 @@ export const Home: React.FC = () => {
                 </div>
             )}
 
-            <div className="mb-4">
+            <div className="mb-1">
                 <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-2">
                         <TrendingUp className="text-synergy-blue" size={20} strokeWidth={2} fill="currentColor" fillOpacity={0.15} />
@@ -491,7 +481,7 @@ export const Home: React.FC = () => {
                     </button>
                 </div>
                 
-                <div className="flex space-x-0 overflow-x-auto no-scrollbar -mx-4 snap-x snap-mandatory pb-6">
+                <div className="flex space-x-0 overflow-x-auto no-scrollbar -mx-4 snap-x snap-mandatory pb-3">
                     {tiersOrder.map((tier) => {
                         const colors = getTierColors(tier);
                         const threshold = TIER_THRESHOLDS[tier];
@@ -514,12 +504,11 @@ export const Home: React.FC = () => {
                         return (
                             <div 
                                 key={tier}
-                                ref={isCurrent ? currentTierRef : null}
                                 className="w-full shrink-0 snap-center px-4"
                             >
                                 <button 
                                     onClick={() => navigate('/tier-benefits')}
-                                    className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-3xl p-6 shadow-2xl dark:shadow-none border border-white/60 dark:border-slate-800 transition-all active:scale-[0.98] group relative overflow-hidden h-full`}
+                                    className={`w-full text-left ${colors.bgLight} backdrop-blur-xl rounded-3xl p-6 shadow-lg dark:shadow-none border border-white/60 dark:border-slate-800 transition-all active:scale-[0.98] group relative overflow-hidden h-full`}
                                 >
                                     <div className="relative z-10">
                                         <div className="flex justify-between items-center mb-4">
@@ -532,7 +521,7 @@ export const Home: React.FC = () => {
                                                 </div>
                                                 <h2 className={`text-2xl font-black ${colors.text}`}>{tier} Affiliate</h2>
                                             </div>
-                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl dark:shadow-none border transition-transform group-hover:scale-110 ${colors.bgLight} ${colors.text} border-white/50 dark:border-slate-700`}>
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-md dark:shadow-none border transition-transform group-hover:scale-110 ${colors.bgLight} ${colors.text} border-white/50 dark:border-slate-700`}>
                                                 {colors.icon && <colors.icon size={24} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />}
                                             </div>
                                         </div>

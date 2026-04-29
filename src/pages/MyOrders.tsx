@@ -168,7 +168,7 @@ export const MyOrders: React.FC = () => {
 
   return (
     <div className="pb-24 pt-0 px-4 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
-      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-2xl dark:shadow-none">
+      <div className="sticky top-0 z-[100] bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-100/50 dark:border-gray-800/50 -mx-4 px-4 py-3 mb-6 transition-all shadow-lg dark:shadow-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">
@@ -182,7 +182,7 @@ export const MyOrders: React.FC = () => {
           >
             <ShoppingBagIcon size={24} />
             {cart.reduce((acc, item) => acc + item.quantity, 0) > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full px-1 shadow-2xl dark:shadow-none backdrop-blur-sm">
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-bold text-white bg-red-500/80 rounded-full px-1 shadow-lg dark:shadow-none backdrop-blur-sm">
                 {cart.reduce((acc, item) => acc + item.quantity, 0)}
               </span>
             )}
@@ -195,7 +195,7 @@ export const MyOrders: React.FC = () => {
             <button 
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
-                className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeTab === tab ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
+                className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeTab === tab ? 'bg-synergy-blue text-white shadow-lg dark:shadow-none scale-105' : 'bg-white dark:bg-gray-800 text-gray-400 border border-gray-100 dark:border-gray-700 hover:border-gray-200'}`}
             >
                 {tab}
             </button>
@@ -215,7 +215,7 @@ export const MyOrders: React.FC = () => {
                 const isExpanded = expandedOrder === order.id;
 
                 return (
-                    <div key={order.id} className={`bg-white dark:bg-gray-900 rounded-[24px] overflow-hidden shadow-2xl dark:shadow-none border border-transparent transition-all duration-500 ${isExpanded ? 'ring-1 ring-synergy-blue/20' : ''}`}>
+                    <div key={order.id} className={`bg-white dark:bg-gray-900 rounded-[24px] overflow-hidden shadow-lg dark:shadow-none border border-transparent transition-all duration-500 ${isExpanded ? 'ring-1 ring-synergy-blue/20' : ''}`}>
                         
                         <div className="p-4" onClick={() => toggleExpand(order.id)}>
                             <div className="flex justify-between items-center mb-4">
@@ -244,9 +244,9 @@ export const MyOrders: React.FC = () => {
                                         navigate(`/product/${order.items[0].id}`);
                                     }}
                                 >
-                                    <img src={order.items[0].image || undefined} className="w-full h-full object-cover rounded-xl border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-none" alt="p" />
+                                    <img src={order.items[0].image || undefined} className="w-full h-full object-cover rounded-xl border border-gray-100 dark:border-gray-800 shadow-lg dark:shadow-none" alt="p" />
                                     {order.items.length > 1 && (
-                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-[9px] font-black border-2 border-white dark:border-gray-900 shadow-2xl dark:shadow-none">
+                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center text-[9px] font-black border-2 border-white dark:border-gray-900 shadow-lg dark:shadow-none">
                                             +{order.items.length - 1}
                                         </div>
                                     )}
@@ -261,7 +261,7 @@ export const MyOrders: React.FC = () => {
                                         <p className="text-base font-black text-synergy-blue">฿{(order.total ?? 0).toLocaleString()}</p>
                                         <div className="flex items-center space-x-1">
                                             {[1, 2, 3].map(i => (
-                                                <div key={i} className={`w-1 h-1 rounded-full ${i <= status.step ? 'bg-synergy-blue shadow-2xl dark:shadow-none' : 'bg-gray-100 dark:bg-gray-800'}`} />
+                                                <div key={i} className={`w-1 h-1 rounded-full ${i <= status.step ? 'bg-synergy-blue shadow-lg dark:shadow-none' : 'bg-gray-100 dark:bg-gray-800'}`} />
                                             ))}
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@ export const MyOrders: React.FC = () => {
                                         {order.items.some(item => !order.reviewedProductIds?.includes(item.id)) && (
                                             <button 
                                                 onClick={(e) => { e.stopPropagation(); toggleExpand(order.id); }}
-                                                className={`flex-[2] py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 active:scale-95 transition shadow-2xl dark:shadow-none group ${isExpanded ? 'bg-synergy-blue text-white' : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'}`}
+                                                className={`flex-[2] py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 active:scale-95 transition shadow-lg dark:shadow-none group ${isExpanded ? 'bg-synergy-blue text-white' : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'}`}
                                             >
                                                 <Star size={14} className={isExpanded ? 'fill-current' : 'group-hover:fill-current'} />
                                                 <span>{isExpanded ? 'Close Items' : 'Review Items'}</span>
@@ -302,7 +302,7 @@ export const MyOrders: React.FC = () => {
                                 ) : order.status === 'Return Pending' ? (
                                     <button 
                                         onClick={(e) => { e.stopPropagation(); }}
-                                        className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all shadow-2xl dark:shadow-none active:scale-95"
+                                        className="flex-1 py-2.5 rounded-xl bg-red-500 text-white text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all shadow-lg dark:shadow-none active:scale-95"
                                     >
                                         <ShieldCheck size={14} />
                                         <span>Verify & Refund</span>
@@ -319,7 +319,7 @@ export const MyOrders: React.FC = () => {
                                     <button 
                                         onClick={(e) => handleTrackOrder(e, order.id)}
                                         disabled={trackingLoading === order.id}
-                                        className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all ${isExpanded ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none' : 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 shadow-none'}`}
+                                        className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center justify-center space-x-2 transition-all ${isExpanded ? 'bg-synergy-blue text-white shadow-lg dark:shadow-none' : 'bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 shadow-none'}`}
                                     >
                                         {trackingLoading === order.id ? <Loader2 size={14} className="animate-spin" /> : <Truck size={14} />}
                                         <span>{isExpanded ? 'Hide Intel' : (order.status === 'Pending' ? 'View Audit' : 'Live Track')}</span>
@@ -346,7 +346,7 @@ export const MyOrders: React.FC = () => {
 
                                  <div className="space-y-3">
                                      <h4 className="text-[8px] font-black text-gray-400 uppercase tracking-widest ml-1">Distribution Items</h4>
-                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 space-y-3.5 shadow-2xl dark:shadow-none">
+                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 space-y-3.5 shadow-lg dark:shadow-none">
                                           {order.items.map((item, idx) => {
                                               const isReviewed = order.reviewedProductIds?.includes(item.id);
                                               const canReview = order.status === 'Delivered' && !isReviewed;
@@ -397,7 +397,7 @@ export const MyOrders: React.FC = () => {
                                   </div>
 
                                   <div className="grid grid-cols-2 gap-3">
-                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 relative shadow-2xl dark:shadow-none">
+                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 relative shadow-lg dark:shadow-none">
                                          <div className="flex items-center space-x-1.5 text-synergy-blue mb-2">
                                              <MapPin size={12} />
                                              <p className="text-[8px] font-black uppercase tracking-widest">Shipment</p>
@@ -409,7 +409,7 @@ export const MyOrders: React.FC = () => {
                                          )}
                                      </div>
 
-                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-none">
+                                     <div className="bg-white dark:bg-gray-900 p-3.5 rounded-[20px] border border-gray-100 dark:border-gray-800 shadow-lg dark:shadow-none">
                                          <div className="flex items-center space-x-1.5 text-gray-400 mb-2">
                                              <Navigation size={12} />
                                              <p className="text-[8px] font-black uppercase tracking-widest">Logistics</p>
@@ -420,7 +420,7 @@ export const MyOrders: React.FC = () => {
                                  </div>
 
                                  {order.status !== 'Pending' && order.status !== 'Return Pending' && order.status !== 'Returned' ? (
-                                    <div className="bg-white dark:bg-gray-900 p-4 rounded-[28px] border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-none">
+                                    <div className="bg-white dark:bg-gray-900 p-4 rounded-[28px] border border-gray-100 dark:border-gray-800 shadow-lg dark:shadow-none">
                                          <div className="flex justify-between items-center mb-5">
                                              <h4 className="text-[9px] font-black text-gray-900 dark:text-white uppercase tracking-[0.15em]">Movement History</h4>
                                              <div className="bg-gray-50 dark:bg-gray-900 px-2.5 py-1 rounded-lg flex items-center border border-gray-100 dark:border-gray-700">
@@ -438,7 +438,7 @@ export const MyOrders: React.FC = () => {
                                              <div className="absolute left-[3px] top-1 bottom-1 w-[1.5px] bg-gray-100 dark:bg-gray-800"></div>
                                              {order.timeline.map((step, idx) => (
                                                  <div key={idx} className="relative pl-6 animate-in slide-in-from-left-2" style={{ animationDelay: `${idx * 100}ms` }}>
-                                                     <div className={`absolute -left-[26px] top-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${step.completed ? 'bg-synergy-blue text-white shadow-2xl dark:shadow-none border-2 border-white dark:border-gray-900' : 'bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 text-gray-300'}`}>
+                                                     <div className={`absolute -left-[26px] top-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${step.completed ? 'bg-synergy-blue text-white shadow-lg dark:shadow-none border-2 border-white dark:border-gray-900' : 'bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 text-gray-300'}`}>
                                                         {step.completed ? <CheckCircle2 size={14} strokeWidth={3} /> : <div className="w-1 h-1 rounded-full bg-gray-200 dark:bg-gray-800" />}
                                                      </div>
                                                      <div className="pt-0.5">
@@ -489,10 +489,10 @@ export const MyOrders: React.FC = () => {
 
       {showReturnModal && (
           <div className="fixed inset-0 z-[120] flex items-center justify-center p-6 bg-black/70 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[36px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95 border border-white/10">
+              <div className="bg-white dark:bg-gray-900 w-full max-w-sm rounded-[36px] overflow-hidden shadow-lg dark:shadow-none animate-in zoom-in-95 border border-white/10">
                   <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                       <div className="flex items-center space-x-3">
-                          <div className="w-9 h-9 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-600">
+                          <div className="w-9 h-9 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-600 shadow-lg dark:shadow-none">
                               <RotateCcw size={18} />
                           </div>
                           <h3 className="font-black text-gray-900 dark:text-white text-[10px] uppercase tracking-[0.15em]">Initiate Return</h3>
@@ -540,7 +540,7 @@ export const MyOrders: React.FC = () => {
 
       {editingOrder && editForm && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white dark:bg-gray-900 w-full max-sm rounded-[36px] overflow-hidden shadow-2xl dark:shadow-none animate-in zoom-in-95">
+              <div className="bg-white dark:bg-gray-900 w-full max-sm rounded-[36px] overflow-hidden shadow-lg dark:shadow-none animate-in zoom-in-95">
                   <div className="p-5 border-b border-gray-50 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800/50">
                       <h3 className="font-black text-gray-900 dark:text-white text-[10px] uppercase tracking-widest flex items-center">
                           <Edit3 size={14} className="mr-2 text-synergy-blue" /> Re-route Intelligence

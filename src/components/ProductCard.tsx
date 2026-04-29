@@ -48,7 +48,7 @@ export const getTierColors = (tier: UserTier | undefined) => {
 
 export const getTierBadgeStyles = (tier: UserTier | undefined) => {
   const colors = getTierColors(tier);
-  return `${colors.bgLight} ${colors.text} border border-white/50 dark:border-slate-800 shadow-2xl dark:shadow-none`;
+  return `${colors.bgLight} ${colors.text} border border-white/50 dark:border-slate-800 shadow-lg dark:shadow-none`;
 };
 
 export const formatSold = (num: number) => {
@@ -84,13 +84,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isFeatured = 
   return (
       <div 
           onClick={() => product.stock > 0 && navigate(`/product/${product.id}`)}
-          className={`${isFeatured ? 'w-40 shrink-0' : 'w-full'} bg-white dark:bg-slate-800 rounded-xl shadow-2xl dark:shadow-none hover:shadow-synergy-blue/10 transition-all duration-300 cursor-pointer active:scale-[0.98] border border-slate-100 dark:border-slate-800/50 overflow-hidden flex flex-col relative group`}
+          className={`${isFeatured ? 'w-40 shrink-0' : 'w-full'} bg-white dark:bg-slate-800 rounded-xl shadow-lg dark:shadow-none hover:shadow-synergy-blue/10 transition-all duration-300 cursor-pointer active:scale-[0.98] border border-slate-100 dark:border-slate-800/50 overflow-hidden flex flex-col relative group`}
       >
           <div className="relative aspect-square bg-slate-100 dark:bg-slate-800">
               <img src={product.image || undefined} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 
               {/* Commission Badge at Top Right */}
-              <div className={`absolute top-1 right-1 px-1.5 py-0.5 rounded-full backdrop-blur-md flex items-center font-black text-[10px] shadow-2xl dark:shadow-none z-10 ${getTierBadgeStyles(user?.tier)}`}>
+              <div className={`absolute top-1 right-1 px-1.5 py-0.5 rounded-full backdrop-blur-md flex items-center font-black text-[10px] shadow-lg dark:shadow-none z-10 ${getTierBadgeStyles(user?.tier)}`}>
                   +฿{calculateCommission(product.price).toFixed(0)}
               </div>
 
@@ -126,7 +126,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isFeatured = 
                   <button 
                       disabled={product.stock <= 0}
                       onClick={(e) => { e.stopPropagation(); addToCart(product); }} 
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 shadow-2xl dark:shadow-none shrink-0 ml-1 active:scale-90 ${
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg dark:shadow-none shrink-0 ml-1 active:scale-90 ${
                         product.stock <= 0 
                         ? 'bg-slate-100 dark:bg-slate-800 text-slate-300 cursor-not-allowed' 
                         : 'bg-sky-50 dark:bg-slate-700 text-synergy-blue hover:bg-synergy-blue hover:text-white group/btn'

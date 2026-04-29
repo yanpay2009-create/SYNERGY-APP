@@ -69,7 +69,7 @@ const MenuRow = ({ icon: Icon, label, subtitle, value, valueLabel, to, onClick, 
     className={`w-full flex items-start justify-between p-4 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 active:scale-[0.98] active:bg-slate-100 dark:active:bg-slate-800/60 transition-all duration-200 group ${!isLast ? 'border-b border-slate-50 dark:border-slate-800/50' : ''}`}
   >
     <div className="flex items-start space-x-4 min-w-0 flex-1">
-      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue'} flex items-center justify-center shadow-2xl dark:shadow-none shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
+      <div className={`w-10 h-10 rounded-xl ${colorClass || 'bg-blue-50 dark:bg-blue-900/30 text-synergy-blue'} flex items-center justify-center shadow-lg dark:shadow-none shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300`}>
         <Icon size={20} strokeWidth={1.8} fill="currentColor" fillOpacity={0.15} />
       </div>
       <div className="flex flex-col items-start min-w-0 flex-1">
@@ -376,11 +376,11 @@ export const Account: React.FC = () => {
     <div className="pb-0 pt-0 max-w-md mx-auto min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative overflow-x-hidden">
       
       {/* TOP BACKGROUND HEADER */}
-      <div className={`absolute top-0 left-0 right-0 h-48 bg-gradient-to-br ${colors.gradient} border-b-4 ${colors.border} z-0 shadow-2xl dark:shadow-none`}>
+      <div className={`absolute top-0 left-0 right-0 h-48 bg-gradient-to-br ${colors.gradient} border-b-4 ${colors.border} z-0 shadow-lg dark:shadow-none`}>
           <div className="absolute top-[-20px] left-[-20px] w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-[-10px] right-[-10px] w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
           <div className="absolute top-8 right-6 z-20">
-              <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-4 py-1.5 flex items-center shadow-2xl dark:shadow-none animate-in fade-in slide-in-from-right-4 duration-700">
+              <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full px-4 py-1.5 flex items-center shadow-lg dark:shadow-none animate-in fade-in slide-in-from-right-4 duration-700">
                   <div className="mr-2 p-1 bg-white/20 rounded-full">
                       <Crown size={12} strokeWidth={2} fill="currentColor" fillOpacity={0.2} className="text-white" />
                   </div>
@@ -395,7 +395,7 @@ export const Account: React.FC = () => {
       {isVerifyingPin && (
           <div className="fixed inset-0 z-[100] bg-white dark:bg-gray-900 flex flex-col items-center justify-start pt-20 px-6 transition-all duration-300 animate-in fade-in">
               <button onClick={() => setIsVerifyingPin(false)} className="absolute top-6 right-6 p-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-400"><X size={20} /></button>
-              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-2xl dark:shadow-none mb-8 transition-all duration-500 ${showSuccess ? 'bg-emerald-50 text-white scale-110' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg dark:shadow-none mb-8 transition-all duration-500 ${showSuccess ? 'bg-emerald-50 text-white scale-110' : 'bg-gray-50 dark:bg-gray-800 text-synergy-blue border border-gray-100 dark:border-gray-700'}`}>
                 {showSuccess ? <CheckCircle2 size={40} className="animate-in zoom-in" /> : (pinFlow === 'recovery' ? <Smartphone size={32} className="text-amber-500" /> : (pinFlow === 'verify' ? <Lock size={32} /> : <Sparkles size={32} className="animate-pulse" />))}
               </div>
               <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2 text-center">{getPinTitle()}</h2>
@@ -415,7 +415,7 @@ export const Account: React.FC = () => {
                   <>
                     <div className="flex space-x-4 mb-10">
                         {[...Array(6)].map((_, i) => (
-                        <div key={i} className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length ? 'bg-synergy-blue scale-125 shadow-2xl dark:shadow-none' : 'bg-gray-200 dark:bg-gray-700'} ${pinError ? 'bg-red-50' : ''}`} />
+                        <div key={i} className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length ? 'bg-synergy-blue scale-125 shadow-lg dark:shadow-none' : 'bg-gray-200 dark:bg-gray-700'} ${pinError ? 'bg-red-50' : ''}`} />
                         ))}
                     </div>
                     {pinFlow === 'verify' && (
@@ -446,16 +446,16 @@ export const Account: React.FC = () => {
           
           {/* Action Icons Area */}
           <div className="absolute top-6 right-6 flex items-center space-x-2.5 z-30">
-              <button onClick={() => triggerPinGate('/withdraw')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-2xl dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><Wallet size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
-              <button onClick={() => navigate('/referrer-info')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-2xl dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><UserCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
-              <button onClick={handleShareProfile} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-2xl dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><Share2 size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={() => triggerPinGate('/withdraw')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-lg dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><Wallet size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={() => navigate('/referrer-info')} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-lg dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><UserCheck size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
+              <button onClick={handleShareProfile} className={`w-9 h-9 ${colors.bgLight} backdrop-blur-sm rounded-full flex items-center justify-center ${colors.text} shadow-lg dark:shadow-none border border-white dark:border-gray-700 active:scale-90 transition-all`}><Share2 size={18} strokeWidth={2} fill="currentColor" fillOpacity={0.15} /></button>
           </div>
 
           {/* PROFILE SECTION */}
           <div className="mb-4 relative z-20 flex flex-col items-start -mt-[100px] px-5 w-full">
               <div className="flex flex-col items-center space-y-3 w-24">
                   <button onClick={() => triggerPinGate('/edit-profile')} className="relative w-24 h-24 group block active:scale-95 transition-transform shrink-0">
-                    <div className="w-24 h-24 rounded-full shadow-2xl overflow-hidden bg-white dark:bg-gray-700 transition-all group-hover:ring-8 group-hover:ring-synergy-blue/10 border-2 border-white/90">
+                    <div className="w-24 h-24 rounded-full shadow-lg overflow-hidden bg-white dark:bg-gray-700 transition-all group-hover:ring-8 group-hover:ring-synergy-blue/10 border-2 border-white/90">
                         <img src={user.avatar || undefined} alt="User" className="w-full h-full object-cover" />
                     </div>
                     <div className="absolute inset-0 bg-black/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><Lock size={22} className="text-white opacity-60" /></div>
@@ -463,14 +463,14 @@ export const Account: React.FC = () => {
                   <div className="flex flex-col text-center w-64 -mx-20">
                       <div className="flex items-center justify-center space-x-1">
                         <h2 className="text-base font-bold text-gray-900 dark:text-white tracking-tight drop-shadow-sm leading-tight">{user.name}</h2>
-                        {kycStatus === 'Verified' && <div className="bg-emerald-500 text-white rounded-full p-0.5 shadow-2xl dark:shadow-none flex items-center justify-center shrink-0"><Check size={8} strokeWidth={4} /></div>}
+                        {kycStatus === 'Verified' && <div className="bg-emerald-500 text-white rounded-full p-0.5 shadow-lg dark:shadow-none flex items-center justify-center shrink-0"><Check size={8} strokeWidth={4} /></div>}
                       </div>
                   </div>
               </div>
           </div>
 
           {/* Today's Earnings Card */}
-          <div onClick={() => navigate('/leaderboard')} className={`w-full text-left bg-white dark:bg-slate-900 rounded-3xl p-7 mb-5 shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}>
+          <div onClick={() => navigate('/leaderboard')} className={`w-full text-left bg-white dark:bg-slate-900 rounded-3xl p-7 mb-5 shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}>
             <div className="relative z-10 flex flex-col h-full">
                 <div className="flex justify-between items-start mb-6">
                     <div>
@@ -483,10 +483,6 @@ export const Account: React.FC = () => {
                         </h2>
                     </div>
                     <div className="flex flex-col items-end">
-                        <div className="text-xs font-black text-synergy-blue tracking-tighter mb-1">
-                            +{globalProgress}%
-                        </div>
-                        <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest leading-none">Activity</span>
                     </div>
                 </div>
 
@@ -532,7 +528,7 @@ export const Account: React.FC = () => {
             activeAd ? (
                 <div 
                   onClick={() => navigate('/promotions')}
-                  className="w-full h-32 rounded-xl overflow-hidden shadow-2xl dark:shadow-none mb-5 relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-gray-700 animate-in slide-in-from-bottom-2 duration-700"
+                  className="w-full h-32 rounded-xl overflow-hidden shadow-lg dark:shadow-none mb-5 relative group cursor-pointer active:scale-[0.98] transition-all duration-500 border border-white/60 dark:border-gray-700 animate-in slide-in-from-bottom-2 duration-700"
                 >
                     <img src={activeAd.image || undefined} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" alt="Account Ad" />
                     
@@ -555,7 +551,7 @@ export const Account: React.FC = () => {
             ) : (
                 <div 
                   onClick={() => navigate('/promotions')}
-                  className={`w-full min-h-[110px] rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 mb-5 p-5 shadow-2xl dark:shadow-none relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}
+                  className={`w-full min-h-[110px] rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 mb-5 p-5 shadow-lg dark:shadow-none relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all duration-500`}
                 >
                     {/* Content Overlay */}
                     <div className="relative z-10 flex flex-col h-full justify-between">
@@ -621,7 +617,7 @@ export const Account: React.FC = () => {
                 <ShieldCheck size={14} className="mr-2" />
                 {t('account.admin')}
               </h3>
-              <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
+              <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={Database} label="System Infrastructure" subtitle="Monitor logs and core infrastructure" to="/admin/dashboard" colorClass="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={ImageIcon} label="Product Catalog" subtitle="Configure product details and media" to="/admin/products" colorClass="bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
@@ -639,7 +635,7 @@ export const Account: React.FC = () => {
                 <BarChart3 size={14} className="mr-2" />
                 {t('account.business')}
             </h3>
-            <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
+            <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={BarChart2} label={t('menu.commissions')} subtitle={t('menu.commissions_sub')} value={`${currentRate}%`} valueLabel={t('account.currently')} to="/commissions" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={Trophy} label={t('menu.leaderboard')} subtitle={t('menu.leaderboard_sub')} to="/leaderboard" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
@@ -656,7 +652,7 @@ export const Account: React.FC = () => {
                  <UserCog size={14} className="mr-2" />
                  {t('account.account_section')}
              </h3>
-             <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-2xl dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
+             <div className="bg-white dark:bg-slate-800 rounded-[32px] overflow-hidden shadow-lg dark:shadow-none border border-slate-100 dark:border-slate-800 relative">
                 <div className="relative z-10">
                     <MenuRow icon={UserCog} label={t('menu.personal_info')} subtitle={t('menu.personal_info_sub')} to="/personal-info" requiresPin={true} navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
                     <MenuRow icon={MapPin} label={t('menu.address_book')} subtitle={t('menu.address_book_sub')} to="/address-book" navigate={navigate} triggerPinGate={triggerPinGate} isLast={false} />
